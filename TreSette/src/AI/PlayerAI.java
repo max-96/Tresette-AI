@@ -10,6 +10,7 @@ public class PlayerAI implements Player {
 	 */
 	int id;
 
+	private static final int N_BOARD_GEN=30;
 
 
 	/**
@@ -25,17 +26,6 @@ public class PlayerAI implements Player {
 	public PlayerAI(int id, LinkedList<Integer> carte) {
 		this.id = id;
 		carteInMano = carte;
-//		for (int i = 0; i < 40; i++) {
-//			if (carteInMano.contains(i)) {
-//				for (int j = 0; j < 4; j++)
-//					beliefMat[i][j] = (j == id) ? 1.0f : 0.0f;
-//			} else {
-//				for (int j = 0; j < 4; j++)
-//					beliefMat[i][j] = (j == id) ? 0.0f : (1 / 3);
-//
-//			}
-		}
-
 
 		for (int i = 0; i < 4; i++)
 			unknownCards[i] = (i == id) ? 0 : 10;
@@ -44,4 +34,12 @@ public class PlayerAI implements Player {
 	public int getMossa()
 	{
 		
+		//TODO 
+		for(int i=0;i<N_BOARD_GEN;i++)
+		{
+			continue;
+		}
+		
+		return 0;
+	}
 }
