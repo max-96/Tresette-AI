@@ -1,9 +1,11 @@
 package AI;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
@@ -116,6 +118,29 @@ public class CSPSolver {
 
 	public void produce()
 	{
+		
+		
+	}
+	
+	private void prod_rec(HashMap<Integer, Integer> ass, HashMap<Integer, LinkedList<Integer>> doms,
+			List<Integer> carte, int[] rimCarte, Random r)
+	{
+		//mischia le carte rimanenti
+		Collections.shuffle(carte);
+		
+		int carta= carte.remove(0);
+		LinkedList<Integer> domCarta= doms.get(carta);
+		
+		int player= domCarta.get(r.nextInt(domCarta.size()));
+		
+		ass.put(carta, player);
+		doms.remove(carta);
+		
+		
+		
+		
+		
+		
 		
 		
 	}
