@@ -1,5 +1,6 @@
 package AI;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -34,11 +35,8 @@ public class PlayerAI implements Player {
 	public int getMossa()
 	{
 		
-		//TODO 
-		for(int i=0;i<N_BOARD_GEN;i++)
-		{
-			continue;
-		}
+		List<int[]> possBoard=new ArrayList<>();
+		
 		
 		return 0;
 	}
