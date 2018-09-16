@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import setting.Gioco;
+
 public class PlayerAI implements Player {
 
 	/**
@@ -18,13 +20,15 @@ public class PlayerAI implements Player {
 	 * carte che il player ha in mano
 	 */
 	LinkedList<Integer> carteInMano;
+	Gioco gioco;
 
 	/**
 	 * Numero di carte sconosciute dall'attuale player per ciascun player
 	 */
 	int[] unknownCards = new int[4];
 
-	public PlayerAI(int id, LinkedList<Integer> carte) {
+	public PlayerAI(int id, LinkedList<Integer> carte, Gioco gioco) {
+		this.gioco=gioco;
 		this.id = id;
 		carteInMano = carte;
 
@@ -35,8 +39,7 @@ public class PlayerAI implements Player {
 	public int getMossa()
 	{
 		
-		List<int[]> possBoard=new ArrayList<>();
-		
+//		CSPSolver csp= new CSPSolver(id, gioco, carteInMano, unknownCards, N_BOARD_GEN, piombi);
 		
 		return 0;
 	}

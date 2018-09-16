@@ -46,6 +46,16 @@ public class Gioco {
 	}
 	
 	
+	
+	
+	public HashSet<Integer> getExCards() {
+		return new HashSet<>(exCards);
+	}
+
+	public boolean[][] getPiombi() {
+		return piombi;
+	}
+
 	/**
 	 * Distribuisce le carte e inizializza i player
 	 */
@@ -68,7 +78,7 @@ public class Gioco {
 		
 		for(int i=0;i<4;i++)
 		{
-			players[i]= new PlayerAI(i, cardsPlayer[i]);
+			players[i]= new PlayerAI(i, cardsPlayer[i], this);
 			for(int j=0;j<4;j++)
 				piombi[i][j]=false;
 		}
