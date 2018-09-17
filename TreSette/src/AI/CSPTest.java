@@ -87,7 +87,7 @@ public class CSPTest {
 	
 	public static void test2() throws InterruptedException {
 		
-		final int numSoluzioni = 1;
+		final int numSoluzioni = 100;
 
 		HashSet<Integer> ex = new HashSet<>();
 		LinkedList<Integer> mano = new LinkedList<>();
@@ -104,7 +104,7 @@ public class CSPTest {
 
 		int[] rcards = { 0, 10, 10, 10 };
 		boolean[][] piombi = { { false, false, false, false }, { false, true, true, false },
-				{ false, false, false, false }, { false, false, false, false }, };
+				{ false, true, true, false }, { false, false, false, false }, };
 
 		RandCSPSolver ccc = new RandCSPSolver(0, ex, mano, rcards, numSoluzioni, piombi);
 

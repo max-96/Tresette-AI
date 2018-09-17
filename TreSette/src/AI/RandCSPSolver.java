@@ -32,6 +32,8 @@ public class RandCSPSolver {
 	private HashMap<Integer, Integer> assegnamento = new HashMap<Integer, Integer>();
 	private int[] nCarteRimanenti = new int[4];
 	private int status = 0;
+	private int[] nSemiDisponibili = new int[4];
+	private LinkedList<Integer> ordinePlayer = new LinkedList<>();
 
 	public RandCSPSolver(int player, Set<Integer> Ex, List<Integer> pCards, int[] rCards, int maxStati,
 			boolean[][] piombi) {
@@ -40,6 +42,20 @@ public class RandCSPSolver {
 		maxSol = new Semaphore(maxStati);
 		nCarteRimanenti = Arrays.copyOf(rCards, 4);
 
+		for (int i = 0; i < 4; i++) {
+			nSemiDisponibili[i] = 4;
+			for (int j = 0; j < 4; j++)
+				if (piombi[i][j])
+					nSemiDisponibili[i]--;
+
+		}
+
+		for (int i = 1; i < 5; i++) {
+			for (int j = 0; j < 4; j++) {
+				if (j != player && nSemiDisponibili[j] == i)
+					ordinePlayer.add(j);
+			}
+		}
 		for (int i : pCards)
 			assegnamento.put(i, player);
 
@@ -140,21 +156,60 @@ public class RandCSPSolver {
 
 			ArrayList<Integer> carte = new ArrayList<>(domini.keySet());
 
-			Collections.shuffle(carte, ThreadLocalRandom.current());
-			for (Integer c : carte) {
-				Vector<Integer> players = domini.get(c);
-				Collections.shuffle(players, ThreadLocalRandom.current());
-				boolean drop=true;
-				for (Integer p : players) {
-					if (carteRimanenti[p] > 0) {
-						drop=false;
-						sol.put(c, p);
-						carteRimanenti[p]--;
-						break;
-					}
+			/*
+			 * Ordino i player in base al numero di piombi che hanno
+			 * 
+			 */
+
+			/*
+			 *  
+			 */
+
+			for (int p : ordinePlayer) {
+
+				LinkedList<Integer> toDelete = new LinkedList<>();
+				Collections.shuffle(carte, ThreadLocalRandom.current());
+				for (Integer c : carte) {
+					Vector<Integer> players = domini.get(c);
+					if (!players.contains(p))
+						continue;
+
+
+					sol.put(c, p);
+					carteRimanenti[p]--;
+					toDelete.add(c);
+					if(carteRimanenti[p]<=0) break;
+
 				}
-				//if(drop) return;
-			}
+				carte.removeAll(toDelete);
+				if( carteRimanenti[p] != 0)
+				{		System.out.println("stacca stacca!");
+						return;
+				}
+				}
+			
+		
+			
+		
+
+//			Collections.shuffle(carte, ThreadLocalRandom.current());
+//			for (Integer c : carte) {
+//				Vector<Integer> players = domini.get(c);
+//				Collections.shuffle(players, ThreadLocalRandom.current());
+//				boolean drop = true;
+//				for (Integer p : players) {
+//					if (carteRimanenti[p] > 0) {
+//						drop = false;
+//						sol.put(c, p);
+//						carteRimanenti[p]--;
+//						break;
+//					}
+//				}
+//				if (drop) {
+//					System.out.println("Dropping");
+//					return;
+//				}
+//			}
 			if (maxSol.tryAcquire())
 				soluzioni.offer(sol);
 		}
