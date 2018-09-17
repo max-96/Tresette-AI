@@ -14,12 +14,13 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.RecursiveAction;
+import java.util.concurrent.Semaphore;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class RandCSPSolver {
 
 	public BlockingQueue<Map<Integer, Integer>> soluzioni;
-	private int maxSol;
+	private Semaphore maxSol;
 
 	public long tempoEsec = 0;
 	// carte non assegnate
@@ -36,7 +37,7 @@ public class RandCSPSolver {
 			boolean[][] piombi) {
 
 		soluzioni = new ArrayBlockingQueue<Map<Integer, Integer>>((int) (maxStati * (1.5)));
-		maxSol = maxStati;
+		maxSol = new Semaphore(maxStati);
 		nCarteRimanenti = Arrays.copyOf(rCards, 4);
 
 		for (int i : pCards)
@@ -96,34 +97,44 @@ public class RandCSPSolver {
 	} // ENDCOSTR
 
 	public void produce() {
-		if (status != 0) return;
-		status=1;
-		ForkJoinPool fjp= ForkJoinPool.commonPool();
-		long t1= System.currentTimeMillis();
-		LinkedList<RandCSPslave> threads=new LinkedList<>();
-		for (int i = 0; i < maxSol; i++) {
-			RandCSPslave t=new RandCSPslave();
-			fjp.execute(t);
-			threads.add(t);
-		}
-		for(RandCSPslave t: threads)
-		{
-			t.join();
-		}
-		t1= System.currentTimeMillis() - t1;
-		tempoEsec=t1;
-		
-		soluzioni.offer(Collections.emptyMap());
-		status = 2;
+		if (status != 0)
+			return;
+		status = 1;
+		ForkJoinPool fjp = ForkJoinPool.commonPool();
+		fjp.execute(new RandCSPFirstSlave());
 	}
 
-	
-	private class RandCSPslave extends RecursiveAction
-	{
+	private class RandCSPFirstSlave extends RecursiveAction {
 		private static final long serialVersionUID = 1L;
 
 		@Override
 		protected void compute() {
+			long t1 = System.currentTimeMillis();
+			LinkedList<RandCSPslave> threads = new LinkedList<>();
+			while (maxSol.availablePermits() > 0) {
+				RandCSPslave t = new RandCSPslave();
+				t.fork();
+				threads.add(t);
+			}
+			for (RandCSPslave t : threads)
+				t.join();
+
+			t1 = System.currentTimeMillis() - t1;
+			tempoEsec = t1;
+
+			soluzioni.offer(Collections.emptyMap());
+			status = 2;
+		}
+	}
+
+	private class RandCSPslave extends RecursiveAction {
+		private static final long serialVersionUID = 1L;
+
+		@Override
+		protected void compute() {
+			if (maxSol.availablePermits() <= 0)
+				return;
+
 			HashMap<Integer, Integer> sol = new HashMap<>(assegnamento);
 			int[] carteRimanenti = Arrays.copyOf(nCarteRimanenti, 4);
 
@@ -133,18 +144,23 @@ public class RandCSPSolver {
 			for (Integer c : carte) {
 				Vector<Integer> players = domini.get(c);
 				Collections.shuffle(players, ThreadLocalRandom.current());
+				boolean drop=true;
 				for (Integer p : players) {
 					if (carteRimanenti[p] > 0) {
+						drop=false;
 						sol.put(c, p);
 						carteRimanenti[p]--;
 						break;
 					}
 				}
+				//if(drop) return;
 			}
-			soluzioni.offer(sol);
+			if (maxSol.tryAcquire())
+				soluzioni.offer(sol);
 		}
-		
+
 	}
+
 	public boolean isDone() {
 		return status == 2;
 	}

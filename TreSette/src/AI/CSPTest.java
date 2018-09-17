@@ -87,7 +87,7 @@ public class CSPTest {
 	
 	public static void test2() throws InterruptedException {
 		
-		final int numSoluzioni = 50000;
+		final int numSoluzioni = 1;
 
 		HashSet<Integer> ex = new HashSet<>();
 		LinkedList<Integer> mano = new LinkedList<>();
@@ -103,7 +103,7 @@ public class CSPTest {
 		mano.add(9);
 
 		int[] rcards = { 0, 10, 10, 10 };
-		boolean[][] piombi = { { false, false, false, false }, { false, false, false, false },
+		boolean[][] piombi = { { false, false, false, false }, { false, true, true, false },
 				{ false, false, false, false }, { false, false, false, false }, };
 
 		RandCSPSolver ccc = new RandCSPSolver(0, ex, mano, rcards, numSoluzioni, piombi);
@@ -129,8 +129,8 @@ public class CSPTest {
 			if (sol == Collections.EMPTY_MAP)
 				System.out.println("Fine delle soluzioni");
 			else {
-//				System.out.print(c + " ");
-//				System.out.println(sol);
+				System.out.print(c + " ");
+				System.out.println(sol);
 				for (Entry<Integer, Integer> k : sol.entrySet()) {
 					statistiche[k.getKey()][k.getValue()]++;
 				}
