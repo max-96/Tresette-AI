@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.RecursiveAction;
@@ -13,10 +14,9 @@ import java.util.concurrent.Semaphore;
 @SuppressWarnings("serial")
 public class ParCSP extends RecursiveAction {
 
-
 	public ParCSP(HashMap<Integer, Integer> assegnamento, HashMap<Integer, LinkedList<Integer>> dominiIniziali,
 			int[] carteRimanenti, int cartaAssegnata, int playerAssegnato,
-			BlockingQueue<HashMap<Integer, Integer>> soluzioni, Semaphore maxSol) {
+			BlockingQueue<Map<Integer, Integer>> soluzioni, Semaphore maxSol) {
 		this.assegnamento = assegnamento;
 		this.nCarteRimanenti = carteRimanenti;
 		this.cartaAssegnata = cartaAssegnata;
@@ -28,7 +28,7 @@ public class ParCSP extends RecursiveAction {
 	}
 
 	private static final int SEQ_CUTOFF = 20;
-	public BlockingQueue<HashMap<Integer, Integer>> soluzioni;
+	public BlockingQueue<Map<Integer, Integer>> soluzioni;
 	private Semaphore maxSol;
 	private HashMap<Integer, Integer> assegnamento;
 	private HashMap<Integer, LinkedList<Integer>> domini;
@@ -44,7 +44,7 @@ public class ParCSP extends RecursiveAction {
 			return;
 
 		{
-			assegnamento=new HashMap<>(assegnamento);
+			assegnamento = new HashMap<>(assegnamento);
 			nCarteRimanenti = Arrays.copyOf(nCarteRimanenti, 4);
 			HashMap<Integer, LinkedList<Integer>> d = domini;
 			domini = new HashMap<>();
@@ -61,8 +61,10 @@ public class ParCSP extends RecursiveAction {
 		ensureConsistency();
 
 		if (domini.size() == 0) {
-			if (maxSol.tryAcquire())
-				soluzioni.add(assegnamento);
+			if (maxSol.tryAcquire()) {
+				soluzioni.offer(assegnamento);
+				
+			}
 			return;
 
 		} else {
@@ -92,7 +94,7 @@ public class ParCSP extends RecursiveAction {
 	private void ensureConsistency() {
 
 		assert nCarteRimanenti[playerAssegnato] >= 0;
-		LinkedList<Integer> toDelete= new LinkedList<>();
+		LinkedList<Integer> toDelete = new LinkedList<>();
 
 		if (nCarteRimanenti[playerAssegnato] > 0)
 			return;
@@ -127,7 +129,7 @@ public class ParCSP extends RecursiveAction {
 				}
 
 			}
-			while(!toDelete.isEmpty())
+			while (!toDelete.isEmpty())
 				domini.remove((Integer) toDelete.pop());
 
 		}

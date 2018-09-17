@@ -3,6 +3,7 @@ package AI;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map.Entry;
@@ -21,9 +22,10 @@ import java.util.concurrent.Semaphore;
  */
 public class CSPSolver {
 
-	public BlockingQueue<HashMap<Integer, Integer>> soluzioni;
+	public BlockingQueue<Map<Integer, Integer>> soluzioni;
 	private Semaphore maxSol;
 
+	public long tempoEsec=0;
 	// carte non assegnate
 	private LinkedList<Integer> carte = new LinkedList<>();
 	// domini di tali carte
@@ -36,7 +38,7 @@ public class CSPSolver {
 
 	public CSPSolver(int player, Set<Integer> Ex, List<Integer> pCards, int[] rCards, int maxStati, boolean[][] piombi) {
 
-		soluzioni = new ArrayBlockingQueue<HashMap<Integer, Integer>>(maxStati);
+		soluzioni = new ArrayBlockingQueue<Map<Integer, Integer>>((int) ( maxStati*(1.5)));
 		maxSol = new Semaphore(maxStati);
 		nCarteRimanenti=Arrays.copyOf(rCards,4);
 		
@@ -125,7 +127,8 @@ public class CSPSolver {
 		if(domini.size()==0)
 		{
 			status=2;
-			soluzioni.add(assegnamento);
+			soluzioni.offer(assegnamento);
+			soluzioni.offer(Collections.emptyMap());
 		}
 		
 
@@ -202,6 +205,8 @@ public class CSPSolver {
 			if (status != 0) return;
 			status=1;
 			
+			long t1= System.currentTimeMillis();
+			
 			LinkedList<ParCSP> threads = new LinkedList<>();
 			Collections.shuffle(carte);
 			int c = carte.getFirst();
@@ -215,7 +220,14 @@ public class CSPSolver {
 			{
 				t.join();
 			}
+			
+			t1= System.currentTimeMillis() - t1;
+			tempoEsec=t1;
+			
+			soluzioni.offer(Collections.emptyMap());
 			status=2;
+			
+			
 		}
 		
 	}

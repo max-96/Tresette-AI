@@ -1,7 +1,9 @@
 package AI;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.Map;
 
 public class CSPTest {
 	public static void main(String[] args) throws InterruptedException {
@@ -33,16 +35,23 @@ public class CSPTest {
 		ccc.produce();
 
 		while (!ccc.isDone()) {
-			System.out.println("Dormo. Size:"+ccc.soluzioni.size());
-			Thread.sleep(1000);
+			Thread.sleep(100);
 
 		}
 		System.out.println("Stampo:");
 		int c=1;
 		while (!ccc.soluzioni.isEmpty()) {
-			System.out.print(c);
+			
+			Map<Integer, Integer> sol=ccc.soluzioni.take();
+			if(sol== Collections.EMPTY_MAP)
+				System.out.println("Fine delle soluzioni");
+			else
+			{
+				System.out.print(c+" ");
+				System.out.println(sol);
+			}
 			c++;
-			System.out.println(ccc.soluzioni.take());
 		}
+		System.out.println("Tempo di Esecuzione: "+ccc.tempoEsec+" ms");
 	}
 }
