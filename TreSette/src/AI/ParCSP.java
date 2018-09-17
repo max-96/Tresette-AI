@@ -10,6 +10,7 @@ import java.util.Map.Entry;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.RecursiveAction;
 import java.util.concurrent.Semaphore;
+import java.util.concurrent.ThreadLocalRandom;
 
 @SuppressWarnings("serial")
 public class ParCSP extends RecursiveAction {
@@ -69,7 +70,7 @@ public class ParCSP extends RecursiveAction {
 
 		} else {
 			ArrayList<Integer> carteRimaste = new ArrayList<Integer>(domini.keySet());
-			Collections.shuffle(carteRimaste);
+			Collections.shuffle(carteRimaste, ThreadLocalRandom.current());
 			Integer c = carteRimaste.get(0);
 			LinkedList<ParCSP> threads = new LinkedList<>();
 			for (Integer v : domini.get(c))
@@ -94,6 +95,13 @@ public class ParCSP extends RecursiveAction {
 	private void ensureConsistency() {
 
 		assert nCarteRimanenti[playerAssegnato] >= 0;
+		{
+			int s=0;
+			for(int i=0;i<4;i++)
+				s+=nCarteRimanenti[i];
+			
+			assert s==domini.size();
+		}
 		LinkedList<Integer> toDelete = new LinkedList<>();
 
 		if (nCarteRimanenti[playerAssegnato] > 0)

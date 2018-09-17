@@ -1,49 +1,43 @@
 package AI;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map.Entry;
+import java.util.Map;
 import java.util.Set;
+import java.util.Vector;
+import java.util.Map.Entry;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.RecursiveAction;
-import java.util.concurrent.Semaphore;
 import java.util.concurrent.ThreadLocalRandom;
 
-/**
- * Solver ad hoc per generare le possibili combinazioni di stati possibili
- * 
- * 
- *
- */
-public class CSPSolver {
+public class RandCSPSolver {
 
 	public BlockingQueue<Map<Integer, Integer>> soluzioni;
-	private Semaphore maxSol;
+	private int maxSol;
 
-	public long tempoEsec=0;
+	public long tempoEsec = 0;
 	// carte non assegnate
 	private LinkedList<Integer> carte = new LinkedList<>();
 	// domini di tali carte
-	private HashMap<Integer, LinkedList<Integer>> domini= new HashMap<Integer, LinkedList<Integer>>();
-	
+	private HashMap<Integer, Vector<Integer>> domini = new HashMap<Integer, Vector<Integer>>();
+
 	// assegnamento delle carte sicure
 	private HashMap<Integer, Integer> assegnamento = new HashMap<Integer, Integer>();
 	private int[] nCarteRimanenti = new int[4];
-	private int status=0;
-	
+	private int status = 0;
 
-	public CSPSolver(int player, Set<Integer> Ex, List<Integer> pCards, int[] rCards, int maxStati, boolean[][] piombi) {
+	public RandCSPSolver(int player, Set<Integer> Ex, List<Integer> pCards, int[] rCards, int maxStati,
+			boolean[][] piombi) {
 
-		soluzioni = new ArrayBlockingQueue<Map<Integer, Integer>>((int) ( maxStati*(1.5)));
-		maxSol = new Semaphore(maxStati);
-		nCarteRimanenti=Arrays.copyOf(rCards,4);
-		
+		soluzioni = new ArrayBlockingQueue<Map<Integer, Integer>>((int) (maxStati * (1.5)));
+		maxSol = maxStati;
+		nCarteRimanenti = Arrays.copyOf(rCards, 4);
 
 		for (int i : pCards)
 			assegnamento.put(i, player);
@@ -86,60 +80,96 @@ public class CSPSolver {
 			} else {
 				// aggiunge il dominio
 				// Collections.shuffle(dom);
-				domini.put(c, dom);
+				domini.put(c, new Vector<>(dom));
 			}
 
 		}
-		
+
 		ensureConsistency(toCheck);
 
-		if(domini.size()==0)
-		{
-			status=2;
+		if (domini.size() == 0) {
+			status = 2;
 			soluzioni.offer(assegnamento);
 			soluzioni.offer(Collections.emptyMap());
 		}
-		
 
 	} // ENDCOSTR
 
 	public void produce() {
-
-		if(status != 0) return; 
+		if (status != 0) return;
+		status=1;
+		ForkJoinPool fjp= ForkJoinPool.commonPool();
+		long t1= System.currentTimeMillis();
+		LinkedList<RandCSPslave> threads=new LinkedList<>();
+		for (int i = 0; i < maxSol; i++) {
+			RandCSPslave t=new RandCSPslave();
+			fjp.execute(t);
+			threads.add(t);
+		}
+		for(RandCSPslave t: threads)
+		{
+			t.join();
+		}
+		t1= System.currentTimeMillis() - t1;
+		tempoEsec=t1;
 		
-		ForkJoinPool fjp = ForkJoinPool.commonPool();
-		FirstParCSP t= new FirstParCSP();
-		fjp.execute(t);
+		soluzioni.offer(Collections.emptyMap());
+		status = 2;
+	}
 
-	}
 	
-	public boolean isDone()
+	private class RandCSPslave extends RecursiveAction
 	{
-		return status==2;
+		private static final long serialVersionUID = 1L;
+
+		@Override
+		protected void compute() {
+			HashMap<Integer, Integer> sol = new HashMap<>(assegnamento);
+			int[] carteRimanenti = Arrays.copyOf(nCarteRimanenti, 4);
+
+			ArrayList<Integer> carte = new ArrayList<>(domini.keySet());
+
+			Collections.shuffle(carte, ThreadLocalRandom.current());
+			for (Integer c : carte) {
+				Vector<Integer> players = domini.get(c);
+				Collections.shuffle(players, ThreadLocalRandom.current());
+				for (Integer p : players) {
+					if (carteRimanenti[p] > 0) {
+						sol.put(c, p);
+						carteRimanenti[p]--;
+						break;
+					}
+				}
+			}
+			soluzioni.offer(sol);
+		}
+		
 	}
-	
-	
+	public boolean isDone() {
+		return status == 2;
+	}
+
 	private void ensureConsistency(LinkedList<Integer> toCheck) {
 
-		LinkedList<Integer> toDelete= new LinkedList<>();
+		LinkedList<Integer> toDelete = new LinkedList<>();
 
 		while (!toCheck.isEmpty()) {
 			int p = toCheck.pop();
 			// per ogni dominio controlliamo che non sia presente p
-			for (Entry<Integer, LinkedList<Integer>> k : domini.entrySet()) {
+			for (Entry<Integer, Vector<Integer>> k : domini.entrySet()) {
 				if (k.getValue().contains(p)) {
 
 					// Se lo contiene lo dobbiamo togliere
-					LinkedList<Integer> dom = k.getValue();
+					Vector<Integer> dom = k.getValue();
 					dom.remove((Integer) p);
 					assert dom.size() > 0;
 					// Ora controlliamo se è diventato un assegnamento
 					//
 					if (dom.size() == 1) {
-						int pToCheck = dom.getFirst();
+						int pToCheck = dom.get(0);
 						int carta = k.getKey();
 						toDelete.add(carta);
-//						domini.remove(carta);
+						// domini.remove(carta);
 						assegnamento.put(carta, pToCheck);
 						nCarteRimanenti[pToCheck] = nCarteRimanenti[pToCheck] - 1;
 
@@ -152,56 +182,10 @@ public class CSPSolver {
 				}
 
 			}
-			while(!toDelete.isEmpty())
+			while (!toDelete.isEmpty())
 				domini.remove((Integer) toDelete.pop());
 
 		}
 
 	}
-	
-	
-	
-	
-	
-	
-	
-	@SuppressWarnings("serial")
-	private class FirstParCSP extends RecursiveAction
-	{
-
-		@Override
-		protected void compute() {
-			if (status != 0) return;
-			status=1;
-			
-			long t1= System.currentTimeMillis();
-			
-			LinkedList<ParCSP> threads = new LinkedList<>();
-			Collections.shuffle(carte, ThreadLocalRandom.current());
-			int c = carte.getFirst();
-			for (int p : domini.get(c)) {
-				ParCSP t = new ParCSP(assegnamento, domini, nCarteRimanenti, c, p, soluzioni, maxSol);
-				t.fork();
-				threads.add(t);
-			}
-			
-			for(ParCSP t: threads)
-			{
-				t.join();
-			}
-			
-			t1= System.currentTimeMillis() - t1;
-			tempoEsec=t1;
-			
-			soluzioni.offer(Collections.emptyMap());
-			status=2;
-			
-			
-		}
-		
-	}
-
-	
-	
-	
-} // ENDCLASS
+}
