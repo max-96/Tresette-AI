@@ -1,0 +1,199 @@
+package AI;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.RecursiveAction;
+import java.util.concurrent.ThreadLocalRandom;
+
+public class SforzaSolver {
+
+	public BlockingQueue<List<Integer>[]> possibiliAssegnamenti;
+
+	private LinkedList<Integer>[] assegnamentoCarte = (LinkedList<Integer>[]) new LinkedList[4];
+	private int[] carteMancanti = new int[4];
+	private boolean[][] semiAttivi = new boolean[4][4];
+
+	private LinkedList<Integer> carteLibere = new LinkedList<>();
+	private LinkedList<Integer>[] carteLiberePerSeme = (LinkedList<Integer>[]) new LinkedList[4];
+	private int status = 0;
+
+	private int idPlayer;
+	private int numeroSoluzioni;
+
+	/********************
+	 * 
+	 * @param id
+	 *            Id del player
+	 * @param CarteScartate
+	 *            Insieme di carte scartate
+	 * @param carteInMano
+	 *            Lista delle carte in mano al giocatore
+	 * @param carteMancanti
+	 *            Numero di carte sconosciute che ha in mano ogni player
+	 * @param semiAttivi
+	 *            SemiAttivi[p][s] indica se il giocatore p puo' avere seme s
+	 * @param numeroSoluzioni
+	 *            Il numero di soluzioni da produrre
+	 */
+
+	public SforzaSolver(int id, Set<Integer> CarteScartate, LinkedList<Integer> carteInMano, int[] carteMancanti,
+			boolean[][] semiAttivi, int numeroSoluzioni) {
+
+		idPlayer = id;
+		this.carteMancanti = carteMancanti;
+		carteMancanti[id] = 0;
+		this.semiAttivi = semiAttivi;
+		this.numeroSoluzioni = numeroSoluzioni;
+		possibiliAssegnamenti = new LinkedBlockingQueue<>();
+
+		for (int i = 0; i < 4; i++) {
+			assegnamentoCarte[i] = new LinkedList<>();
+			carteLiberePerSeme[i] = new LinkedList<>();
+
+		}
+
+		assegnamentoCarte[id] = new LinkedList<>(carteInMano);
+
+		for (int carta = 0; carta < 40; carta++) {
+			if (CarteScartate.contains(carta) || carteInMano.contains(carta))
+				continue;
+
+			carteLibere.add(carta);
+			carteLiberePerSeme[carta / 10].add(carta);
+
+		}
+	}
+
+	public boolean startProducing() {
+		if (status != 0)
+			return false;
+
+		status = 1;
+		ForkJoinPool pool = ForkJoinPool.commonPool();
+
+		pool.execute(new SforzaFirst());
+
+		return true;
+
+	}
+
+	public boolean isDone() {
+		return status == 2;
+	}
+
+	private class SforzaFirst extends RecursiveAction {
+
+		private static final long serialVersionUID = 1L;
+
+		@Override
+		protected void compute() {
+			LinkedList<SforzaSlave> threads = new LinkedList<>();
+
+			for (int i = 0; i < numeroSoluzioni; i++) {
+
+				SforzaSlave t = new SforzaSlave();
+				t.fork();
+				threads.add(t);
+			}
+
+			while (!threads.isEmpty())
+				threads.pop().join();
+
+			List<Integer>[] sentinella = (List<Integer>[]) new LinkedList[1];
+			sentinella[0] = Collections.emptyList();
+			possibiliAssegnamenti.offer(sentinella);
+			status = 2;
+
+		}
+
+	}
+
+	private class SforzaSlave extends RecursiveAction {
+
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+		private LinkedList<Integer>[] assCarte = (LinkedList<Integer>[]) new LinkedList[4];
+		private LinkedList<Integer> carteLib = new LinkedList<>();
+		private LinkedList<Integer>[] carteLibPerSeme = (LinkedList<Integer>[]) new LinkedList[4];
+		private int[] carteManc;
+
+		@Override
+		protected void compute() {
+			copiaStrutture();
+
+			for (int player = 0; player < 4; player++) {
+
+				check();
+
+				Collections.shuffle(carteLib, ThreadLocalRandom.current());
+				int i = 0;
+
+				while (carteManc[player] > 0) {
+
+					while (!semiAttivi[player][(carteLib.get(i) / 10)])
+						i++;
+
+					Integer carta = carteLib.remove(i);
+
+					assCarte[player].add(carta);
+					carteLibPerSeme[carta / 10].remove(carta);
+					carteManc[player] = carteManc[player] - 1;
+					check();
+				}
+
+			}
+
+			possibiliAssegnamenti.offer(assCarte);
+
+		}
+
+		private void copiaStrutture() {
+			for (int i = 0; i < 4; i++) {
+				assCarte[i] = new LinkedList<>(assegnamentoCarte[i]);
+				carteLibPerSeme[i] = new LinkedList<>(carteLiberePerSeme[i]);
+			}
+
+			carteLib = new LinkedList<>(carteLibere);
+			carteManc = Arrays.copyOf(carteMancanti, 4);
+
+		}
+
+		private void check() {
+			for (int p = 0; p < 4; p++) {
+				if (carteManc[p] == 0)
+					continue;
+
+				int somma = 0;
+				for (int s = 0; s < 4; s++) {
+					if (semiAttivi[p][s])
+						s += carteLibPerSeme[s].size();
+
+				}
+
+				assert somma >= carteManc[p];
+				if (somma == carteManc[p]) {
+					for (int s = 0; s < 4; s++) {
+						if (semiAttivi[p][s]) {
+							assCarte[p].addAll(carteLibPerSeme[s]);
+							carteLib.removeAll(carteLibPerSeme[s]);
+							carteLibPerSeme[s].clear();
+							carteManc[p] = 0;
+						}
+
+					}
+				}
+			}
+		}
+
+	}
+
+}

@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -83,6 +84,64 @@ public class CSPTest {
 
 	}
 
+public static void test3() throws InterruptedException {
+		
+		final int numSoluzioni = 100;
+
+		HashSet<Integer> ex = new HashSet<>();
+		LinkedList<Integer> mano = new LinkedList<>();
+		mano.add(0);
+		mano.add(1);
+		mano.add(2);
+		mano.add(3);
+		mano.add(4);
+		mano.add(5);
+		mano.add(6);
+		mano.add(7);
+		mano.add(8);
+		mano.add(9);
+
+		int[] rcards = { 0, 10, 10, 10 };
+		boolean[][] semiAttivi = { { true, true, true, true }, { true, true, true, true },
+				{ true, true, true, true }, { true, true, true, true }, };
+
+		SforzaSolver ccc = new SforzaSolver(0, ex, mano, rcards, semiAttivi,  numSoluzioni);
+
+		ccc.startProducing();
+		
+		while (!ccc.isDone()) {
+			Thread.sleep(100);
+		}
+		
+	
+		
+		//Statistica
+		
+		int[][] statistiche = new int[40][4];
+
+		for (int i = 0; i < 40; i++)
+			Arrays.fill(statistiche[i], 0);
+
+		System.out.println("Stampo:");
+		int c = 1;
+		while (!ccc.possibiliAssegnamenti.isEmpty()) {
+
+			List<Integer>[] sol = ccc.possibiliAssegnamenti.take();
+			if (sol[0] == Collections.EMPTY_LIST)
+				System.out.println("Fine delle soluzioni");
+			else {
+				System.out.print(c + " ");
+				System.out.println(sol);
+				for(int p=0;p<4;p++)
+				for (Entry<Integer, Integer> k : sol.entrySet()) {
+					
+					statistiche[k.getKey()][k.getValue()]++;
+				}
+			}
+			c++;
+		}
+	
+}
 	
 	
 	public static void test2() throws InterruptedException {

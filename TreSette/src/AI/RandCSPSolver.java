@@ -182,34 +182,12 @@ public class RandCSPSolver {
 
 				}
 				carte.removeAll(toDelete);
-				if( carteRimanenti[p] != 0)
-				{		System.out.println("stacca stacca!");
-						return;
+				if (carteRimanenti[p] != 0) {
+					throw new RuntimeException("Errore assegnamento impossibile");
 				}
-				}
+			}
 			
-		
-			
-		
 
-//			Collections.shuffle(carte, ThreadLocalRandom.current());
-//			for (Integer c : carte) {
-//				Vector<Integer> players = domini.get(c);
-//				Collections.shuffle(players, ThreadLocalRandom.current());
-//				boolean drop = true;
-//				for (Integer p : players) {
-//					if (carteRimanenti[p] > 0) {
-//						drop = false;
-//						sol.put(c, p);
-//						carteRimanenti[p]--;
-//						break;
-//					}
-//				}
-//				if (drop) {
-//					System.out.println("Dropping");
-//					return;
-//				}
-//			}
 			if (maxSol.tryAcquire())
 				soluzioni.offer(sol);
 		}
