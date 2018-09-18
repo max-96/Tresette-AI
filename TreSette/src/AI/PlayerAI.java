@@ -1,6 +1,6 @@
 package AI;
 
-import java.util.LinkedList;
+import java.util.List;
 
 import setting.Card;
 import setting.Game;
@@ -14,7 +14,7 @@ public class PlayerAI extends Player
 	 */
 	int[] unknownCards = new int[4];
 
-	public PlayerAI(int id, LinkedList<Card> carte, Game gioco)
+	public PlayerAI(int id, List<Card> carte, Game gioco)
 	{
 		super(id, carte, gioco);
 	}

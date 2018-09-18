@@ -1,6 +1,6 @@
 package AI;
 
-import java.util.LinkedList;
+import java.util.List;
 
 import setting.Card;
 import setting.Game;
@@ -8,10 +8,10 @@ import setting.Game;
 public abstract class Player
 {
 	protected int id;
-	protected LinkedList<Card> carteInMano;
+	protected List<Card> carteInMano;
 	protected Game gioco;
 	
-	public Player(int id, LinkedList<Card> carte, Game gioco)
+	public Player(int id, List<Card> carte, Game gioco)
 	{
 		this.id = id;
 		carteInMano = carte;
