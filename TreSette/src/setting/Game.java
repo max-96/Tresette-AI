@@ -13,13 +13,13 @@ import java.util.Set;
 import AI.Player;
 import AI.PlayerAI;
 
-public class Game {
-
-	private Map<Integer, List<Card>> assCarte = new HashMap<>();
+public class Game
+{
+	private List<Card>[] assCarte = new LinkedList[4];
 	private Player[] players = new PlayerAI[4];
 	private Set<Card> exCards = new HashSet<>();
 	private int[] punteggi = {0, 0};
-	private Map<Integer, List<Card.Suit>> semiAttivi = new HashMap<>(); // player x semi
+	private List<Card.Suit>[] semiAttivi = new LinkedList[4]; // player x semi
 
 	public Game() {
 		initialise();
@@ -57,8 +57,11 @@ public class Game {
 		return new HashSet<>(exCards);
 	}
 
-	public Map<Integer, List<Card.Suit>> getSemiAttivi() {
-		return null;
+	public List<Card.Suit>[] getSemiAttivi() {
+		List<Card.Suit>[] temp = new LinkedList[4];
+		for(int i=0; i<4; i++)
+			Collections.copy(semiAttivi[i], temp[i]);
+		return temp;
 	}
 
 	/**
@@ -79,8 +82,8 @@ public class Game {
 			for(int j= 0; j<10; j++)
 				carteInMano.add(new Card(temp.remove(0)));
 			
-			assCarte.put(i, carteInMano);
-			semiAttivi.put(i, Arrays.asList(Card.Suit.values()));
+			assCarte[i] = carteInMano;
+			semiAttivi[i] = Arrays.asList(Card.Suit.values());
 			
 			players[i] = new PlayerAI(i, carteInMano, this);
 		}
