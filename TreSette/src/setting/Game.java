@@ -58,7 +58,7 @@ public class Game {
 	}
 
 	public Map<Integer, List<Card.Suit>> getSemiAttivi() {
-		;
+		return null;
 	}
 
 	/**
