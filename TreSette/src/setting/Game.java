@@ -17,7 +17,7 @@ public class Game
 {
 	private List<Card>[] assCarte = new LinkedList[4];
 	private Player[] players = new PlayerAI[4];
-	private Set<Card> exCards = new HashSet<>();
+	private Set<Card> carteInGioco = new HashSet<>();
 	private int[] punteggi = {0, 0};
 	private List<Card.Suit>[] semiAttivi = new LinkedList[4]; // player x semi
 
@@ -52,15 +52,14 @@ public class Game
 //	
 	
 	
-	
 	public Set<Card> getExCards() {
-		return new HashSet<>(exCards);
+		return new HashSet<>(carteInGioco);
 	}
 
 	public List<Card.Suit>[] getSemiAttivi() {
 		List<Card.Suit>[] temp = new LinkedList[4];
 		for(int i=0; i<4; i++)
-			Collections.copy(semiAttivi[i], temp[i]);
+			Collections.copy(temp[i], semiAttivi[i]);
 		return temp;
 	}
 
