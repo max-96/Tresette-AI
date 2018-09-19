@@ -24,6 +24,7 @@ public class PlayerAI extends Player
 		
 //		CSPSolver csp= new CSPSolver(id, gioco, carteInMano, unknownCards, N_BOARD_GEN, piombi);
 		
+		
 		return new Card(0);
 	}
 }

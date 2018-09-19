@@ -1,6 +1,6 @@
 package setting;
 
-public class Card
+public class Card implements Comparable<Card>
 {	
 	public enum Suit
 	{
@@ -60,4 +60,12 @@ public class Card
 	public int getPunti() { return valore.getPunti(); }
 	
 	public int toInt() { return seme.getVal() + valore.getVal(); }
+	
+	@Override
+	public int compareTo(Card other)
+	{
+		if (seme != other.seme) return 0;
+		return valore.getVal(); //- other.valore.getVal();
+	}
+	
 }
