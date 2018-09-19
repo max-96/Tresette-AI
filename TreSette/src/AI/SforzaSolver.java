@@ -14,7 +14,8 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class SforzaSolver {
 
-	public BlockingQueue<List<Integer>[]> possibiliAssegnamenti;
+	public BlockingQueue<List<List<Integer>>> possibiliAssegnamenti;
+	public long tempoEsecuzione;
 
 	private LinkedList<Integer>[] assegnamentoCarte = (LinkedList<Integer>[]) new LinkedList[4];
 	private int[] carteMancanti = new int[4];
@@ -94,6 +95,7 @@ public class SforzaSolver {
 
 		@Override
 		protected void compute() {
+			long tempo=System.currentTimeMillis();
 			LinkedList<SforzaSlave> threads = new LinkedList<>();
 
 			for (int i = 0; i < numeroSoluzioni; i++) {
@@ -105,9 +107,11 @@ public class SforzaSolver {
 
 			while (!threads.isEmpty())
 				threads.pop().join();
+			
+			tempo=System.currentTimeMillis() - tempo;
+			tempoEsecuzione=tempo;
 
-			List<Integer>[] sentinella = (List<Integer>[]) new LinkedList[1];
-			sentinella[0] = Collections.emptyList();
+			List<List<Integer>> sentinella= Collections.emptyList();
 			possibiliAssegnamenti.offer(sentinella);
 			status = 2;
 
@@ -152,7 +156,8 @@ public class SforzaSolver {
 
 			}
 
-			possibiliAssegnamenti.offer(assCarte);
+			
+			possibiliAssegnamenti.offer(Arrays.asList(assCarte));
 
 		}
 
@@ -175,7 +180,7 @@ public class SforzaSolver {
 				int somma = 0;
 				for (int s = 0; s < 4; s++) {
 					if (semiAttivi[p][s])
-						s += carteLibPerSeme[s].size();
+						somma += carteLibPerSeme[s].size();
 
 				}
 
