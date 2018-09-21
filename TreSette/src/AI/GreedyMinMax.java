@@ -2,6 +2,8 @@ package AI;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.RecursiveTask;
 
 /**
  * Questa classe implementa un MinMax greedy, nel senso che cerca di
@@ -21,13 +23,21 @@ public class GreedyMinMax extends DeterministicAI {
 		playerId = idPlayer;
 	}
 
-	@Override
-	public Integer getBestMove(List<List<Integer>> assegnamentoCarte, List<Integer> carteInGioco) {
+	// @Override
+	public Integer getBestMove(List<List<Integer>> assegnamentoCarte, List<Integer> carteInGioco,
+			ConcurrentHashMap<Integer, Double> valoriPerMossa) {
+
+		// assumo che valoriPerMossa sia gia' inizializzata e posto tutto a 0
 
 		boolean newPassata = carteInGioco.isEmpty();
 		List<Integer> cartePossibili = newPassata ? new ArrayList<>(assegnamentoCarte.get(playerId))
 				: DeterministicAI.possibiliMosse(assegnamentoCarte.get(playerId), carteInGioco.get(0) / 10);
 
+		/*
+		 * in realta' non deve mai capitare, il player lo deve notare prima evitando di
+		 * generare tutti gli scenari e non chiamando minmax. TODO quando sara'
+		 * funzionante, questa va sostituita con un assert assert cartePossibili.size>1;
+		 */
 		if (cartePossibili.size() == 1)
 			return cartePossibili.get(0);
 
@@ -81,6 +91,14 @@ public class GreedyMinMax extends DeterministicAI {
 					bestMove = c;
 				}
 
+				/*
+				 * Aggiorno il valore nella mappa delle mosse x valori
+				 */
+				{
+					double oldval = valoriPerMossa.get(c);
+					while (!valoriPerMossa.replace(c, oldval, oldval + valore))
+						oldval = valoriPerMossa.get(c);
+				}
 			} else {
 				/*
 				 * Se ci sono meno di 3 carte in gioco, posso ragionare e usare minmax per
@@ -88,10 +106,10 @@ public class GreedyMinMax extends DeterministicAI {
 				 */
 				int newDomCarta;
 				int newDomPlayer;
-				
+
 				if (newPassata) {
-					newDomCarta=c;
-					newDomPlayer=playerId;
+					newDomCarta = c;
+					newDomPlayer = playerId;
 
 				} else {
 					newDomCarta = cartaDominante;
@@ -115,12 +133,22 @@ public class GreedyMinMax extends DeterministicAI {
 						carteInGioco.size() + 1, false);
 
 				System.out.println("Minmax value (" + c + "):" + minmaxVal);
+				
+				/*
+				 * Aggiorno il valore nella mappa delle mosse x valori
+				 */
+				{
+					double oldval = valoriPerMossa.get(c);
+					while (!valoriPerMossa.replace(c, oldval, oldval + minmaxVal))
+						oldval = valoriPerMossa.get(c);
+				}
 
 				if (minmaxVal > bestVal) {
 					bestVal = minmaxVal;
 					bestMove = c;
 				}
 			}
+
 		}
 		return bestMove;
 	}
@@ -149,7 +177,7 @@ public class GreedyMinMax extends DeterministicAI {
 				return (playerDominante % 2 == playerId % 2) ? valore : (-valore);
 			}
 
-			double bestVal = (maximise) ? Double.MIN_VALUE : Double.MAX_VALUE;
+			double bestVal = (maximise) ? Double.NEGATIVE_INFINITY : Double.POSITIVE_INFINITY;
 
 			for (Integer c : mosse) {
 				int newVincente = playerDominante;
@@ -207,19 +235,32 @@ public class GreedyMinMax extends DeterministicAI {
 		}
 
 	}
+	
+	public static class GreedyMinMaxForkino extends RecursiveTask<Integer>
+	{
+		
+		private int idPlayer;
+		private List<List<Integer>> assegnamentoCarte;
+		private List<Integer> carteInGioco;
+		private ConcurrentHashMap<Integer, Double> valoriPerMossa;
+		
 
-	// private double minmax(List<List<Integer>> assegnamento, int player,
-	// List<Integer> carteInGioco, int semeDominante)
-	// {
-	// int turno=carteInGioco.size();
-	//
-	// List<Integer>
-	// mossePoss=DeterministicAI.possibiliMosse(assegnamento.get(player),
-	// semeDominante);
-	//
-	//
-	//
-	//
-	// return 0;
-	// }
+		
+		public GreedyMinMaxForkino(int idPlayer, List<List<Integer>> assegnamentoCarte, List<Integer> carteInGioco,
+				ConcurrentHashMap<Integer, Double> valoriPerMossa) {
+			this.idPlayer = idPlayer;
+			this.assegnamentoCarte = assegnamentoCarte;
+			this.carteInGioco = carteInGioco;
+			this.valoriPerMossa = valoriPerMossa;
+		}
+
+
+
+		@Override
+		protected Integer compute() {
+			GreedyMinMax gmm=new GreedyMinMax(idPlayer);
+			return gmm.getBestMove(assegnamentoCarte, carteInGioco, valoriPerMossa);
+		}
+	}
+
 }

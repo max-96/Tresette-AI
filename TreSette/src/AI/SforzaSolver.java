@@ -1,11 +1,13 @@
 package AI;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -17,18 +19,19 @@ public class SforzaSolver {
 	public BlockingQueue<List<List<Integer>>> possibiliAssegnamenti;
 	public long tempoEsecuzione;
 
-	private LinkedList<Integer>[] assegnamentoCarte = (LinkedList<Integer>[]) new LinkedList[4];
+	private List<Integer>[] assegnamentoCarte = (ArrayList<Integer>[]) new ArrayList[4];
 	private int[] carteMancanti = new int[4];
 	private boolean[][] semiAttivi = new boolean[4][4];
 
-	private LinkedList<Integer> carteLibere = new LinkedList<>();
-	private LinkedList<Integer>[] carteLiberePerSeme = (LinkedList<Integer>[]) new LinkedList[4];
+	private List<Integer> carteLibere = new ArrayList<>();
+	private List<Integer>[] carteLiberePerSeme = (ArrayList<Integer>[]) new ArrayList[4];
 	private int status = 0;
 
-	private int idPlayer;
+//	private int idPlayer;
 	private int numeroSoluzioni;
 
 	/********************
+	 * Solver parallelo che produce soluzioni distribuendo le carte equiprobabilmente ai giocatori.
 	 * 
 	 * @param id
 	 *            Id del player
@@ -44,23 +47,23 @@ public class SforzaSolver {
 	 *            Il numero di soluzioni da produrre
 	 */
 
-	public SforzaSolver(int id, Set<Integer> CarteScartate, LinkedList<Integer> carteInMano, int[] carteMancanti,
+	public SforzaSolver(int id, Set<Integer> CarteScartate, List<Integer> carteInMano, int[] carteMancanti,
 			boolean[][] semiAttivi, int numeroSoluzioni) {
 
-		idPlayer = id;
+//		idPlayer = id;
 		this.carteMancanti = carteMancanti;
 		carteMancanti[id] = 0;
 		this.semiAttivi = semiAttivi;
 		this.numeroSoluzioni = numeroSoluzioni;
-		possibiliAssegnamenti = new LinkedBlockingQueue<>();
+		possibiliAssegnamenti = new ArrayBlockingQueue<>(numeroSoluzioni+1);
 
 		for (int i = 0; i < 4; i++) {
-			assegnamentoCarte[i] = new LinkedList<>();
-			carteLiberePerSeme[i] = new LinkedList<>();
+			assegnamentoCarte[i] = new ArrayList<>();
+			carteLiberePerSeme[i] = new ArrayList<>();
 
 		}
 
-		assegnamentoCarte[id] = new LinkedList<>(carteInMano);
+		assegnamentoCarte[id] = new ArrayList<>(carteInMano);
 
 		for (int carta = 0; carta < 40; carta++) {
 			if (CarteScartate.contains(carta) || carteInMano.contains(carta))
@@ -72,6 +75,14 @@ public class SforzaSolver {
 		}
 	}
 
+	
+	/**
+	 * Avvia la risoluzione e inizia a produrre gli assegnamenti possibili.
+	 * Gli assegnamenti prodotti vengono inseriti
+	 * nella <code><b>BlockingQueue</b> assegnamentiProdotti</code> .
+	 * 
+	 * @return <b>true</b> se e' possibile procedere alla produzione, <b>false</b> altrimenti
+	 */
 	public boolean startProducing() {
 		if (status != 0)
 			return false;
@@ -125,9 +136,9 @@ public class SforzaSolver {
 		 * 
 		 */
 		private static final long serialVersionUID = 1L;
-		private LinkedList<Integer>[] assCarte = (LinkedList<Integer>[]) new LinkedList[4];
-		private LinkedList<Integer> carteLib = new LinkedList<>();
-		private LinkedList<Integer>[] carteLibPerSeme = (LinkedList<Integer>[]) new LinkedList[4];
+		private List<Integer>[] assCarte = (ArrayList<Integer>[]) new ArrayList[4];
+		private List<Integer> carteLib = new ArrayList<>();
+		private List<Integer>[] carteLibPerSeme = (ArrayList<Integer>[]) new ArrayList[4];
 		private int[] carteManc;
 
 		@Override
@@ -163,11 +174,11 @@ public class SforzaSolver {
 
 		private void copiaStrutture() {
 			for (int i = 0; i < 4; i++) {
-				assCarte[i] = new LinkedList<>(assegnamentoCarte[i]);
-				carteLibPerSeme[i] = new LinkedList<>(carteLiberePerSeme[i]);
+				assCarte[i] = new ArrayList<>(assegnamentoCarte[i]);
+				carteLibPerSeme[i] = new ArrayList<>(carteLiberePerSeme[i]);
 			}
 
-			carteLib = new LinkedList<>(carteLibere);
+			carteLib = new ArrayList<>(carteLibere);
 			carteManc = Arrays.copyOf(carteMancanti, 4);
 
 		}
