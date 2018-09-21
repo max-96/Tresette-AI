@@ -36,7 +36,7 @@ public class CSPTest
 
 		int[] rcards = { 0, 10, 10, 10 };
 		boolean[][] semiAttivi = { { true, true, true, true }, { true, true, true, true }, { true, true, true, true },
-				{ true, false, false, true }, };
+				{ true, true, true, true }, };
 
 		SforzaSolver ccc = new SforzaSolver(0, ex, mano, rcards, semiAttivi, numSoluzioni);
 
