@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import setting.Card;
+
 public class CSPTest
 {
 	public static void main(String[] args) throws InterruptedException
@@ -90,8 +92,11 @@ public class CSPTest
 			System.out.print(((double) (statistiche[i][2]) / numSoluzioni) + "\t");
 			System.out.print(((double) (statistiche[i][3]) / numSoluzioni) + "\t");
 			System.out.println();
+			
 
 		}
+
+		System.out.println(new Card(Card.Suit.BASTONI, Card.Value.DUE).compareTo(new Card(Card.Suit.BASTONI, Card.Value.TRE)));
 
 	}
 
