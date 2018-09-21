@@ -61,11 +61,31 @@ public class Card implements Comparable<Card>
 	
 	public int toInt() { return seme.getVal() + valore.getVal(); }
 	
+	/**
+	 * metodo temporaneo creato per comparare le carte: può e forse deve essere rifatto meglio.
+	 * vieni utilizzato da Game per trovare il giocatore con il 4 di danari(ovvero il giocatore che inizia)
+	 * @param other
+	 * @return
+	 */
+	
+	public boolean equals(Card other)
+	{
+		if(seme != other.seme) return false;
+		if(valore != other.valore) return false;
+		return true;
+	}
+	
 	@Override
 	public int compareTo(Card other)
 	{
 		if (seme != other.seme) return 0;
 		return valore.getVal(); //- other.valore.getVal();
+	}
+	
+	public boolean betterThan(Card other)
+	{
+		//DA IMPLEMENTARE
+		return true;
 	}
 	
 }
