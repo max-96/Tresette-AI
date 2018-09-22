@@ -28,13 +28,17 @@ public class Game
 	/**
 	 * list of players active in the current game
 	 */
-	private Player[] players = new PlayerAI[4];
+	private Player[] players = new Player[4];
 	
 	/**
 	 * Cards currently in game
 	 */
 	private Set<Card> carteInGioco = new HashSet<>();
 	
+	/**
+	 * Cards that are used during the game
+	 */
+	private Set<Card> exCards = new HashSet<>();
 	/**
 	 * Point counter for each team
 	 */
@@ -128,6 +132,7 @@ public class Game
 		float points = 0;																			
 		do
 		{
+			
 			Card temp = players[nextPlayer].getMossa();
 			//se e' la prima carta buttata allora e' sia palo sia cartadominante
 			if(startingPlayer == nextPlayer)
@@ -142,8 +147,9 @@ public class Game
 			points += temp.getPunti();				//aggiorno i punti
 			cardsOnTable.put(nextPlayer,temp);		//aggiungo la carta al "tavolo"
 			carteInGioco.remove(temp); 				//la rimuovo dalle carte in "gioco"
+			exCards.add(temp);						//la aggiungo alle carte esplorate
 			nrCardsInHand[nextPlayer]--;
-			nextPlayer = (nextPlayer - 1) % 4;		//il prossimo giocatore e' quello alla mia sinistra
+			nextPlayer = Math.floorMod(nextPlayer - 1, 4);	//il prossimo giocatore e' quello alla mia sinistra
 			
 		}while(nextPlayer!=startingPlayer);
 		
@@ -160,6 +166,14 @@ public class Game
 	
 	
 	public Set<Card> getExCards() {
+		return new HashSet<>(exCards);
+	}
+	
+	/**
+	 * this method returns the set of card that can still be used
+	 * @return
+	 */
+	public Set<Card> getCardsInGame(){
 		return new HashSet<>(carteInGioco);
 	}
 	
