@@ -23,31 +23,47 @@ public class Game
 	 * assCarte[i] returns the list of cards of player i
 	 */
 	private List<Card>[] assCarte = new LinkedList[4];
+	
 	/**
 	 * list of players active in the current game
 	 */
 	private Player[] players = new PlayerAI[4];
+	
 	/**
 	 * Cards currently in game
 	 */
 	private Set<Card> carteInGioco = new HashSet<>();
+	
 	/**
 	 * Point counter for each team
 	 */
-	private int[] punteggi = {0, 0};
+	private float[] punteggi = {0, 0};
+	
 	/**
 	 * Suit active for each Player
 	 * semiAttivi[i] returns the list of suits that the player i can play.
 	 */
 	private List<Card.Suit>[] semiAttivi = new LinkedList[4]; // player x semi
+	
 	 /**
 	  * startingPlayer is the player that in this turn drop the card first.
 	  */
 	private int startingPlayer;
+	
 	/**
 	 * actual gameState
 	 */
 	private GameState gameState;
+	
+	/**
+	 * Map of integer,card that specifies the card used by each player, where 0,Card indicates the card used by player 0
+	*/
+	Map<Integer,Card> cardsOnTable = new HashMap<Integer,Card>();
+	
+	private int[] nrCardsInHand = {10,10,10,10};
+	
+	private enum GameState { GAMEREADY,INGOING,GAMEEND }
+	
 	public Game() {
 		initialise();
 	}
@@ -103,15 +119,12 @@ public class Game
 	 */
 	private void playHand()
 	{
-		/**
-		 * Map of card,integer that specifies the card used by each player, where Card,0 indicates the card used by player 0
-		 */
-		Map<Card,Integer> cardsOnTable = new HashMap<Card,Integer>();
+		
 		System.out.println("The player "+startingPlayer+" starts.");
 		int nextPlayer = startingPlayer;													
 		int dominatingPlayer = nextPlayer;														
 		Card dominatingCard = null;																
-		int points = 0;																			
+		float points = 0;																			
 		do
 		{
 			Card temp = players[nextPlayer].getMossa();
@@ -126,11 +139,14 @@ public class Game
 				}
 			
 			points += temp.getPunti();				//aggiorno i punti
-			cardsOnTable.put(temp, nextPlayer);		//aggiungo la carta al "tavolo"
+			cardsOnTable.put(nextPlayer,temp);		//aggiungo la carta al "tavolo"
+			carteInGioco.remove(temp); 				//la rimuovo dalle carte in "gioco"
+			nrCardsInHand[nextPlayer]--;
 			nextPlayer = (nextPlayer - 1) % 4;		//il prossimo giocatore e' quello alla mia sinistra
 			
 		}while(nextPlayer!=startingPlayer);
 		
+		cardsOnTable.clear();
 		
 		if(dominatingPlayer % 2 == 0)	//se i punti vanno alla squadra 1
 			punteggi[0] += points;
@@ -145,7 +161,46 @@ public class Game
 	public Set<Card> getExCards() {
 		return new HashSet<>(carteInGioco);
 	}
-
+	
+	/**
+	 * this method return the map of the cards on table
+	 * @return
+	 */
+	public Map<Integer,Card> getCardsOnTable()
+	{
+		return cardsOnTable;
+	}
+	
+	/**
+	 * this method return the Card that your mate just throw on the table
+	 * @param player is the actual player who want's to check his mate card on the table. the mate index is calculated by doing player+2%4
+	 * @return
+	 */
+	public Card getMateCard(int player)
+	{
+		return cardsOnTable.get((player+2)%4);
+	}
+	
+	/**
+	 * this method returns the number of cards that the player "player" has in his hand.
+	 * @param player the player you want to know the number of cards
+	 * @return	the number of cards in the hand of that player
+	 */
+	public int getNumberOfCardsInHand(int player)
+	{
+		return nrCardsInHand[player];
+	}
+	
+	/**
+	 * this method returns an array containing the number of cards in hand for each player
+	 * @param player
+	 * @return
+	 */
+	public int[] getAllCardsInHand()
+	{
+		return nrCardsInHand;
+	}
+	
 	public List<Card.Suit>[] getSemiAttivi() {
 		List<Card.Suit>[] temp = new LinkedList[4];
 		for(int i=0; i<4; i++)
@@ -171,10 +226,10 @@ public class Game
 			for(int j= 0; j<10; j++)
 				carteInMano.add(new Card(temp.remove(0)));
 			
-			
+			carteInGioco.addAll(carteInMano);				//adding these cards to the card "in game"
 			assCarte[i] = carteInMano;
 			semiAttivi[i] = Arrays.asList(Card.Suit.values());
-			
+			nrCardsInHand[i] = 10;
 			players[i] = new PlayerAI(i, carteInMano, this);
 			//se questo giocatore possiede il 4 di denari, allora iniziera la mano
 			if(carteInMano.contains(fourDenari))
@@ -183,5 +238,5 @@ public class Game
 		this.gameState = GameState.GAMEREADY;
 	}
 	
-	private enum GameState { GAMEREADY,INGOING,GAMEEND }
+	
 }

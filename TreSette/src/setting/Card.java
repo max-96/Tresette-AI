@@ -70,8 +70,8 @@ public class Card implements Comparable<Card>
 	
 	public boolean equals(Card other)
 	{
-		if(seme != other.seme) return false;
-		if(valore != other.valore) return false;
+		if(seme.equals(other.seme)) return false;
+		if(valore.equals(other.valore)) return false;
 		return true;
 	}
 	
