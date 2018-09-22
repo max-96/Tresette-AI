@@ -47,7 +47,7 @@ public class CSPTest
 
 		while (!ccc.isDone())
 		{
-			System.out.println("dormo");
+			//System.out.println("dormo");
 			Thread.sleep(100);
 		}
 

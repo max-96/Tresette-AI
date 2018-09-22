@@ -1,9 +1,11 @@
-package AI;
+package minmax;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.RecursiveTask;
+
+import AI.DeterministicAI;
 
 /**
  * Questa classe implementa un MinMax greedy, nel senso che cerca di
@@ -130,10 +132,10 @@ public class GreedyMinMax extends DeterministicAI {
 				}
 
 				double minmaxVal = minmax(newAssegn, (playerId + 1) % 4, newValoreGiocata, newDomCarta, newDomPlayer,
-						carteInGioco.size() + 1, false);
+						carteInGioco.size() + 1, false, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY);
 
 				System.out.println("Minmax value (" + c + "):" + minmaxVal);
-				
+
 				/*
 				 * Aggiorno il valore nella mappa delle mosse x valori
 				 */
@@ -154,7 +156,7 @@ public class GreedyMinMax extends DeterministicAI {
 	}
 
 	private double minmax(List<List<Integer>> assegnamento, int playerConsiderato, double valoreGiocata,
-			int cartaDominante, int playerDominante, int turno, boolean maximise) {
+			int cartaDominante, int playerDominante, int turno, boolean maximise, double alpha, double beta) {
 
 		List<Integer> mosse = DeterministicAI.possibiliMosse(assegnamento.get(playerConsiderato), cartaDominante / 10);
 
@@ -223,8 +225,37 @@ public class GreedyMinMax extends DeterministicAI {
 				}
 
 				double minmaxVal = minmax(newAssegn, (playerConsiderato + 1) % 4, newValoreGiocata, newDomCarta,
-						newDomPlayer, turno + 1, !maximise);
+						newDomPlayer, turno + 1, !maximise, alpha, beta);
 
+				if(maximise) {
+					if(minmaxVal > bestVal)
+					{
+						bestVal=minmaxVal;
+					
+					if(bestVal>alpha)
+					{
+						alpha=bestVal;
+						if(beta<=alpha)
+							break;
+					}
+					}
+					
+				}
+				else
+				{
+					if(minmaxVal < bestVal)
+					{
+						bestVal=minmaxVal;
+					
+					if(bestVal<beta)
+					{
+						beta=bestVal;
+						if(beta<=alpha)
+							break;
+					}
+					}
+					
+				}
 				if ((maximise && minmaxVal > bestVal) || (!maximise && minmaxVal < bestVal))
 					bestVal = minmaxVal;
 
@@ -235,17 +266,14 @@ public class GreedyMinMax extends DeterministicAI {
 		}
 
 	}
-	
-	public static class GreedyMinMaxForkino extends RecursiveTask<Integer>
-	{
-		
+
+	public static class GreedyMinMaxForkino extends RecursiveTask<Integer> {
+
 		private int idPlayer;
 		private List<List<Integer>> assegnamentoCarte;
 		private List<Integer> carteInGioco;
 		private ConcurrentHashMap<Integer, Double> valoriPerMossa;
-		
 
-		
 		public GreedyMinMaxForkino(int idPlayer, List<List<Integer>> assegnamentoCarte, List<Integer> carteInGioco,
 				ConcurrentHashMap<Integer, Double> valoriPerMossa) {
 			this.idPlayer = idPlayer;
@@ -254,11 +282,9 @@ public class GreedyMinMax extends DeterministicAI {
 			this.valoriPerMossa = valoriPerMossa;
 		}
 
-
-
 		@Override
 		protected Integer compute() {
-			GreedyMinMax gmm=new GreedyMinMax(idPlayer);
+			GreedyMinMax gmm = new GreedyMinMax(idPlayer);
 			return gmm.getBestMove(assegnamentoCarte, carteInGioco, valoriPerMossa);
 		}
 	}

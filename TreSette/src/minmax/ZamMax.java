@@ -1,6 +1,8 @@
-package AI;
+package minmax;
 
 import java.util.List;
+
+import AI.DeterministicAI;
 
 public class ZamMax extends DeterministicAI
 {

@@ -174,7 +174,7 @@ public class Game
 	
 	/**
 	 * this method return the Card that your mate just throw on the table
-	 * @param player is the actual player who want's to check his mate card on the table. the mate index is calculated by doing player+2%4
+	 * @param player is the actual player who wants to check his mate card on the table. the mate index is calculated by doing player+2%4
 	 * @return
 	 */
 	public Card getMateCard(int player)
@@ -199,11 +199,11 @@ public class Game
 	 */
 	public int[] getAllCardsInHand()
 	{
-		return nrCardsInHand;
+		return Arrays.copyOf(nrCardsInHand, nrCardsInHand.length);
 	}
 	
 	public List<Card.Suit>[] getSemiAttivi() {
-		List<Card.Suit>[] temp = new LinkedList[4];
+		List<Card.Suit>[] temp = (List<Card.Suit>[]) new LinkedList[4];
 		for(int i=0; i<4; i++)
 			Collections.copy(temp[i], semiAttivi[i]);
 		return temp;

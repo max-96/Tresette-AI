@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ForkJoinPool;
 
-import AI.GreedyMinMax.GreedyMinMaxForkino;
+import minmax.GreedyMinMax.GreedyMinMaxForkino;
 import setting.Card;
 import setting.Game;
 
@@ -52,7 +52,7 @@ public class GreedyPlayerAI extends Player
 		 * Conversione in interi e booleani finita 
 		 */
 		
-		SforzaSolver solver = new SforzaSolver(this.id, carteUsate, carteInMano, gioco.numeroCarte, semAtt, N_BOARD_GEN);
+		SforzaSolver solver = new SforzaSolver(this.id, carteUsate, carteInMano, gioco.getAllCardsInHand(), semAtt, N_BOARD_GEN);
 		solver.startProducing(); //inizio la produzione di possibili assegnamenti
 		
 		ConcurrentHashMap<Integer, Double> punteggiPerAzione= new ConcurrentHashMap<>(carteInMano.size(), 0, ForkJoinPool.getCommonPoolParallelism());
