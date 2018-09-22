@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import AI.DumbPlayerAI;
 import AI.Player;
 import AI.PlayerAI;
 import setting.Card.Suit;
@@ -132,7 +133,7 @@ public class Game
 			if(startingPlayer == nextPlayer)
 				dominatingCard = temp;
 			else    //altrimenti controlliamo se la carta appena buttata diventa la dominante
-				if(temp.betterThan(dominatingCard))
+				if(temp.compareTo(dominatingCard)>0)
 				{
 					dominatingCard = temp;
 					dominatingPlayer = nextPlayer;
@@ -228,9 +229,9 @@ public class Game
 			
 			carteInGioco.addAll(carteInMano);				//adding these cards to the card "in game"
 			assCarte[i] = carteInMano;
-			semiAttivi[i] = Arrays.asList(Card.Suit.values());
+//			semiAttivi[i] = Arrays.asList(Card.Suit.values());
 			nrCardsInHand[i] = 10;
-			players[i] = new PlayerAI(i, carteInMano, this);
+			players[i] = new DumbPlayerAI(i, carteInMano, this);
 			//se questo giocatore possiede il 4 di denari, allora iniziera la mano
 			if(carteInMano.contains(fourDenari))
 				startingPlayer = i;

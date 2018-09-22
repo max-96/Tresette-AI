@@ -79,7 +79,8 @@ public class Card implements Comparable<Card>
 	public int compareTo(Card other)
 	{
 		if (seme != other.seme) return 0;
-		return valore.getVal(); //- other.valore.getVal();
+		return 1; // da sistemare, solo per test
+//		return valore.getVal(); //- other.valore.getVal();
 	}
 	
 	public boolean betterThan(Card other)
