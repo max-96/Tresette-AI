@@ -17,7 +17,6 @@ public class DumbPlayerAI extends Player{
 
 	public DumbPlayerAI(int id, List<Card> carte, Game gioco) {
 		super(id, carte, gioco);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
