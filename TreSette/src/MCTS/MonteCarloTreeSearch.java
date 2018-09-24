@@ -1,5 +1,7 @@
 package MCTS;
 
+import java.util.List;
+
 public class MonteCarloTreeSearch {
 
 	private int playerId;
@@ -9,9 +11,15 @@ public class MonteCarloTreeSearch {
 		this.playerId = playerId;
 		this.iterations=iterations;
 	}
-	public Integer getBestMove()
+	public Integer getBestMove(List<List<Integer>> assegnamentoCarte, List<Integer> cardsOnTable)
 	{
-		
+		for(int it=0;it<iterations;it++)
+		{
+			
+			
+			
+			
+		}	
 		return null;
 	}
 	
