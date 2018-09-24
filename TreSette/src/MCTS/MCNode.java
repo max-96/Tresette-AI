@@ -8,9 +8,13 @@ import java.util.Map.Entry;
 
 public class MCNode {
 	
+	public static final double C_PARAM=1.414;
+	
 	private final MCNode parent;
 	private final Integer generatingAction;
 	private final GameState gamestate;
+	private final MonteCarloTree tree;
+	private boolean isLeaf;
 	
 	private List<MCNode> children=Collections.emptyList();
 	
@@ -18,6 +22,7 @@ public class MCNode {
 	private double priority=0.0;
 	private int winCount=0;
 	private int visitCount=0;
+	private boolean updated=false;
 
 	
 	
@@ -25,10 +30,12 @@ public class MCNode {
 	
 	
 	
-	public MCNode(MCNode parent, Integer generatingAction, GameState gamestate) {
+	public MCNode(MCNode parent, Integer generatingAction, GameState gamestate, MonteCarloTree tree) {
 		this.parent = parent;
 		this.generatingAction = generatingAction;
 		this.gamestate = gamestate;
+		this.tree=tree;
+		isLeaf = true;
 	}
 	
 	public void generateChildren()
@@ -39,14 +46,19 @@ public class MCNode {
 		children= new ArrayList<>();
 		for(Entry<Integer, GameState> node: figli.entrySet())
 		{
-			MCNode child= new MCNode(this, node.getKey(), node.getValue());
+			MCNode child= new MCNode(this, node.getKey(), node.getValue(), tree);
 			children.add(child);
-			
+			tree.frontier.add(child);
 		}
-		
+		isLeaf=false;
 	}
 
-
+	
+	public double getPriority()
+	{
+		double p= ((double) winCount)/visitCount + C_PARAM * Math.sqrt((Math.log(tree.iterations)) / visitCount);
+		return p;
+	}
 
 
 
