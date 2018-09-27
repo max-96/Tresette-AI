@@ -73,7 +73,7 @@ public class AlphaBetaKiller extends DeterministicAI {
 		 */
 
 		double bestActionVal = Double.NEGATIVE_INFINITY;
-		double alpha = Double.NEGATIVE_INFINITY;// siamo in nodo maximise
+		double alpha = 0 ;//Double.NEGATIVE_INFINITY;// siamo in nodo maximise
 		Integer bestAction = -1;
 
 		for (Integer mossa : mosse) {

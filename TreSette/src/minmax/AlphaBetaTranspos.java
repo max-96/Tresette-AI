@@ -1,12 +1,18 @@
 package minmax;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Random;
+
+import minmax.DebugGraph.Node;
+import minmax.DebugGraph;
 
 import AI.DeterministicAI;
 
-public class AlphaBetaKiller2 extends DeterministicAI {
+public class AlphaBetaTranspos extends DeterministicAI {
 
 	/**
 	 * Player's ID
@@ -19,36 +25,20 @@ public class AlphaBetaKiller2 extends DeterministicAI {
 	public double winningValue=0;
 	private int depth;
 	
-	public List<List<Integer>> alphaMoves;
-//	private byte[] alphaMovesClock=new byte[40];
-	public List<List<Integer>> betaMoves;
-//	private byte[] betaMovesClock=new byte[40];
-	
-	private Random randGen= new Random(100);
-	
-	public static final int MAX_CACHE_SIZE=4;
+//	public DebugGraph debugGrapho;
 	
 	
 	
-	public AlphaBetaKiller2(int playerId, int depth) {
+	
+	
+	
+	
+	public AlphaBetaTranspos(int playerId, int depth) {
 		this.playerId = playerId;
 		this.depth=depth;
 		
-		alphaMoves=new ArrayList<>(40);
-		betaMoves=new ArrayList<>(40);
-		for(int i=0;i<40;i++)
-		{
-			alphaMoves.add(new ArrayList<>(MAX_CACHE_SIZE));
-			betaMoves.add(new ArrayList<>(MAX_CACHE_SIZE));
-		}
-//		Arrays.fill(alphaMovesClock, (byte) 0);
-//		Arrays.fill(betaMovesClock, (byte) 0);
 		
-	}
-	
-	public void setDepth(int d)
-	{
-		depth=d;
+		
 	}
 
 	public Integer getBestMove(List<List<Integer>> assegnamentoCarte, List<Integer> cardsOnTable) {
@@ -57,9 +47,6 @@ public class AlphaBetaKiller2 extends DeterministicAI {
 		 * rendersene conto prima di eseguire la determinazione!
 		 */
 
-		forkCounter=0;
-		alphapruning=0;
-		betapruning=0;
 		executionTime=System.currentTimeMillis();
 		int turno = cardsOnTable.size();
 
@@ -76,10 +63,29 @@ public class AlphaBetaKiller2 extends DeterministicAI {
 		double alpha = Double.NEGATIVE_INFINITY;// siamo in nodo maximise
 		Integer bestAction = -1;
 
+		HashMap<StateAction, Double> TransTable=new HashMap<>();
+		
+		
+		
+		System.out.println("Shallow Search");
 		for (Integer mossa : mosse) {
+			alphabeta(assegnamentoCarte, (playerId -turno+4)%4, cardsOnTable, mossa, playerId, false, alpha, Double.POSITIVE_INFINITY, 3 ,1, 0.0,TransTable, false);
+			System.out.print("x");
+//			if (mmaxval > bestActionVal) {
+//				bestActionVal = mmaxval;
+//				bestAction = mossa;
+//				winningValue=mmaxval;
+//			}
+//
+//			if (mmaxval > alpha) {
+//				alpha = mmaxval;
+//			}
 
-			double mmaxval = minmax(assegnamentoCarte, (playerId -turno+4)%4, cardsOnTable, mossa, playerId, false, alpha, Double.POSITIVE_INFINITY, depth,1, 0);
-
+		}
+		System.out.println();
+		System.out.println("Deeper Search");
+		for (Integer mossa : mosse) {
+			double mmaxval = alphabeta(assegnamentoCarte, (playerId -turno+4)%4, cardsOnTable, mossa, playerId, false, alpha, Double.POSITIVE_INFINITY, depth,1, 0.0,TransTable, true);
 			System.out.print("x");
 			if (mmaxval > bestActionVal) {
 				bestActionVal = mmaxval;
@@ -89,32 +95,39 @@ public class AlphaBetaKiller2 extends DeterministicAI {
 
 			if (mmaxval > alpha) {
 				alpha = mmaxval;
-				
 			}
 
 		}
+		
 		executionTime= System.currentTimeMillis() - executionTime;
 		System.out.println();
 		return bestAction;
 	}
 
-	/**
+	/*
+	 * *****************************************
 	 * 
-	 * @param oldassegnamentoCarte
-	 * @param startingPlayer
-	 * @param oldcardsOnTable
-	 * @param carta
-	 * @param currPlayer
-	 * @param maximise
-	 * @param evenScore
-	 * @param oddScore
-	 * @param alpha
-	 * @param beta
-	 * @return
+	 * 
+	 * 					ALPHA BETA
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
 	 */
-	private double minmax(List<List<Integer>> oldassegnamentoCarte, int startingPlayer, List<Integer> oldcardsOnTable,
+	
+	
+	
+	
+	private double alphabeta(List<List<Integer>> oldassegnamentoCarte, int startingPlayer, List<Integer> oldcardsOnTable,
 			Integer carta, int currPlayer,boolean maximise,  double alpha,
-			double beta,int depth, int currDepth, double oldScore) {
+			double beta,int depth, int currDepth, double oldScore, HashMap<StateAction, Double> TransTable, boolean isExplorative) {
 		
 		
 		forkCounter++;
@@ -210,86 +223,86 @@ public class AlphaBetaKiller2 extends DeterministicAI {
 
 		int turno = cardsOnTable.size();
 		double bestActionVal = maximise ? Double.NEGATIVE_INFINITY : Double.POSITIVE_INFINITY;
-		
+			
 		List<Integer> mosse = turno == 0 ? new ArrayList<>(assegnamentoCarte.get(currPlayer))
 				: DeterministicAI.possibiliMosse(assegnamentoCarte.get(currPlayer), cardsOnTable.get(0) / 10);
 
-		/*
-		 * Introduco la Killer Heuristic, valutando prima le mosse
-		 * che hanno prodotto pruning alla stessa altezza
-		 */
+		if(currDepth<8 && !isExplorative)
 		{
-			if(maximise)
-			{
-				for(Integer killerMove: alphaMoves.get(currDepth))
+		Comparator<Integer> ordinaCarte= maximise ? new Comparator<Integer>()
 				{
-					if(mosse.contains(killerMove))
-					{
-						mosse.remove(killerMove);
-						mosse.add(0, killerMove);
+					@Override
+					public int compare(Integer arg0, Integer arg1) {
+						Double s0= TransTable.get(new StateAction(assegnamentoCarte, cardsOnTable, arg0));
+						Double s1= TransTable.get(new StateAction(assegnamentoCarte, cardsOnTable, arg1));
+						if(s0==null)
+							return -1;
+						if(s1==null)
+							return 1;
+						return (int) Math.ceil(s0-s1);
 					}
-				}
-			}
-			else
-			{
-				for(Integer killerMove: betaMoves.get(currDepth))
+				
+				} : 
+					new Comparator<Integer>()
 				{
-					if(mosse.contains(killerMove))
-					{
-						mosse.remove(killerMove);
-						mosse.add(0, killerMove);
+					@Override
+					public int compare(Integer arg0, Integer arg1) {
+						Double s0= TransTable.get(new StateAction(assegnamentoCarte, cardsOnTable, arg0));
+						Double s1= TransTable.get(new StateAction(assegnamentoCarte, cardsOnTable, arg1));
+						if(s0==null)
+							return -1;
+						if(s1==null)
+							return 1;
+						return (int) Math.ceil(s1-s0);
 					}
-				}
-			}
-			
-			
+				
+				};
+				
+		Collections.sort(mosse, ordinaCarte);
 		}
-
+			
+			
+		
 		for (Integer mossa : mosse) {
 
-			double mmaxval = minmax(assegnamentoCarte, startingPlayer, cardsOnTable, mossa, currPlayer, !maximise, alpha, beta, depth, currDepth+1, score);// chiama minmax
-
+			double mmaxval = alphabeta(assegnamentoCarte, startingPlayer, cardsOnTable, mossa, currPlayer, !maximise, alpha, beta, depth, currDepth+1,  score, TransTable, isExplorative);// chiama minmax
+			
+			if(currDepth<8 && isExplorative)
+				TransTable.put(new StateAction(assegnamentoCarte, cardsOnTable, mossa), mmaxval);
+			
+			
 			if (maximise) {
 				if (mmaxval > bestActionVal)
+				{
 					bestActionVal = mmaxval;
+				}
 				if (mmaxval > alpha)
 					alpha = mmaxval;
 				if (beta <= alpha) {
 					alphapruning++;
-					List<Integer> cache=alphaMoves.get(currDepth);
-					if(!cache.contains(mossa))
-					{
-						if(cache.size()<MAX_CACHE_SIZE)
-							cache.add(mossa);
-						else
-							cache.set(randGen.nextInt(MAX_CACHE_SIZE), mossa);							
-					}
+					
 					//System.out.println("alpha pruning\t" + alpha + "\t"+mossa+"\t"+currPlayer+"\t"+(10-assegnamentoCarte.get(currPlayer).size()));
 					break;
 				}
 
 			} else {
 				if (mmaxval < bestActionVal)
+				{
 					bestActionVal = mmaxval;
+				}
 
 				if (mmaxval < beta)
 					beta = mmaxval;
 				
 				if (beta <= alpha) {
 					betapruning++;
-					List<Integer> cache=betaMoves.get(currDepth);
-					if(!cache.contains(mossa))
-					{
-						if(cache.size()<MAX_CACHE_SIZE)
-							cache.add(mossa);
-						else
-							cache.set(randGen.nextInt(MAX_CACHE_SIZE), mossa);
-					}
 					//System.out.println("beta pruning\t" + beta + "\t"+mossa+"\t"+currPlayer+"\t"+(10-assegnamentoCarte.get(currPlayer).size()));
 					break;
 				}
 			}
 		}
+		
+		
 
 		return bestActionVal;
 	}
@@ -311,10 +324,24 @@ public class AlphaBetaKiller2 extends DeterministicAI {
 	
 	public List<List<Integer>> getAlphaMoves()
 	{
-		return alphaMoves;
+		return Collections.emptyList();
 	}
 	public List<List<Integer>> getBetaMoves()
 	{
-		return betaMoves;
+		return Collections.emptyList();
+	}
+	
+	private class StateAction 
+	{
+		public final List<List<Integer>> assignment;
+		public final List<Integer> cardsOnTable;
+		public final Integer action;
+		
+		public StateAction(List<List<Integer>> assignment, List<Integer> cardsOnTable, Integer action) {
+			this.assignment = assignment;
+			this.cardsOnTable = cardsOnTable;
+			this.action = action;
+		}
+		
 	}
 }

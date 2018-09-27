@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ThreadLocalRandom;
 
 import AI.DeterministicAI;
 
@@ -60,7 +61,17 @@ public class GameState {
 		return mappa;
 	}
 
-	private GameState genSuccessor(Integer mossa) {
+	public Integer genRandMossa()
+	{
+		List<Integer> mosse = cardsOnTable.isEmpty() ? new ArrayList<>(cardsAssignment.get(currentPlayer))
+				: DeterministicAI.possibiliMosse(cardsAssignment.get(currentPlayer), cardsOnTable.get(0) / 10);
+		
+		int pos=ThreadLocalRandom.current().nextInt(mosse.size());
+		
+		return mosse.get(pos);
+	}
+	
+	public GameState genSuccessor(Integer mossa) {
 		List<List<Integer>> newCardsAssignment = new ArrayList<>(cardsAssignment);
 		List<Integer> newCardsOnTable = new ArrayList<>(cardsOnTable);
 		int newCurrentPlayer;
@@ -86,13 +97,14 @@ public class GameState {
 		 * Dobbiamo assegnare i punti e la dominanza
 		 */
 		{
+		assert cardsOnTable.size()==4;
 		double newScoreSoFar=scoreSoFar;
 		int playerDominante = (currentPlayer +1)%4;
-		int cartaDominante = cardsOnTable.get(0);
+		int cartaDominante = newCardsOnTable.get(0);
 		int semeDominante = cartaDominante / 10;
 		double punteggio = DeterministicAI.puntiPerCarta[cartaDominante % 10];
 		for (int p = 1; p < 4; p++) {
-			int cartaTemp = cardsOnTable.get(p);
+			int cartaTemp = newCardsOnTable.get(p);
 			punteggio += DeterministicAI.puntiPerCarta[cartaTemp % 10];
 			if (semeDominante == cartaTemp / 10
 					&& DeterministicAI.dominioPerCarta[cartaDominante % 10] < DeterministicAI.dominioPerCarta[cartaTemp % 10]) {

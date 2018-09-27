@@ -27,14 +27,14 @@ public class AlphaBetaTest {
 			Collections.shuffle(t, new Random(1200));
 
 			for (int i = 0; i < 4; i++) {
-				List<Integer> l = new ArrayList<>(t.subList(i * 3, (i + 1) * 3));
+				List<Integer> l = new ArrayList<>(t.subList(i * 10, (i + 1) * 10));
 				assegnamentoCasuale.add(l);
 			}
 		}
 		
 		System.out.println("Assegnamento: ");
 		System.out.println(assegnamentoCasuale);
-		AlphaBeta solver= new AlphaBeta(0, DEPTH);
+		AlphaBeta solver= new AlphaBeta(0, 12);
 		System.out.println("Inizio Risoluzione:");
 		Integer mossa= solver.getBestMove(assegnamentoCasuale, cardsOnTable);
 		
@@ -70,14 +70,14 @@ public class AlphaBetaTest {
 			Collections.shuffle(t, new Random(1200));
 
 			for (int i = 0; i < 4; i++) {
-				List<Integer> l = new ArrayList<>(t.subList(i * 3, (i + 1) * 3));
+				List<Integer> l = new ArrayList<>(t.subList(i * 10, (i + 1) * 10));
 				assegnamentoCasuale.add(l);
 			}
 		}
 		
 		System.out.println("Assegnamento: ");
 		System.out.println(assegnamentoCasuale);
-		AlphaBetaKiller solver= new AlphaBetaKiller(0, DEPTH);
+		AlphaBetaKiller solver= new AlphaBetaKiller(0, 2);
 		System.out.println("Inizio Risoluzione:");
 		Integer mossa= solver.getBestMove(assegnamentoCasuale, cardsOnTable);
 		
@@ -121,12 +121,12 @@ public class AlphaBetaTest {
 		System.out.println("Assegnamento: ");
 		System.out.println(assegnamentoCasuale);
 		
-		AlphaBetaKiller solver1= new AlphaBetaKiller(0, 7);
-		AlphaBetaKiller2 solver2= new AlphaBetaKiller2(0, 7);
-		System.out.println("Inizio Risoluzione (killer1):");
+		AlphaBeta solver1= new AlphaBeta(0, 5);
+		AlphaBetaTranspos solver2= new AlphaBetaTranspos(0, 5);
+		System.out.println("Inizio Risoluzione (vanilla):");
 		Integer mossa1= solver1.getBestMove(assegnamentoCasuale, cardsOnTable);
 
-		System.out.println("Inizio Risoluzione (killer2):");
+		System.out.println("Inizio Risoluzione (transpose):");
 		Integer mossa2= solver2.getBestMove(assegnamentoCasuale, cardsOnTable);
 		
 		System.out.println("Mossa scelta:\t\t"+mossa1+"\t"+mossa2);

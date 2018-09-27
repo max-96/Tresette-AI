@@ -45,13 +45,6 @@ public class AlphaBeta extends DeterministicAI {
 		 * rendersene conto prima di eseguire la determinazione!
 		 */
 
-//		DebugGraph debug= new DebugGraph();
-//		Node root= new Node();
-//		root.valore=500;
-//		debug.root=root;
-//		
-//		debugGrapho=debug;
-		
 		executionTime=System.currentTimeMillis();
 		int turno = cardsOnTable.size();
 
@@ -69,10 +62,6 @@ public class AlphaBeta extends DeterministicAI {
 		Integer bestAction = -1;
 
 		for (Integer mossa : mosse) {
-
-//			Node debMossa=new Node();
-//			debMossa.valore=mossa;
-//			root.figli.add(debMossa);
 			double mmaxval = minmax(assegnamentoCarte, (playerId -turno+4)%4, cardsOnTable, mossa, playerId, false, alpha, Double.POSITIVE_INFINITY, depth,1, 0.0);
 
 			System.out.print("x");
@@ -87,12 +76,6 @@ public class AlphaBeta extends DeterministicAI {
 			}
 
 		}
-//		for(int i=root.figli.size()-1;i>=0; i--)
-//		{
-//			if(!root.figli.get(i).checkNumber(bestAction))
-//				root.figli.remove(i);
-//		}
-//		root.figli.trimToSize();
 		executionTime= System.currentTimeMillis() - executionTime;
 		System.out.println();
 		return bestAction;
@@ -259,12 +242,6 @@ public class AlphaBeta extends DeterministicAI {
 		}
 		
 		
-//		for(int i=root.figli.size()-1;i>=0; i--)
-//		{
-//			if(!root.figli.get(i).checkNumber(bestAction))
-//				root.figli.remove(i);
-//		}
-//		root.figli.trimToSize();
 
 		return bestActionVal;
 	}

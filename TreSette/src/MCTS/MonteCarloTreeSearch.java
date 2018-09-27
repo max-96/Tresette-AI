@@ -1,5 +1,6 @@
 package MCTS;
 
+import java.util.Collections;
 import java.util.List;
 
 public class MonteCarloTreeSearch {
@@ -11,16 +12,11 @@ public class MonteCarloTreeSearch {
 		this.playerId = playerId;
 		this.iterations=iterations;
 	}
-	public Integer getBestMove(List<List<Integer>> assegnamentoCarte, List<Integer> cardsOnTable)
+	public Integer getBestMove(List<List<Integer>> assegnamentoCarte, List<Integer> cardsOnTable, double score)
 	{
-		for(int it=0;it<iterations;it++)
-		{
-			
-			
-			
-			
-		}	
-		return null;
+		GameState starting= new GameState(assegnamentoCarte, cardsOnTable, playerId, score, true);
+		MonteCarloTree MCT= new MonteCarloTree(starting);
+		return MCT.execute(iterations);
 	}
 	
 	

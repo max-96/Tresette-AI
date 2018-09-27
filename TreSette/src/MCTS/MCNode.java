@@ -6,84 +6,99 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-public class MCNode {
-	
-	public static final double C_PARAM=1.414;
-	
-	private final MCNode parent;
+public class MCNode implements Comparable<MCNode> {
+
+	public static final double C_PARAM = 0.75;
+	public static final double EPS=1e-8;
+
+	private MCNode parent;
 	private final Integer generatingAction;
 	private final GameState gamestate;
 	private final MonteCarloTree tree;
-	private boolean isLeaf;
-	
-	private List<MCNode> children=Collections.emptyList();
-	
+	protected boolean isLeaf;
 
-	private double priority=0.0;
-	private int winCount=0;
-	private int visitCount=0;
-	private boolean updated=false;
+	protected List<MCNode> children = Collections.emptyList();
 
-	
-	
-	
-	
-	
+	private int winCount = 0;
+	private int visitCount = 0;
+	private final boolean isBlackNode; 
 	
 	public MCNode(MCNode parent, Integer generatingAction, GameState gamestate, MonteCarloTree tree) {
 		this.parent = parent;
 		this.generatingAction = generatingAction;
 		this.gamestate = gamestate;
-		this.tree=tree;
+		this.tree = tree;
 		isLeaf = true;
+		isBlackNode=! this.gamestate.maxNode;
 	}
-	
-	public void generateChildren()
-	{
-		if(!children.isEmpty() || gamestate.terminal) return;
-		
-		Map<Integer, GameState> figli=gamestate.generateSuccessors();
-		children= new ArrayList<>();
-		for(Entry<Integer, GameState> node: figli.entrySet())
-		{
-			MCNode child= new MCNode(this, node.getKey(), node.getValue(), tree);
+
+	public void generateChildren() {
+		if (!children.isEmpty() || gamestate.terminal)
+			return;
+
+		Map<Integer, GameState> figli = gamestate.generateSuccessors();
+		children = new ArrayList<>();
+		for (Entry<Integer, GameState> node : figli.entrySet()) {
+			MCNode child = new MCNode(this, node.getKey(), node.getValue(), tree);
 			children.add(child);
-			tree.frontier.add(child);
 		}
-		isLeaf=false;
+		isLeaf = false;
 	}
 
-	
-	public double getPriority()
-	{
-		double p= ((double) winCount)/visitCount + C_PARAM * Math.sqrt((Math.log(tree.iterations)) / visitCount);
-		return p;
+	protected double playout() {
+		GameState gs = gamestate;
+		while (!gs.terminal) {
+			Integer mossa = gs.genRandMossa();
+			gs = gs.genSuccessor(mossa);
+		}
+		return gs.scoreSoFar;
+
 	}
 
+	public double getPriority() {
+		// if(changedPriority) return priority;
+		double priority = ((double) winCount) / (visitCount + EPS);
+		priority += C_PARAM * Math.sqrt((Math.log(parent.visitCount + 1)) / (visitCount + EPS));
+		// changedPriority=true;
+		return priority;
+	}
 
+	protected void backpropagateStats(boolean isWin) {
+		MCNode node = this;
+		while (node != null) {
+			if (node.isBlackNode) {
+				if (isWin)
+					node.winCount += 1;
+			} else {
+				if (!isWin)
+					node.winCount += 1;
+			}
+			node.visitCount += 1;
+			node = node.parent;
+		}
 
+	}
+
+	public boolean isTerminal() {
+		return gamestate.terminal;
+	}
 
 	public Integer getBestMove() {
-		
-		int maxVisite=0;
-		Integer bestAction=-1;
-		for(MCNode c: children)
-		{
-			if(c.visitCount>maxVisite)
-			{
-				maxVisite=c.visitCount;
-				bestAction=c.generatingAction;
+
+		int maxVisite = 0;
+		Integer bestAction = -1;
+		for (MCNode c : children) {
+			if (c.visitCount > maxVisite) {
+				maxVisite = c.visitCount;
+				bestAction = c.generatingAction;
 			}
 		}
 		return bestAction;
 	}
 
-
-
-
-
-
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
@@ -96,12 +111,9 @@ public class MCNode {
 		return result;
 	}
 
-
-
-
-
-
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
@@ -130,7 +142,10 @@ public class MCNode {
 			return false;
 		return true;
 	}
-	
-	
-	
+
+	@Override
+	public int compareTo(MCNode other) {
+		return (int) Math.ceil(getPriority() - other.getPriority());
+	}
+
 }
