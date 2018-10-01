@@ -1,6 +1,7 @@
 package minmax;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
@@ -36,7 +37,7 @@ public class AlphaBetaTest {
 		System.out.println(assegnamentoCasuale);
 		AlphaBeta solver= new AlphaBeta(0, 12);
 		System.out.println("Inizio Risoluzione:");
-		Integer mossa= solver.getBestMove(assegnamentoCasuale, cardsOnTable);
+		Integer mossa= solver.getBestMove(assegnamentoCasuale, cardsOnTable, 0, 0);
 		
 		System.out.println("Mossa scelta:\t\t"+mossa);
 		System.out.println("Valore:\t\t\t"+solver.winningValue);
@@ -79,7 +80,7 @@ public class AlphaBetaTest {
 		System.out.println(assegnamentoCasuale);
 		AlphaBetaKiller solver= new AlphaBetaKiller(0, 2);
 		System.out.println("Inizio Risoluzione:");
-		Integer mossa= solver.getBestMove(assegnamentoCasuale, cardsOnTable);
+		Integer mossa= solver.getBestMove(assegnamentoCasuale, cardsOnTable, 0, 0);
 		
 		System.out.println("Mossa scelta:\t\t"+mossa);
 		System.out.println("Valore:\t\t\t"+solver.winningValue);
@@ -121,13 +122,13 @@ public class AlphaBetaTest {
 		System.out.println("Assegnamento: ");
 		System.out.println(assegnamentoCasuale);
 		
-		AlphaBeta solver1= new AlphaBeta(0, 5);
-		AlphaBetaTranspos solver2= new AlphaBetaTranspos(0, 5);
-		System.out.println("Inizio Risoluzione (vanilla):");
-		Integer mossa1= solver1.getBestMove(assegnamentoCasuale, cardsOnTable);
+		AlphaBetaKiller solver1= new AlphaBetaKiller(1, 5);
+		AlphaBetaKiller3 solver2= new AlphaBetaKiller3(1, 20);
+		System.out.println("Inizio Risoluzione (killer1):");
+		Integer mossa1= solver1.getBestMove(assegnamentoCasuale, cardsOnTable, 0,0);
 
-		System.out.println("Inizio Risoluzione (transpose):");
-		Integer mossa2= solver2.getBestMove(assegnamentoCasuale, cardsOnTable);
+		System.out.println("Inizio Risoluzione (killer2):");
+		Integer mossa2= solver2.getBestMove(assegnamentoCasuale, cardsOnTable, 0, 0);
 		
 		System.out.println("Mossa scelta:\t\t"+mossa1+"\t"+mossa2);
 		System.out.println("Valore:\t\t\t"+solver1.winningValue+"\t"+solver2.winningValue);
@@ -139,14 +140,22 @@ public class AlphaBetaTest {
 		
 		System.out.println("---------------------");
 
-//		System.out.println("Alpha Moves:");
-////		for(int i=0;i<40;i++)
-//			System.out.println(solver1.getAlphaMoves());
-//		
-//		System.out.println("Beta Moves:");
-////		for(int i=0;i<40;i++)
-//			System.out.println(solver1.getBetaMoves());
-//		
-//	
+		System.out.println("Alphacount:");
+		System.out.println(Arrays.toString(normalize(solver2.alphacount)));
+		System.out.println("Betacount:");
+		System.out.println(Arrays.toString(normalize(solver2.betacount)));
 		}
+	
+	
+	public static float[] normalize(long[] array)
+	{
+		long t=0L;
+		for(long i: array)
+			t+=i;
+		float[] xx=new float[array.length];
+		for(int i=0;i<array.length;i++)
+			xx[i]=(((float) array[i]) / t) *100;
+		
+		return xx;
+	}
 }

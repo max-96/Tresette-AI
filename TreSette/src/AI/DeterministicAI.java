@@ -10,7 +10,7 @@ public abstract class DeterministicAI {
 	public final static int[] dominioPerCarta= {7, 8, 9, 0, 1, 2, 3, 4, 5, 6};
 	
 	
-//	public abstract Integer getBestMove(List<List<Integer>> assegnamentoCarte, List<Integer> carteInGioco);
+	public abstract Integer getBestMove(List<List<Integer>> assegnamentoCarte, List<Integer> carteInGioco, double scoreMyTeam, double scoreOtherTeam);
 	
 	
 	public static List<Integer> possibiliMosse(List<Integer> carte, int semeAttuale)

@@ -3,20 +3,32 @@ package MCTS;
 import java.util.Collections;
 import java.util.List;
 
-public class MonteCarloTreeSearch {
+import AI.DeterministicAI;
+import AI.GameState;
+
+public class MonteCarloTreeSearch extends DeterministicAI{
 
 	private int playerId;
 	private int iterations;
+	public long execTime;
+	public static long maxExecTime=0;
 	
 	public MonteCarloTreeSearch(int playerId, int iterations) {
 		this.playerId = playerId;
 		this.iterations=iterations;
 	}
-	public Integer getBestMove(List<List<Integer>> assegnamentoCarte, List<Integer> cardsOnTable, double score)
+	
+	@Override
+	public Integer getBestMove(List<List<Integer>> assegnamentoCarte, List<Integer> cardsOnTable, double scoreMyTeam, double scoreOtherTeam)
 	{
-		GameState starting= new GameState(assegnamentoCarte, cardsOnTable, playerId, score, true);
+		execTime=System.currentTimeMillis();
+		GameState starting= new GameState(assegnamentoCarte, cardsOnTable, playerId, true, scoreMyTeam, scoreOtherTeam);
 		MonteCarloTree MCT= new MonteCarloTree(starting);
-		return MCT.execute(iterations);
+		Integer m= MCT.execute(iterations);
+		execTime=System.currentTimeMillis() - execTime;
+		if(execTime> maxExecTime)
+			maxExecTime=execTime;
+		return m;
 	}
 	
 	

@@ -1,12 +1,8 @@
 package minmax;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-
-import minmax.DebugGraph.Node;
-import minmax.DebugGraph;
 
 import AI.DeterministicAI;
 
@@ -39,7 +35,8 @@ public class AlphaBeta extends DeterministicAI {
 		
 	}
 
-	public Integer getBestMove(List<List<Integer>> assegnamentoCarte, List<Integer> cardsOnTable) {
+	@Override
+	public Integer getBestMove(List<List<Integer>> assegnamentoCarte, List<Integer> cardsOnTable, double a, double b) {
 		/*
 		 * Il caso in cui le carte rimaste siano 0 o 1 non e' considerato, e' necessario
 		 * rendersene conto prima di eseguire la determinazione!

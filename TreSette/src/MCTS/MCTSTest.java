@@ -32,8 +32,8 @@ public class MCTSTest {
 		
 		System.out.println("Assegnamento: ");
 		System.out.println(assegnamentoCasuale);
-		MonteCarloTreeSearch mcts= new MonteCarloTreeSearch(0, 100000);
-		Integer mossa=mcts.getBestMove(assegnamentoCasuale, cardsOnTable, 0);
+		MonteCarloTreeSearch mcts= new MonteCarloTreeSearch(0, 100);
+		Integer mossa=mcts.getBestMove(assegnamentoCasuale, cardsOnTable, 0, 0);
 		System.out.println("Mossa Scelta: "+mossa);
 		
 	}

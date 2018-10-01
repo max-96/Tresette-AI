@@ -3,6 +3,7 @@ package MCTS;
 import java.util.Collections;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
+import AI.GameState;
 
 public class MonteCarloTree {
 	

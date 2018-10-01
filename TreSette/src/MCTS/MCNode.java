@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import AI.GameState;
 
 public class MCNode implements Comparable<MCNode> {
 
@@ -13,7 +14,7 @@ public class MCNode implements Comparable<MCNode> {
 
 	private MCNode parent;
 	private final Integer generatingAction;
-	private final GameState gamestate;
+	private final AI.GameState gamestate;
 	private final MonteCarloTree tree;
 	protected boolean isLeaf;
 
@@ -23,7 +24,7 @@ public class MCNode implements Comparable<MCNode> {
 	private int visitCount = 0;
 	private final boolean isBlackNode; 
 	
-	public MCNode(MCNode parent, Integer generatingAction, GameState gamestate, MonteCarloTree tree) {
+	public MCNode(MCNode parent, Integer generatingAction, AI.GameState gamestate, MonteCarloTree tree) {
 		this.parent = parent;
 		this.generatingAction = generatingAction;
 		this.gamestate = gamestate;
@@ -56,10 +57,9 @@ public class MCNode implements Comparable<MCNode> {
 	}
 
 	public double getPriority() {
-		// if(changedPriority) return priority;
 		double priority = ((double) winCount) / (visitCount + EPS);
 		priority += C_PARAM * Math.sqrt((Math.log(parent.visitCount + 1)) / (visitCount + EPS));
-		// changedPriority=true;
+
 		return priority;
 	}
 

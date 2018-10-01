@@ -51,7 +51,9 @@ public class AlphaBetaKiller extends DeterministicAI {
 		depth=d;
 	}
 
-	public Integer getBestMove(List<List<Integer>> assegnamentoCarte, List<Integer> cardsOnTable) {
+	
+	@Override
+	public Integer getBestMove(List<List<Integer>> assegnamentoCarte, List<Integer> cardsOnTable, double a, double b) {
 		/*
 		 * Il caso in cui le carte rimaste siano 0 o 1 non e' considerato, e' necessario
 		 * rendersene conto prima di eseguire la determinazione!
