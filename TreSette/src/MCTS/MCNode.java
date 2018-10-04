@@ -14,7 +14,7 @@ public class MCNode implements Comparable<MCNode> {
 
 	private MCNode parent;
 	private final Integer generatingAction;
-	private final AI.GameState gamestate;
+	private AI.GameState gamestate;
 	private final MonteCarloTree tree;
 	protected boolean isLeaf;
 
@@ -22,7 +22,7 @@ public class MCNode implements Comparable<MCNode> {
 
 	private int winCount = 0;
 	private int visitCount = 0;
-	private final boolean isBlackNode; 
+	private boolean isBlackNode; 
 	
 	public MCNode(MCNode parent, Integer generatingAction, AI.GameState gamestate, MonteCarloTree tree) {
 		this.parent = parent;
@@ -32,21 +32,38 @@ public class MCNode implements Comparable<MCNode> {
 		isLeaf = true;
 		isBlackNode=! this.gamestate.maxNode;
 	}
+	
+	public MCNode(MCNode parent, Integer generatingAction, MonteCarloTree tree) {
+		this.parent = parent;
+		this.generatingAction = generatingAction;
+		this.tree = tree;
+		isLeaf = true;
+	}
+	
+	public void init()
+	{
+		if(gamestate == null)
+		{
+			gamestate=parent.gamestate.genSuccessor(generatingAction);
+			isBlackNode= ! gamestate.maxNode;
+		}
+	}
 
 	public void generateChildren() {
 		if (!children.isEmpty() || gamestate.terminal)
 			return;
 
-		Map<Integer, GameState> figli = gamestate.generateSuccessors();
+		List<Integer> mosse=gamestate.generateActions();
 		children = new ArrayList<>();
-		for (Entry<Integer, GameState> node : figli.entrySet()) {
-			MCNode child = new MCNode(this, node.getKey(), node.getValue(), tree);
+		for (Integer node : mosse) {
+			MCNode child = new MCNode(this, node, tree);
 			children.add(child);
 		}
 		isLeaf = false;
 	}
 
 	protected double playout() {
+		init();
 		GameState gs = gamestate;
 		while (!gs.terminal) {
 			Integer mossa = gs.genRandMossa();
@@ -80,6 +97,7 @@ public class MCNode implements Comparable<MCNode> {
 	}
 
 	public boolean isTerminal() {
+		init();
 		return gamestate.terminal;
 	}
 
