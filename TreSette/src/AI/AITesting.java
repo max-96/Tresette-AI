@@ -32,9 +32,10 @@ public class AITesting {
 			List<Integer> cardsOnTable = new ArrayList<>();
 			int currentplayer= find4Denari(randomAssignment);
 			int initTeam=currentplayer%2;
-			System.out.print(initTeam+" ");
+			System.out.print(initTeam+" ok");
 			GameState gs=new GameState(randomAssignment, cardsOnTable, currentplayer, true, 0, 0);
 			double score1=0, score2=0;
+			
 			while(!gs.terminal)
 			{				
 				DeterministicAI dai=playerALFABETA[currentplayer] ? genABK3(currentplayer) : genABK(currentplayer);
