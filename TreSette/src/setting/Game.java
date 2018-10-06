@@ -83,7 +83,7 @@ public class Game
 		while(true) {
 			switch(this.gameState) {
 			case GAMEREADY: 
-				this.gameState = this.gameState.INGOING;
+				this.gameState = GameState.INGOING;
 				System.out.println("We are starting the game");
 				break;
 			case INGOING:

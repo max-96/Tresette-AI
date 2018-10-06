@@ -82,7 +82,6 @@ public class AlphaBetaKiller extends DeterministicAI {
 
 			double mmaxval = minmax(assegnamentoCarte, (playerId -turno+4)%4, cardsOnTable, mossa, playerId, false, alpha, Double.POSITIVE_INFINITY, depth,1, 0);
 
-			System.out.print("x");
 			if (mmaxval > bestActionVal) {
 				bestActionVal = mmaxval;
 				bestAction = mossa;
@@ -96,7 +95,7 @@ public class AlphaBetaKiller extends DeterministicAI {
 
 		}
 		executionTime= System.currentTimeMillis() - executionTime;
-		System.out.println();
+		
 		return bestAction;
 	}
 

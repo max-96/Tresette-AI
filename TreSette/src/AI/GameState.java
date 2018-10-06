@@ -5,12 +5,14 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 import AI.DeterministicAI;
 
 public class GameState {
 
+	private static Random rand;
 	private final List<List<Integer>> cardsAssignment;
 	private final List<Integer> cardsOnTable;
 	public final int currentPlayer;
@@ -88,18 +90,25 @@ public class GameState {
 	}
 
 	public Integer genRandMossa() {
+		if(rand==null)
+			rand=new Random();
+		
 		List<Integer> mosse = cardsOnTable.isEmpty() ? new ArrayList<>(cardsAssignment.get(currentPlayer))
 				: DeterministicAI.possibiliMosse(cardsAssignment.get(currentPlayer), cardsOnTable.get(0) / 10);
 
-		int pos = ThreadLocalRandom.current().nextInt(mosse.size());
+		int pos = rand.nextInt(mosse.size());
 
 		return mosse.get(pos);
 	}
 
 	public GameState genSuccessor(Integer mossa) {
+		return genSuccessor(mossa, false);
+	}
+		
+	public GameState genSuccessor(Integer mossa, boolean print) {
 		List<List<Integer>> newCardsAssignment = new ArrayList<>(cardsAssignment);
 		List<Integer> newCardsOnTable = new ArrayList<>(cardsOnTable);
-		int newCurrentPlayer;
+		int newCurrentPlayer=-1;
 		double newScoreMyTeam = scoreMyTeam;
 		double newScoreOtherTeam = scoreOtherTeam;
 
@@ -123,9 +132,10 @@ public class GameState {
 		/*
 		 * Siamo a fine di una passata. Dobbiamo assegnare i punti e la dominanza
 		 */
-		{
+		
 			assert cardsOnTable.size() == 4;
-			int playerDominante = (currentPlayer + 1) % 4;
+			int startingPlayer=(currentPlayer + 1) % 4;
+			int playerDominante = startingPlayer;
 			int cartaDominante = newCardsOnTable.get(0);
 			int semeDominante = cartaDominante / 10;
 			double punteggio = DeterministicAI.puntiPerCarta[cartaDominante % 10];
@@ -134,8 +144,10 @@ public class GameState {
 				punteggio += DeterministicAI.puntiPerCarta[cartaTemp % 10];
 				if (semeDominante == cartaTemp / 10 && DeterministicAI.dominioPerCarta[cartaDominante
 						% 10] < DeterministicAI.dominioPerCarta[cartaTemp % 10]) {
-					playerDominante = p;
+					if (print) System.out.println("sto sostituendo "+((cartaDominante%10)+1)+" con "+(cartaTemp%10 + 1));
+					playerDominante = (startingPlayer + p)%4;
 					cartaDominante = cartaTemp;
+					
 				}
 			}
 
@@ -155,7 +167,7 @@ public class GameState {
 			GameState newGS = new GameState(newCardsAssignment, newCardsOnTable, newCurrentPlayer, newMaxNode,
 					newScoreMyTeam, newScoreOtherTeam);
 			return newGS;
-		}
+		
 
 	}
 

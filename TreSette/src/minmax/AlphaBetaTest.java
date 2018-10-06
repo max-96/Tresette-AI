@@ -6,8 +6,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-import minmax.DebugGraph.Node;
-
 public class AlphaBetaTest {
 
 	public static final int DEPTH=8;
