@@ -4,7 +4,7 @@ import java.util.Collections;
 import java.util.List;
 
 import AI.DeterministicAI;
-import AI.GameState;
+import AI.AIGameState;
 
 public class MonteCarloTreeSearch extends DeterministicAI{
 
@@ -22,7 +22,7 @@ public class MonteCarloTreeSearch extends DeterministicAI{
 	public Integer getBestMove(List<List<Integer>> assegnamentoCarte, List<Integer> cardsOnTable, double scoreMyTeam, double scoreOtherTeam)
 	{
 		execTime=System.currentTimeMillis();
-		GameState starting= new GameState(assegnamentoCarte, cardsOnTable, playerId, true, scoreMyTeam, scoreOtherTeam);
+		AIGameState starting= new AIGameState(assegnamentoCarte, cardsOnTable, playerId, true, scoreMyTeam, scoreOtherTeam);
 		MonteCarloTree MCT= new MonteCarloTree(starting);
 		Integer m= MCT.execute(iterations);
 		execTime=System.currentTimeMillis() - execTime;

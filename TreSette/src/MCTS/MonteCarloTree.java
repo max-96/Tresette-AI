@@ -3,7 +3,7 @@ package MCTS;
 import java.util.Collections;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
-import AI.GameState;
+import AI.AIGameState;
 
 public class MonteCarloTree {
 	
@@ -11,7 +11,7 @@ public class MonteCarloTree {
 
 	//public Set<MCNode> frontier;
  
-	public MonteCarloTree(GameState gamestate) {
+	public MonteCarloTree(AIGameState gamestate) {
 		root=new MCNode(null, null, gamestate, this);
 		root.generateChildren();
 	}

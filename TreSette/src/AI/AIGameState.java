@@ -10,7 +10,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import AI.DeterministicAI;
 
-public class GameState {
+public class AIGameState {
 
 	private static Random rand;
 	private final List<List<Integer>> cardsAssignment;
@@ -22,7 +22,7 @@ public class GameState {
 	public final double scoreOtherTeam;
 	public final boolean maxNode;
 
-	public GameState(List<List<Integer>> cardsAssignment, List<Integer> cardsOnTable, int currentPlayer,
+	public AIGameState(List<List<Integer>> cardsAssignment, List<Integer> cardsOnTable, int currentPlayer,
 			boolean maxNode, double score1, double score2) {
 		this.cardsAssignment = cardsAssignment;
 		this.cardsOnTable = cardsOnTable;
@@ -46,7 +46,7 @@ public class GameState {
 	 * 
 	 * @return
 	 */
-	public Map<Integer, GameState> generateSuccessors() {
+	public Map<Integer, AIGameState> generateSuccessors() {
 
 		if (terminal)
 			return null;
@@ -60,10 +60,10 @@ public class GameState {
 		/*
 		 * 
 		 */
-		HashMap<Integer, GameState> mappa = new HashMap<>();
+		HashMap<Integer, AIGameState> mappa = new HashMap<>();
 
 		for (Integer m : mosse) {
-			GameState g = genSuccessor(m);
+			AIGameState g = genSuccessor(m);
 			mappa.put(m, g);
 
 		}
@@ -101,11 +101,11 @@ public class GameState {
 		return mosse.get(pos);
 	}
 
-	public GameState genSuccessor(Integer mossa) {
+	public AIGameState genSuccessor(Integer mossa) {
 		return genSuccessor(mossa, false);
 	}
 		
-	public GameState genSuccessor(Integer mossa, boolean print) {
+	public AIGameState genSuccessor(Integer mossa, boolean print) {
 		List<List<Integer>> newCardsAssignment = new ArrayList<>(cardsAssignment);
 		List<Integer> newCardsOnTable = new ArrayList<>(cardsOnTable);
 		int newCurrentPlayer=-1;
@@ -124,7 +124,7 @@ public class GameState {
 		 */
 		if (newCardsOnTable.size() < 4) {
 			newCurrentPlayer = (currentPlayer + 1) % 4;
-			GameState newGS = new GameState(newCardsAssignment, newCardsOnTable, newCurrentPlayer, !maxNode,
+			AIGameState newGS = new AIGameState(newCardsAssignment, newCardsOnTable, newCurrentPlayer, !maxNode,
 					scoreMyTeam, scoreOtherTeam);
 			return newGS;
 		}
@@ -164,7 +164,7 @@ public class GameState {
 			// assegno il maximise (stessa squadra)
 			// svuoto la lista di carte sul tavolo
 			newCardsOnTable.clear();
-			GameState newGS = new GameState(newCardsAssignment, newCardsOnTable, newCurrentPlayer, newMaxNode,
+			AIGameState newGS = new AIGameState(newCardsAssignment, newCardsOnTable, newCurrentPlayer, newMaxNode,
 					newScoreMyTeam, newScoreOtherTeam);
 			return newGS;
 		
@@ -283,7 +283,7 @@ public class GameState {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		GameState other = (GameState) obj;
+		AIGameState other = (AIGameState) obj;
 		if (cardsAssignment == null) {
 			if (other.cardsAssignment != null)
 				return false;

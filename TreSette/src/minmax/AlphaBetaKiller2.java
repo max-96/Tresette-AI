@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import AI.DeterministicAI;
-import AI.GameState;
+import AI.AIGameState;
 
 public class AlphaBetaKiller2 extends DeterministicAI {
 
@@ -66,7 +66,7 @@ public class AlphaBetaKiller2 extends DeterministicAI {
 
 		assert mosse.size() > 1;
 		
-		GameState init=new GameState(assegnamentoCarte, cardsOnTable, playerId, true, 0, 0);
+		AIGameState init=new AIGameState(assegnamentoCarte, cardsOnTable, playerId, true, 0, 0);
 		
 		/*
 		 * L'insieme delle mosse e' definito, ora dobbiamo valutarle
@@ -102,7 +102,7 @@ public class AlphaBetaKiller2 extends DeterministicAI {
 		return bestAction;
 	}
 
-	private double alphabeta(GameState gs, double alpha, double beta, int depth, final int maxDepth) {
+	private double alphabeta(AIGameState gs, double alpha, double beta, int depth, final int maxDepth) {
 
 		forkCounter++;
 
