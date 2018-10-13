@@ -73,6 +73,17 @@ public class SforzaSolver {
 
 		}
 	}
+	
+	public SforzaSolver(int i, Object info, int n_TRAILS)
+	{
+		// TODO Auto-generated constructor stub
+	}
+
+	public void addInfo(Object o)
+	{
+		//TODO
+		return;
+	}
 
 	
 	/**

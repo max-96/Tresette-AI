@@ -251,6 +251,29 @@ public class Game
 		}
 		this.gameState = GameState.GAMEREADY;
 	}
+
+	public Info getInfo() {
+		// TODO 
+		return null;
+	}
+	
+	public static class Info
+	{
+
+		public double getTeamScore(int i)
+		{
+			// TODO Auto-generated method stub
+			return 0;
+		}
+
+		public List<Integer> getCardsOnTable()
+		{
+			// TODO Auto-generated method stub
+			return null;
+		}
+		
+		
+	}
 	
 	
 }
