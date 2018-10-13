@@ -1,0 +1,6 @@
+Su 5000
+AlphaBeta prof. 12 (A) vs RandWalk (B)
+A:	4414
+B:	586
+
+88.28%

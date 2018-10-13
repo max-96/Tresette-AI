@@ -1,0 +1,9 @@
+A: MCTS 60000 it, C=1.25
+
+TEAM EVEN:	449
+TEAM ODD:	51
+Avg:	0.89800
+Ssd:	0.30295
+CI:	[ 0.87145 ; 0.92455 ]
+
+MaxTime: 1.308 s

@@ -74,7 +74,7 @@ public class MCNode implements Comparable<MCNode> {
 	}
 
 	public double getPriority() {
-		return ((double) winCount) / (visitCount + EPS) + C_PARAM * Math.sqrt((Math.log(parent.visitCount + 1)) / (visitCount + EPS));
+		return ((double) winCount) / (visitCount + EPS) + C_PARAM * Math.sqrt(Math.log(parent.visitCount) / (visitCount + EPS));
 	}
 
 	protected void backpropagateStats(boolean isWin) {
