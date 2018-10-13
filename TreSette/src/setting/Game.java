@@ -1,6 +1,6 @@
 package setting;
 
-import java.util.ArrayList;
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -12,7 +12,6 @@ import java.util.Set;
 
 import AI.DumbPlayerAI;
 import AI.Player;
-import AI.PlayerAI;
 import setting.Card.Suit;
 import setting.Card.Value;
 

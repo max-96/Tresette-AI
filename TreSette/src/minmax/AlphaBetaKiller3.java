@@ -66,7 +66,7 @@ public class AlphaBetaKiller3 extends DeterministicAI {
 		forkCounter = 0;
 		alphapruning = 0;
 		betapruning = 0;
-		executionTime = System.currentTimeMillis();
+		long executionTime = System.currentTimeMillis();
 		int turno = cardsOnTable.size();
 
 		List<Integer> mosse = turno == 0 ? new ArrayList<>(assegnamentoCarte.get(playerId))
@@ -82,7 +82,7 @@ public class AlphaBetaKiller3 extends DeterministicAI {
 
 		double bestActionVal = Double.NEGATIVE_INFINITY;
 		double alpha = Double.NEGATIVE_INFINITY;// siamo in nodo maximise
-		Integer bestAction = -1;
+		Integer bestAction = Integer.valueOf(-1);
 		
 		for (Integer mossa : mosse) {
 
@@ -91,7 +91,6 @@ public class AlphaBetaKiller3 extends DeterministicAI {
 //			
 			double mmaxval= alphabeta(init.genSuccessor(mossa), alpha, Double.POSITIVE_INFINITY, 1, depth);
 
-//			System.out.print("x");
 			if (mmaxval > bestActionVal) {
 				bestActionVal = mmaxval;
 				bestAction = mossa;

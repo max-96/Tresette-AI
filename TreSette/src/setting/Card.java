@@ -8,7 +8,7 @@ public class Card implements Comparable<Card>
 		
 		private int val;
 		
-		private Suit(int value) { this.val = val; }
+		private Suit(int value) { this.val = value; }
 		
 		public int getVal() { return val; }
 	}
@@ -22,7 +22,7 @@ public class Card implements Comparable<Card>
 		
 		private Value(int value, int point)
 		{
-			this.val = val;
+		this.val = value;
 			this.punti = point;
 		}
 		

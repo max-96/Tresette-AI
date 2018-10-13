@@ -3,13 +3,13 @@ package MCTS;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
+//import java.util.Map;
+//import java.util.Map.Entry;
 import AI.AIGameState;
 
 public class MCNode implements Comparable<MCNode> {
 
-	public static final double C_PARAM = 0.25;
+	public static final double C_PARAM = 1.25;
 	public static final double EPS=1e-8;
 
 	private MCNode parent;
@@ -74,10 +74,7 @@ public class MCNode implements Comparable<MCNode> {
 	}
 
 	public double getPriority() {
-		double priority = ((double) winCount) / (visitCount + EPS);
-		priority += C_PARAM * Math.sqrt((Math.log(parent.visitCount + 1)) / (visitCount + EPS));
-
-		return priority;
+		return ((double) winCount) / (visitCount + EPS) + C_PARAM * Math.sqrt((Math.log(parent.visitCount + 1)) / (visitCount + EPS));
 	}
 
 	protected void backpropagateStats(boolean isWin) {
