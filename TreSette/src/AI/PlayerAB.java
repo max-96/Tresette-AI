@@ -29,7 +29,6 @@ public class PlayerAB extends Player
 	@Override
 	public Card getMossa()
 	{
-
 		int depth = 10;
 		Info info = gioco.getInfo();
 		double ourScore= info.getTeamScore(id % 2);

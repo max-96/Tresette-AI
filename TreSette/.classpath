@@ -5,7 +5,6 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry excluding="AI/RandCSPSolver.java|MCTS/GameState.java|minmax/GreedyMinMax.java|minmax/GreedyMinMaxTest.java|minmax/ZamMax.java|AI/GreedyPlayerAI.java|minmax/DebugGraph.java|AI/CSPTest.java|AI/DumbPlayerAI.java" kind="src" path="src"/>
-	<classpathentry kind="lib" path="src/AI/DumbPlayerAI.java"/>
+	<classpathentry excluding="AI/RandCSPSolver.java|MCTS/GameState.java|minmax/GreedyMinMax.java|minmax/GreedyMinMaxTest.java|minmax/ZamMax.java|AI/GreedyPlayerAI.java|minmax/DebugGraph.java|AI/CSPTest.java" kind="src" path="src"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
