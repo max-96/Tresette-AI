@@ -10,9 +10,13 @@ import java.util.Set;
 public class CardsUtils
 {
 
+	public static final int QUATTRODIDENARI = 3;
+
 	/**
 	 * Finds the player who owns the four of denari.
-	 * @param l the assignment in which to look for
+	 * 
+	 * @param l
+	 *            the assignment in which to look for
 	 * @return the player who owns the four of denari
 	 */
 	public static int FindFourOfDenari(List<List<Integer>> l)
