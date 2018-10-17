@@ -26,7 +26,7 @@ public class AlphaBeta extends DeterministicAI {
 	
 	
 	
-	
+	@Deprecated
 	public AlphaBeta(int playerId, int depth) {
 		this.playerId = playerId;
 		this.depth=depth;

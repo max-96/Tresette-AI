@@ -9,11 +9,17 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.LongAdder;
 
 import AI.DeterministicAI;
+import util.CardsUtils;
+import util.MovesStats;
 import AI.AIGameState;
 
 public class AlphaBetaKiller3 extends DeterministicAI
 {
 
+	public static long maxExecTime = 0;
+	public static long sumExecTime = 0;
+	public static int numExec=0;
+	
 	/**
 	 * Player's ID
 	 */
@@ -22,7 +28,7 @@ public class AlphaBetaKiller3 extends DeterministicAI
 	private int alphapruning = 0;
 	private int betapruning = 0;
 	public long executionTime = 0;
-	public static long maxExecTime = 0;
+
 	public double winningValue = 0;
 	private int depth;
 
@@ -119,8 +125,19 @@ public class AlphaBetaKiller3 extends DeterministicAI
 		executionTime = System.currentTimeMillis() - executionTime;
 		if (executionTime > maxExecTime)
 			maxExecTime = executionTime;
+		sumExecTime += executionTime;
+		numExec += 1;
+		
 		winningValue = bestActionVal;
-		// System.out.println();
+
+		if (true)
+		{
+			MovesStats ms = MovesStats.getInstance();
+			int d = 10 - assegnamentoCarte.get(playerId).size();
+			int domCard = (turno == 0) ? 10 : CardsUtils.getDominantCard(cardsOnTable);
+			ms.addStats(d, domCard, bestAction);
+		}
+
 		return bestAction;
 	}
 
@@ -304,7 +321,7 @@ public class AlphaBetaKiller3 extends DeterministicAI
 			AlphaBetaKiller3 k = new AlphaBetaKiller3(playerId, depth);
 			Integer r = k.getBestMove(assegnamentoCarte, cardsOnTable, scoreMyTeam, scoreOtherTeam);
 			punti.computeIfAbsent(r, key -> new LongAdder()).increment();
-			
+
 		}
 
 	}

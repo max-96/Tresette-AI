@@ -13,24 +13,28 @@ import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.RecursiveAction;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class SforzaSolver {
+public class SforzaSolver
+{
 
 	public BlockingQueue<List<List<Integer>>> possibiliAssegnamenti;
 	public long tempoEsecuzione;
 
+	@SuppressWarnings("unchecked")
 	private List<Integer>[] assegnamentoCarte = (ArrayList<Integer>[]) new ArrayList[4];
 	private int[] carteMancanti = new int[4];
 	private boolean[][] semiAttivi = new boolean[4][4];
 
 	private List<Integer> carteLibere = new ArrayList<>();
+	@SuppressWarnings("unchecked")
 	private List<Integer>[] carteLiberePerSeme = (ArrayList<Integer>[]) new ArrayList[4];
 	private int status = 0;
 
-//	private int idPlayer;
+	// private int idPlayer;
 	private int numeroSoluzioni;
 
 	/********************
-	 * Solver parallelo che produce soluzioni distribuendo le carte equiprobabilmente ai giocatori.
+	 * Solver parallelo che produce soluzioni distribuendo le carte
+	 * equiprobabilmente ai giocatori.
 	 * 
 	 * @param id
 	 *            Id del player
@@ -47,16 +51,18 @@ public class SforzaSolver {
 	 */
 
 	public SforzaSolver(int id, Set<Integer> CarteScartate, List<Integer> carteInMano, int[] carteMancanti,
-			boolean[][] semiAttivi, int numeroSoluzioni) {
+			boolean[][] semiAttivi, int numeroSoluzioni)
+	{
 
-//		idPlayer = id;
+		// idPlayer = id;
 		this.carteMancanti = carteMancanti;
 		carteMancanti[id] = 0;
 		this.semiAttivi = semiAttivi;
 		this.numeroSoluzioni = numeroSoluzioni;
-		possibiliAssegnamenti = new ArrayBlockingQueue<>(numeroSoluzioni+1);
+		possibiliAssegnamenti = new ArrayBlockingQueue<>(numeroSoluzioni + 1);
 
-		for (int i = 0; i < 4; i++) {
+		for (int i = 0; i < 4; i++)
+		{
 			assegnamentoCarte[i] = new ArrayList<>();
 			carteLiberePerSeme[i] = new ArrayList<>();
 
@@ -64,7 +70,8 @@ public class SforzaSolver {
 
 		assegnamentoCarte[id] = new ArrayList<>(carteInMano);
 
-		for (int carta = 0; carta < 40; carta++) {
+		for (int carta = 0; carta < 40; carta++)
+		{
 			if (CarteScartate.contains(carta) || carteInMano.contains(carta))
 				continue;
 
@@ -73,7 +80,7 @@ public class SforzaSolver {
 
 		}
 	}
-	
+
 	public SforzaSolver(int i, Object info, int n_TRAILS)
 	{
 		// TODO Auto-generated constructor stub
@@ -81,19 +88,20 @@ public class SforzaSolver {
 
 	public void addInfo(Object o)
 	{
-		//TODO
+		// TODO
 		return;
 	}
 
-	
 	/**
-	 * Avvia la risoluzione e inizia a produrre gli assegnamenti possibili.
-	 * Gli assegnamenti prodotti vengono inseriti
-	 * nella <code><b>BlockingQueue</b> assegnamentiProdotti</code> .
+	 * Avvia la risoluzione e inizia a produrre gli assegnamenti possibili. Gli
+	 * assegnamenti prodotti vengono inseriti nella
+	 * <code><b>BlockingQueue</b> assegnamentiProdotti</code> .
 	 * 
-	 * @return <b>true</b> se e' possibile procedere alla produzione, <b>false</b> altrimenti
+	 * @return <b>true</b> se e' possibile procedere alla produzione, <b>false</b>
+	 *         altrimenti
 	 */
-	public boolean startProducing() {
+	public boolean startProducing()
+	{
 		if (status != 0)
 			return false;
 
@@ -106,20 +114,24 @@ public class SforzaSolver {
 
 	}
 
-	public boolean isDone() {
+	public boolean isDone()
+	{
 		return status == 2;
 	}
 
-	private class SforzaFirst extends RecursiveAction {
+	private class SforzaFirst extends RecursiveAction
+	{
 
 		private static final long serialVersionUID = 1L;
 
 		@Override
-		protected void compute() {
-			long tempo=System.currentTimeMillis();
+		protected void compute()
+		{
+			long tempo = System.currentTimeMillis();
 			LinkedList<SforzaSlave> threads = new LinkedList<>();
 
-			for (int i = 0; i < numeroSoluzioni; i++) {
+			for (int i = 0; i < numeroSoluzioni; i++)
+			{
 
 				SforzaSlave t = new SforzaSlave();
 				t.fork();
@@ -128,11 +140,11 @@ public class SforzaSolver {
 
 			while (!threads.isEmpty())
 				threads.pop().join();
-			
-			tempo=System.currentTimeMillis() - tempo;
-			tempoEsecuzione=tempo;
 
-			List<List<Integer>> sentinella= Collections.emptyList();
+			tempo = System.currentTimeMillis() - tempo;
+			tempoEsecuzione = tempo;
+
+			List<List<Integer>> sentinella = Collections.emptyList();
 			possibiliAssegnamenti.offer(sentinella);
 			status = 2;
 
@@ -140,29 +152,35 @@ public class SforzaSolver {
 
 	}
 
-	private class SforzaSlave extends RecursiveAction {
+	private class SforzaSlave extends RecursiveAction
+	{
 
 		/**
 		 * 
 		 */
 		private static final long serialVersionUID = 1L;
+		@SuppressWarnings("unchecked")
 		private List<Integer>[] assCarte = (ArrayList<Integer>[]) new ArrayList[4];
 		private List<Integer> carteLib = new ArrayList<>();
+		@SuppressWarnings("unchecked")
 		private List<Integer>[] carteLibPerSeme = (ArrayList<Integer>[]) new ArrayList[4];
 		private int[] carteManc;
 
 		@Override
-		protected void compute() {
+		protected void compute()
+		{
 			copiaStrutture();
 
-			for (int player = 0; player < 4; player++) {
+			for (int player = 0; player < 4; player++)
+			{
 
 				check();
 
 				Collections.shuffle(carteLib, ThreadLocalRandom.current());
 				int i = 0;
 
-				while (carteManc[player] > 0) {
+				while (carteManc[player] > 0)
+				{
 
 					while (!semiAttivi[player][(carteLib.get(i) / 10)])
 						i++;
@@ -177,13 +195,14 @@ public class SforzaSolver {
 
 			}
 
-			
 			possibiliAssegnamenti.offer(Arrays.asList(assCarte));
 
 		}
 
-		private void copiaStrutture() {
-			for (int i = 0; i < 4; i++) {
+		private void copiaStrutture()
+		{
+			for (int i = 0; i < 4; i++)
+			{
 				assCarte[i] = new ArrayList<>(assegnamentoCarte[i]);
 				carteLibPerSeme[i] = new ArrayList<>(carteLiberePerSeme[i]);
 			}
@@ -193,22 +212,28 @@ public class SforzaSolver {
 
 		}
 
-		private void check() {
-			for (int p = 0; p < 4; p++) {
+		private void check()
+		{
+			for (int p = 0; p < 4; p++)
+			{
 				if (carteManc[p] == 0)
 					continue;
 
 				int somma = 0;
-				for (int s = 0; s < 4; s++) {
+				for (int s = 0; s < 4; s++)
+				{
 					if (semiAttivi[p][s])
 						somma += carteLibPerSeme[s].size();
 
 				}
 
 				assert somma >= carteManc[p];
-				if (somma == carteManc[p]) {
-					for (int s = 0; s < 4; s++) {
-						if (semiAttivi[p][s]) {
+				if (somma == carteManc[p])
+				{
+					for (int s = 0; s < 4; s++)
+					{
+						if (semiAttivi[p][s])
+						{
 							assCarte[p].addAll(carteLibPerSeme[s]);
 							carteLib.removeAll(carteLibPerSeme[s]);
 							carteLibPerSeme[s].clear();

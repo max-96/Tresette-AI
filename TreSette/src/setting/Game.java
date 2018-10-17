@@ -279,7 +279,8 @@ public class Game
 
 	
 	/**
-	 * 
+	 * It holds the information to be given to the players.
+	 * All its methods are read-only and thread-safe.
 	 */
 	public static class Info
 	{

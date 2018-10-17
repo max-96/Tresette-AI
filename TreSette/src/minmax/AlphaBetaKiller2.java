@@ -7,6 +7,7 @@ import java.util.List;
 import AI.DeterministicAI;
 import AI.AIGameState;
 
+@Deprecated
 public class AlphaBetaKiller2 extends DeterministicAI {
 
 	/**
