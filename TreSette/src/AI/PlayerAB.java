@@ -7,11 +7,9 @@ import java.util.Map.Entry;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ForkJoinPool;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.LongAdder;
 
-import minmax.AlphaBetaKiller3;
-import minmax.AlphaBetaKiller3.AlphaBetaSlave;
+import minmax.AlphaBeta.AlphaBetaSlave;
 import setting.Card;
 import setting.Game;
 import setting.Game.Info;

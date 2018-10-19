@@ -3,6 +3,7 @@ package util;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -145,5 +146,65 @@ public class CardsUtils
 				d = s;
 		}
 		return Integer.valueOf(d);
+	}
+
+	/**
+	 * 
+	 * It sorts the moves by how much they restrict the next player's moves. (Lowest
+	 * Branching Factor Heuristic)
+	 * 
+	 * @param onTable
+	 *            cards on the table
+	 * @param mosse
+	 *            cards I can play
+	 * @param assCarte
+	 *            the current cards' assignment
+	 * @param pId
+	 *            my player id
+	 * @return
+	 */
+	public static boolean LBFHeur(List<Integer> onTable, List<Integer> mosse, List<List<Integer>> assCarte, int pId,
+			boolean fast)
+	{
+		if (mosse.isEmpty() || !onTable.isEmpty())
+			return false;
+
+		double[] score = { Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE };
+		boolean[] visited = { false, false, false, false };
+		List<Integer> oppCards = assCarte.get((pId + 1) % 4);
+
+		for (int i = 0; i < mosse.size(); i++)
+		{
+			int val = mosse.get(i).intValue();
+			int seme = val / 10;
+			if (visited[seme])
+				continue;
+			visited[seme] = true;
+
+			double s = 0;
+			for (Integer c : oppCards)
+				if (c.intValue() / 10 == seme)
+					s += 1;
+			if (!fast)
+			{
+				for (Integer c : assCarte.get((pId + 3) % 4))
+					if (c.intValue() / 10 == seme)
+						s += 0.2;
+			}
+			score[seme] = s;
+		}
+
+		Comparator<Integer> t = new Comparator<Integer>()
+		{
+			@Override
+			public int compare(Integer arg0, Integer arg1)
+			{
+				return (int) ((score[arg0.intValue() / 10] - score[arg1.intValue() / 10]) * 5);
+			}
+		};
+
+		Collections.sort(mosse, t);
+		return true;
+
 	}
 }

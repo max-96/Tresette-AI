@@ -12,7 +12,7 @@ import AI.DeterministicAI;
 import util.CardsUtils;
 import util.MovesStats;
 
-public class AlphaBeta extends DeterministicAI
+public class AlphaBetaLBF extends DeterministicAI
 {
 
 	public static long maxExecTime = 0;
@@ -42,7 +42,7 @@ public class AlphaBeta extends DeterministicAI
 
 	public static final int MAX_CACHE_SIZE = 4;
 
-	public AlphaBeta(int playerId, int depth)
+	public AlphaBetaLBF(int playerId, int depth)
 	{
 		this.playerId = playerId;
 		this.depth = depth;
@@ -97,6 +97,8 @@ public class AlphaBeta extends DeterministicAI
 		double bestActionVal = Double.NEGATIVE_INFINITY;
 		double alpha = Double.NEGATIVE_INFINITY;// siamo in nodo maximise
 		Integer bestAction = Integer.valueOf(-1);
+
+		CardsUtils.LBFHeur(cardsOnTable, mosse, assegnamentoCarte, playerId, false);
 
 		for (Integer mossa : mosse)
 		{
@@ -154,6 +156,7 @@ public class AlphaBeta extends DeterministicAI
 
 		List<Integer> mosse = gs.generateActions();
 		killermovesSorter(isMaximise, depth, mosse);
+//			CardsUtils.LBFHeur(gs.getCardsOnTable(), mosse, gs.getCardsAssignment(), playerId, true);
 		double bestActionVal = isMaximise ? Double.NEGATIVE_INFINITY : Double.POSITIVE_INFINITY;
 		double alphabetaVal;
 
@@ -224,6 +227,8 @@ public class AlphaBeta extends DeterministicAI
 		 * pruning alla stessa altezza
 		 */
 
+//		boolean works = false;
+
 		if (isMax)
 		{
 			for (Integer killerMove : alphaMoves.get(currDepth))
@@ -232,6 +237,7 @@ public class AlphaBeta extends DeterministicAI
 				{
 					mosse.remove(killerMove);
 					mosse.add(0, killerMove);
+//					works = true;
 				}
 			}
 		} else
@@ -242,10 +248,12 @@ public class AlphaBeta extends DeterministicAI
 				{
 					mosse.remove(killerMove);
 					mosse.add(0, killerMove);
+//					works = true;
 				}
 			}
 		}
 
+//		return works;
 	}
 
 	/**
@@ -318,7 +326,7 @@ public class AlphaBeta extends DeterministicAI
 		@Override
 		protected void compute()
 		{
-			AlphaBeta k = new AlphaBeta(playerId, depth);
+			AlphaBetaLBF k = new AlphaBetaLBF(playerId, depth);
 			Integer r = k.getBestMove(assegnamentoCarte, cardsOnTable, scoreMyTeam, scoreOtherTeam);
 			punti.computeIfAbsent(r, key -> new LongAdder()).increment();
 

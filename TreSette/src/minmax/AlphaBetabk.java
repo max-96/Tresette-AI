@@ -1,5 +1,7 @@
 package minmax;
 
+
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -11,9 +13,8 @@ import java.util.concurrent.atomic.LongAdder;
 import AI.DeterministicAI;
 import util.CardsUtils;
 import util.MovesStats;
-import AI.AIGameState;
 
-public class AlphaBetaKiller3 extends DeterministicAI
+public class AlphaBeta extends DeterministicAI
 {
 
 	public static long maxExecTime = 0;
@@ -43,7 +44,7 @@ public class AlphaBetaKiller3 extends DeterministicAI
 
 	public static final int MAX_CACHE_SIZE = 4;
 
-	public AlphaBetaKiller3(int playerId, int depth)
+	public AlphaBeta(int playerId, int depth)
 	{
 		this.playerId = playerId;
 		this.depth = depth;
@@ -318,7 +319,7 @@ public class AlphaBetaKiller3 extends DeterministicAI
 		@Override
 		protected void compute()
 		{
-			AlphaBetaKiller3 k = new AlphaBetaKiller3(playerId, depth);
+			AlphaBeta k = new AlphaBeta(playerId, depth);
 			Integer r = k.getBestMove(assegnamentoCarte, cardsOnTable, scoreMyTeam, scoreOtherTeam);
 			punti.computeIfAbsent(r, key -> new LongAdder()).increment();
 

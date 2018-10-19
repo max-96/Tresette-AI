@@ -4,15 +4,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
-//import java.util.Random;
-
-import javax.swing.plaf.basic.BasicInternalFrameTitlePane.MaximizeAction;
-
 import MCTS.MonteCarloTreeSearch;
-import minmax.AlphaBetaKiller;
-import minmax.AlphaBetaKiller3;
-import util.CardsUtils;
-import util.MovesStats;
+import minmax.AlphaBeta;
+import util.*;
 
 public class AITesting
 {
@@ -32,9 +26,9 @@ public class AITesting
 		//// float[] betaP= AlphaBetaTest.normalize(AlphaBetaKiller3.betacount);
 		//// System.out.println(Arrays.toString(alphaP));
 		//// System.out.println(Arrays.toString(betaP));
-		System.out.println(String.format("ABK Max Time:\t%.3f s", (double) AlphaBetaKiller3.maxExecTime / 1000));
-		System.out.println(String.format("ABK Avg Time:\t%.3f s",
-				(((double) AlphaBetaKiller3.sumExecTime) / AlphaBetaKiller3.numExec) / 1000));
+		System.out.println(String.format("ABK Max Time:\t%.3f s", (double) AlphaBeta.maxExecTime / 1000));
+		System.out.println(
+				String.format("ABK Avg Time:\t%.3f s", (((double) AlphaBeta.sumExecTime) / AlphaBeta.numExec) / 1000));
 
 		// System.out.println(
 		// String.format("MonteCarloTS Max Time:\t%.3f", (double)
@@ -112,6 +106,7 @@ public class AITesting
 
 	}
 
+	@SuppressWarnings("unused")
 	private static void test1()
 	{
 		int[] winnings = { 0, 0 };
@@ -156,6 +151,7 @@ public class AITesting
 
 	}
 
+	@SuppressWarnings("unused")
 	private static void test2()
 	{
 		int[] winnings = { 0, 0 };
@@ -200,6 +196,7 @@ public class AITesting
 
 	}
 
+	@SuppressWarnings("unused")
 	private static void test3()
 	{
 		int[] winnings = { 0, 0 };
@@ -244,6 +241,7 @@ public class AITesting
 
 	}
 
+	@SuppressWarnings("unused")
 	private static void test4()
 	{
 		int[] winnings = { 0, 0 };
@@ -289,9 +287,10 @@ public class AITesting
 		// }
 	}
 
+	@SuppressWarnings("unused")
 	private static void test5()
 	{
-		int[] winnings = { 0, 0 };
+		// int[] winnings = { 0, 0 };
 		boolean[] playerALFABETA = { true, false, true, false };
 		// for (int k = 0; k < 20; k++) {
 		List<List<Integer>> randomAssignment = randomAssignment();
@@ -408,19 +407,14 @@ public class AITesting
 		return new RandWalk(player);
 	}
 
-	public static AlphaBetaKiller3 genABK3(int player)
+	public static AlphaBeta genABK3(int player)
 	{
-		return new AlphaBetaKiller3(player, 16);
+		return new AlphaBeta(player, 16);
 	}
 
-	public static AlphaBetaKiller genABK(int player)
+	public static AlphaBeta genABK3(int player, int depth)
 	{
-		return new AlphaBetaKiller(player, 3);
-	}
-
-	public static AlphaBetaKiller3 genABK3(int player, int depth)
-	{
-		return new AlphaBetaKiller3(player, depth);
+		return new AlphaBeta(player, depth);
 	}
 
 	public static MonteCarloTreeSearch genMCTS(int player)
