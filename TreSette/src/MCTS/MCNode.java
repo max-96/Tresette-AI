@@ -160,7 +160,7 @@ public class MCNode implements Comparable<MCNode> {
 
 	@Override
 	public int compareTo(MCNode other) {
-		return (int) Math.ceil(getPriority() - other.getPriority());
+		return (int) Math.signum(getPriority() - other.getPriority());
 	}
 
 }
