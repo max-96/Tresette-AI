@@ -1,5 +1,6 @@
 package ismcts;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import setting.Game.Info;
@@ -13,6 +14,7 @@ public class InformationSetMCTS {
 	public long execTime;
 	public static long maxExecTime=0;
 	public final double C_PARAM;
+	
 	
 	public InformationSetMCTS(int playerId, int iterations)
 	{
@@ -41,6 +43,7 @@ public class InformationSetMCTS {
 		return 0;
 	}
 	
+
 	
 	
 }

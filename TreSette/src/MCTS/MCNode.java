@@ -53,6 +53,7 @@ public class MCNode implements Comparable<MCNode> {
 		if (!children.isEmpty() || gamestate.terminal)
 			return;
 
+		init();
 		List<Integer> mosse=gamestate.generateActions();
 		children = new ArrayList<>();
 		for (Integer node : mosse) {

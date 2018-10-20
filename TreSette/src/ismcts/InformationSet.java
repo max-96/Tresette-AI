@@ -18,15 +18,33 @@ public class InformationSet
 	private final List<Set<Integer>> possibleCards;
 	private final List<Integer> cardsOnTable;
 	private final int currentPlayer;
+	private final byte[] cardsLeft;
+	public final boolean maxNode;
+	public final byte maxTeam;
 
 	public InformationSet(double[] scores, List<Set<Integer>> possibleCards, List<Integer> cardsOnTable,
-			int currentPlayer)
+			int currentPlayer, byte[] cardsLeft, byte maxTeam)
 	{
 		this.scores = scores;
 		this.possibleCards = possibleCards;
 		this.cardsOnTable = cardsOnTable;
 		this.currentPlayer = currentPlayer;
-		terminal = true;// TODO aggiornare
+		this.cardsLeft = cardsLeft;
+		this.terminal = cardsLeft[currentPlayer] == 0;
+		this.maxNode = (currentPlayer & 1) == maxTeam;
+		this.maxTeam = maxTeam;
+
+	}
+
+	public List<Integer> generateActions(Object determinizzazione)
+	{
+
+		if (terminal)
+			return null;
+
+		// TODO aggiornare con determinizzazione
+
+		return null;
 
 	}
 
@@ -39,10 +57,13 @@ public class InformationSet
 		List<Integer> newCardsOnTable = new ArrayList<>(cardsOnTable);
 		newPossibleCards.get(currentPlayer).remove(mossa);
 		newCardsOnTable.add(mossa);
+		byte[] newCardsLeft = Arrays.copyOf(cardsLeft, 4);
+		newCardsLeft[currentPlayer] -= 1;
 
 		if (newCardsOnTable.size() < 4)
 		{
-			InformationSet is = new InformationSet(scores, newPossibleCards, newCardsOnTable, (currentPlayer + 1) % 4);
+			InformationSet is = new InformationSet(scores, newPossibleCards, newCardsOnTable, (currentPlayer + 1) % 4,
+					newCardsLeft, maxTeam);
 			return is;
 		} else
 		{
@@ -66,12 +87,23 @@ public class InformationSet
 			newScores[domPlayer & 1] += punteggio;
 			newCardsOnTable = Collections.emptyList();
 
-			InformationSet is = new InformationSet(newScores, newPossibleCards, newCardsOnTable, domPlayer);
-
+			InformationSet is = new InformationSet(newScores, newPossibleCards, newCardsOnTable, domPlayer,
+					newCardsLeft, maxTeam);
 			return is;
-
 		}
 
+	}
+
+	public Integer genRandMossa(Object determin)
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public double getScoreSoFar()
+	{
+		double r = scores[0] - scores[1];
+		return (maxTeam == 0) ? r : -r;
 	}
 
 }
