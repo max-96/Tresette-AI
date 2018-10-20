@@ -67,6 +67,7 @@ public class AITesting
 			List<Integer> cardsOnTable = new ArrayList<>();
 			int currentplayer = CardsUtils.FindFourOfDenari(randomAssignment);
 			int initTeam = currentplayer & 1;
+
 			System.out.print(initTeam + " ");
 
 			double scoreEven = computeAccusiTeamScore(randomAssignment, 0);
