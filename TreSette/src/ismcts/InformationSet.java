@@ -14,7 +14,6 @@ import util.CardsUtils;
 public class InformationSet
 {
 	public final boolean terminal;
-
 	private final double[] scores;
 	private final List<Set<Integer>> possibleCards;
 	private final List<Integer> cardsOnTable;
@@ -53,7 +52,9 @@ public class InformationSet
 	{
 		if (terminal)
 			return null;
-
+		
+		assert possibleCards.get(currentPlayer).contains(mossa);
+		
 		List<Set<Integer>> newPossibleCards = new ArrayList<>(possibleCards);
 		List<Integer> newCardsOnTable = new ArrayList<>(cardsOnTable);
 		newPossibleCards.get(currentPlayer).remove(mossa);
@@ -117,7 +118,6 @@ public class InformationSet
 		return sizes && possibleCards.get(0).containsAll(determ.get(0))
 				&& possibleCards.get(1).containsAll(determ.get(1)) && possibleCards.get(2).containsAll(determ.get(2))
 				&& possibleCards.get(3).containsAll(determ.get(3));
-
 	}
 
 }

@@ -89,6 +89,21 @@ public class ISMCNode implements Comparable<ISMCNode>
 				+ C_PARAM * Math.sqrt(Math.log(parent.visitCount) / (visitCount + EPS));
 	}
 
+	protected void backpropagateStats(boolean isWin) {
+		ISMCNode node = this;
+		while (node != null) {
+			if (node.isBlackNode) {
+				if (isWin)
+					node.winCount += 1;
+			} else {
+				if (!isWin)
+					node.winCount += 1;
+			}
+			node.visitCount += 1;
+			node = node.parent;
+		}
+	}
+	
 	public boolean isCompatible(List<List<Integer>> determ)
 	{
 		return infoset.isCompatible(determ);
@@ -99,4 +114,6 @@ public class ISMCNode implements Comparable<ISMCNode>
 	{
 		return (int) Math.signum(getPriority() - other.getPriority());
 	}
+	
+	
 }

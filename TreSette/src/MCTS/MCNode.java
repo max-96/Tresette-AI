@@ -92,7 +92,6 @@ public class MCNode implements Comparable<MCNode> {
 			node.visitCount += 1;
 			node = node.parent;
 		}
-
 	}
 
 	public boolean isTerminal() {

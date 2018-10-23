@@ -129,7 +129,6 @@ public class NeutralGameState {
 							.println("sto sostituendo " + ((cartaDominante % 10) + 1) + " con " + (cartaTemp % 10 + 1));
 				playerDominante = (startingPlayer + p) % 4;
 				cartaDominante = cartaTemp;
-
 			}
 		}
 
@@ -147,7 +146,6 @@ public class NeutralGameState {
 		NeutralGameState newGS = new NeutralGameState(newCardsAssignment, newCardsOnTable, newCurrentPlayer,
 				newScoreEven, newScoreOdd);
 		return newGS;
-
 	}
 
 	/**

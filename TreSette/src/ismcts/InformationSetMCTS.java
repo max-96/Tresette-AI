@@ -32,14 +32,18 @@ public class InformationSetMCTS
 	{
 		long execTime = System.currentTimeMillis();
 
+		//TODO implement getbestmove
+		
+		
+		
+		
 		execTime = System.currentTimeMillis() - execTime;
+		this.execTime = execTime;
 		if (execTime > maxExecTime)
 			maxExecTime = execTime;
 
-		// TODO
+		
 		return 0;
 	}
-	
-	
 
 }
