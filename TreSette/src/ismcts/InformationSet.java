@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.ThreadLocalRandom;
 
 import AI.DeterministicAI;
 import util.CardsUtils;
@@ -94,16 +95,29 @@ public class InformationSet
 
 	}
 
-	public Integer genRandMossa(Object determin)
+	public Integer genRandMossa(List<List<Integer>> determin)
 	{
-		// TODO Auto-generated method stub
-		return null;
+		List<Integer> mossa = generateActions(determin);
+
+		return mossa.get(ThreadLocalRandom.current().nextInt(mossa.size()));
+
 	}
 
 	public double getScoreSoFar()
 	{
 		double r = scores[0] - scores[1];
 		return (maxTeam == 0) ? r : -r;
+	}
+
+	public boolean isCompatible(List<List<Integer>> determ)
+	{
+		boolean sizes = determ.get(0).size() == cardsLeft[0] && determ.get(1).size() == cardsLeft[1]
+				&& determ.get(2).size() == cardsLeft[2] && determ.get(3).size() == cardsLeft[3];
+
+		return sizes && possibleCards.get(0).containsAll(determ.get(0))
+				&& possibleCards.get(1).containsAll(determ.get(1)) && possibleCards.get(2).containsAll(determ.get(2))
+				&& possibleCards.get(3).containsAll(determ.get(3));
+
 	}
 
 }

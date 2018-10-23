@@ -42,56 +42,61 @@ public class ISMCNode implements Comparable<ISMCNode>
 		this.tree = tree;
 		isLeaf = true;
 	}
-	
+
 	public void init()
 	{
-		if(infoset == null)
+		if (infoset == null)
 		{
-			infoset=parent.infoset.genSuccessor(generatingAction);
-			isBlackNode= ! infoset.maxNode;
+			infoset = parent.infoset.genSuccessor(generatingAction);
+			isBlackNode = !infoset.maxNode;
 		}
 	}
-	
-	public void generateChildren(Object determin) {
+
+	public void generateChildren(Object determin)
+	{
 		if (!children.isEmpty() || infoset.terminal)
 			return;
 
-		//TODO aggiornare con la determinizzazione corretta
-		
-		
-		List<Integer> mosse=infoset.generateActions(determin);
+		// TODO aggiornare con la determinizzazione corretta
+
+		List<Integer> mosse = infoset.generateActions(determin);
 		children = new ArrayList<>();
-		for (Integer node : mosse) {
+		for (Integer node : mosse)
+		{
 			ISMCNode child = new ISMCNode(this, node, tree);
 			children.add(child);
 		}
 		isLeaf = false;
 	}
-	
-	protected double playout(Object determin) {
-		//TODO update con determin vera
+
+	protected double playout(List<List<Integer>> determin)
+	{
+		// TODO update con determin vera
 		init();
 		InformationSet is = infoset;
-		while (!is.terminal) {
+		while (!is.terminal)
+		{
 			Integer mossa = is.genRandMossa(determin);
 			is = is.genSuccessor(mossa);
 		}
 		return is.getScoreSoFar();
 	}
-	
-	public double getPriority() {
-		assert parent.visitCount>0;
-		return ((double) winCount) / (visitCount + EPS) + C_PARAM * Math.sqrt(Math.log(parent.visitCount) / (visitCount + EPS));
-	}
-	
-	public boolean isCompatible(Object determ)
+
+	public double getPriority()
 	{
-		//TODO
-		return false;
+		assert parent.visitCount > 0;
+		return ((double) winCount) / (visitCount + EPS)
+				+ C_PARAM * Math.sqrt(Math.log(parent.visitCount) / (visitCount + EPS));
 	}
-	
+
+	public boolean isCompatible(List<List<Integer>> determ)
+	{
+		return infoset.isCompatible(determ);
+	}
+
 	@Override
-	public int compareTo(ISMCNode other) {
+	public int compareTo(ISMCNode other)
+	{
 		return (int) Math.signum(getPriority() - other.getPriority());
 	}
 }
