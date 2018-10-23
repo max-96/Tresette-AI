@@ -16,51 +16,51 @@ public class AlphaBetaTest
 		test3();
 	}
 
-	
-	private static void test2()
-	{
-		List<List<Integer>> assegnamentoCasuale = new ArrayList<>();
-		List<Integer> cardsOnTable = new ArrayList<>();
-		{
-			List<Integer> t = new ArrayList<>();
-
-			for (int i = 0; i < 40; i++)
-			{
-				t.add(i);
-			}
-			Collections.shuffle(t, new Random(1200));
-
-			for (int i = 0; i < 4; i++)
-			{
-				List<Integer> l = new ArrayList<>(t.subList(i * 10, (i + 1) * 10));
-				assegnamentoCasuale.add(l);
-			}
-		}
-
-		System.out.println("Assegnamento: ");
-		System.out.println(assegnamentoCasuale);
-		AlphaBetaKiller solver = new AlphaBetaKiller(0, 2);
-		System.out.println("Inizio Risoluzione:");
-		Integer mossa = solver.getBestMove(assegnamentoCasuale, cardsOnTable, 0, 0);
-
-		System.out.println("Mossa scelta:\t\t" + mossa);
-		System.out.println("Valore:\t\t\t" + solver.winningValue);
-		System.out.println("# Forks:\t\t" + solver.getForkCounter());
-		System.out.println("Alpha Prunes:\t\t" + solver.getAlphapruning());
-		System.out.println("Beta Prunes:\t\t" + solver.getBetapruning());
-		System.out.println("Elapsed Time(ms):\t" + solver.executionTime);
-
-		System.out.println("---------------------");
-
-		System.out.println("Alpha Moves:");
-		// for(int i=0;i<40;i++)
-		System.out.println(solver.getAlphaMoves());
-
-		System.out.println("Beta Moves:");
-		// for(int i=0;i<40;i++)
-		System.out.println(solver.getBetaMoves());
-
-	}
+//	@Deprecated
+//	private static void test2()
+//	{
+//		List<List<Integer>> assegnamentoCasuale = new ArrayList<>();
+//		List<Integer> cardsOnTable = new ArrayList<>();
+//		{
+//			List<Integer> t = new ArrayList<>();
+//
+//			for (int i = 0; i < 40; i++)
+//			{
+//				t.add(i);
+//			}
+//			Collections.shuffle(t, new Random(1200));
+//
+//			for (int i = 0; i < 4; i++)
+//			{
+//				List<Integer> l = new ArrayList<>(t.subList(i * 10, (i + 1) * 10));
+//				assegnamentoCasuale.add(l);
+//			}
+//		}
+//
+//		System.out.println("Assegnamento: ");
+//		System.out.println(assegnamentoCasuale);
+//		AlphaBetaKiller solver = new AlphaBetaKiller(0, 2);
+//		System.out.println("Inizio Risoluzione:");
+//		Integer mossa = solver.getBestMove(assegnamentoCasuale, cardsOnTable, 0, 0);
+//
+//		System.out.println("Mossa scelta:\t\t" + mossa);
+//		System.out.println("Valore:\t\t\t" + solver.winningValue);
+//		System.out.println("# Forks:\t\t" + solver.getForkCounter());
+//		System.out.println("Alpha Prunes:\t\t" + solver.getAlphapruning());
+//		System.out.println("Beta Prunes:\t\t" + solver.getBetapruning());
+//		System.out.println("Elapsed Time(ms):\t" + solver.executionTime);
+//
+//		System.out.println("---------------------");
+//
+//		System.out.println("Alpha Moves:");
+//		// for(int i=0;i<40;i++)
+//		System.out.println(solver.getAlphaMoves());
+//
+//		System.out.println("Beta Moves:");
+//		// for(int i=0;i<40;i++)
+//		System.out.println(solver.getBetaMoves());
+//
+//	}
 
 	public static void test3()
 	{
