@@ -144,8 +144,26 @@ public class CardsUtils
 			int s = cards.get(i).intValue();
 			if (d / 10 != s / 10)
 				continue;
-			if (DeterministicAI.dominioPerCarta[s % 10] > DeterministicAI.dominioPerCarta[d % 10])
+			if (dominioPerCarta[s % 10] > dominioPerCarta[d % 10])
 				d = s;
+		}
+		return Integer.valueOf(d);
+	}
+	
+	public static Integer getDominantPlayer(List<Integer> cards, int startPlayer)
+	{
+		assert cards.size() > 0;
+		int domPlayer = startPlayer;
+		int d = cards.get(0).intValue();
+		for (int i = 1; i < cards.size(); i++)
+		{
+			int s = cards.get(i).intValue();
+			if (d / 10 != s / 10)
+				continue;
+			if (dominioPerCarta[s % 10] > dominioPerCarta[d % 10])
+			{
+				d = s;
+			}
 		}
 		return Integer.valueOf(d);
 	}

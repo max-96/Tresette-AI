@@ -18,7 +18,7 @@ public class AITesting
 
 		// System.out.println(getStats(4291,709, 5000));
 		Locale.setDefault(Locale.US);
-		int[] a = { 16, 1, 16, 1 };
+		int[] a = { 1, 1020, 1, 1020 };
 		test1(a);
 		System.out.println(MovesStats.getInstance().dump());
 		// System.out.println("--------");

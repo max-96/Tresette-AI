@@ -10,7 +10,8 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import AI.DeterministicAI;
 
-public class AIGameState {
+public class AIGameState
+{
 
 	private static Random rand;
 	private final List<List<Integer>> cardsAssignment;
@@ -23,12 +24,14 @@ public class AIGameState {
 	public final boolean maxNode;
 
 	public AIGameState(List<List<Integer>> cardsAssignment, List<Integer> cardsOnTable, int currentPlayer,
-			boolean maxNode, double score1, double score2) {
+			boolean maxNode, double score1, double score2)
+	{
 		this.cardsAssignment = cardsAssignment;
 		this.cardsOnTable = cardsOnTable;
 		this.currentPlayer = currentPlayer;
 		terminal = cardsAssignment.get(currentPlayer).isEmpty();
-		if (terminal) {
+		if (terminal)
+		{
 			if (maxNode)
 				score1 += 1.0 / 3;
 			else
@@ -46,7 +49,8 @@ public class AIGameState {
 	 * 
 	 * @return
 	 */
-	public Map<Integer, AIGameState> generateSuccessors() {
+	public Map<Integer, AIGameState> generateSuccessors()
+	{
 
 		if (terminal)
 			return null;
@@ -62,7 +66,8 @@ public class AIGameState {
 		 */
 		HashMap<Integer, AIGameState> mappa = new HashMap<>();
 
-		for (Integer m : mosse) {
+		for (Integer m : mosse)
+		{
 			AIGameState g = genSuccessor(m);
 			mappa.put(m, g);
 
@@ -76,7 +81,8 @@ public class AIGameState {
 	 * 
 	 * @return
 	 */
-	public List<Integer> generateActions() {
+	public List<Integer> generateActions()
+	{
 
 		if (terminal)
 			return null;
@@ -89,10 +95,11 @@ public class AIGameState {
 
 	}
 
-	public Integer genRandMossa() {
-		if(rand==null)
-			rand=new Random();
-		
+	public Integer genRandMossa()
+	{
+		if (rand == null)
+			rand = new Random();
+
 		List<Integer> mosse = cardsOnTable.isEmpty() ? new ArrayList<>(cardsAssignment.get(currentPlayer))
 				: DeterministicAI.possibiliMosse(cardsAssignment.get(currentPlayer), cardsOnTable.get(0) / 10);
 
@@ -101,14 +108,16 @@ public class AIGameState {
 		return mosse.get(pos);
 	}
 
-	public AIGameState genSuccessor(Integer mossa) {
+	public AIGameState genSuccessor(Integer mossa)
+	{
 		return genSuccessor(mossa, false);
 	}
-		
-	public AIGameState genSuccessor(Integer mossa, boolean print) {
+
+	public AIGameState genSuccessor(Integer mossa, boolean print)
+	{
 		List<List<Integer>> newCardsAssignment = new ArrayList<>(cardsAssignment);
 		List<Integer> newCardsOnTable = new ArrayList<>(cardsOnTable);
-		int newCurrentPlayer=-1;
+		int newCurrentPlayer = -1;
 		double newScoreMyTeam = scoreMyTeam;
 		double newScoreOtherTeam = scoreOtherTeam;
 
@@ -122,32 +131,37 @@ public class AIGameState {
 		 * Caso semplice: non e' finita la passata ne la mano. Si passa al prossimo
 		 * player e lo score rimane inalterato
 		 */
-		if (newCardsOnTable.size() < 4) {
+		if (newCardsOnTable.size() < 4)
+		{
 			newCurrentPlayer = (currentPlayer + 1) % 4;
 			AIGameState newGS = new AIGameState(newCardsAssignment, newCardsOnTable, newCurrentPlayer, !maxNode,
 					scoreMyTeam, scoreOtherTeam);
 			return newGS;
-		}
+		} else
+		{
+			/*
+			 * Siamo a fine di una passata. Dobbiamo assegnare i punti e la dominanza
+			 */
 
-		/*
-		 * Siamo a fine di una passata. Dobbiamo assegnare i punti e la dominanza
-		 */
-		
-			assert cardsOnTable.size() == 4;
-			int startingPlayer=(currentPlayer + 1) % 4;
+			assert newCardsOnTable.size() == 4 : newCardsOnTable.size();
+			int startingPlayer = (currentPlayer + 1) % 4;
 			int playerDominante = startingPlayer;
 			int cartaDominante = newCardsOnTable.get(0);
 			int semeDominante = cartaDominante / 10;
 			double punteggio = DeterministicAI.puntiPerCarta[cartaDominante % 10];
-			for (int p = 1; p < 4; p++) {
+			for (int p = 1; p < 4; p++)
+			{
 				int cartaTemp = newCardsOnTable.get(p);
 				punteggio += DeterministicAI.puntiPerCarta[cartaTemp % 10];
 				if (semeDominante == cartaTemp / 10 && DeterministicAI.dominioPerCarta[cartaDominante
-						% 10] < DeterministicAI.dominioPerCarta[cartaTemp % 10]) {
-					if (print) System.out.println("sto sostituendo "+((cartaDominante%10)+1)+" con "+(cartaTemp%10 + 1));
-					playerDominante = (startingPlayer + p)%4;
+						% 10] < DeterministicAI.dominioPerCarta[cartaTemp % 10])
+				{
+					if (print)
+						System.out.println(
+								"sto sostituendo " + ((cartaDominante % 10) + 1) + " con " + (cartaTemp % 10 + 1));
+					playerDominante = (startingPlayer + p) % 4;
 					cartaDominante = cartaTemp;
-					
+
 				}
 			}
 
@@ -167,87 +181,100 @@ public class AIGameState {
 			AIGameState newGS = new AIGameState(newCardsAssignment, newCardsOnTable, newCurrentPlayer, newMaxNode,
 					newScoreMyTeam, newScoreOtherTeam);
 			return newGS;
-		
 
+		}
 	}
 
-	public double evaluationFunction() {
+	public double evaluationFunction()
+	{
 		double puntitot = 1.0 / 3;
 		int dom1 = 0;
 		int dom2 = 0;
 		ArrayList<Integer> cardsTeam1 = new ArrayList<>();
 		ArrayList<Integer> cardsTeam2 = new ArrayList<>();
-		ArrayList<Integer> cards= new ArrayList<>();
+		ArrayList<Integer> cards = new ArrayList<>();
 
-		for (int p = 0; p < 4; p++) {
+		for (int p = 0; p < 4; p++)
+		{
 			if (p % 2 == 0)
-				for (Integer c : cardsAssignment.get(p)) {
-					puntitot += DeterministicAI.puntiPerCarta[c%10];
+				for (Integer c : cardsAssignment.get(p))
+				{
+					puntitot += DeterministicAI.puntiPerCarta[c % 10];
 					cardsTeam1.add(c);
 					cards.add(c);
 				}
 			else
-				for (Integer c : cardsAssignment.get(p)) {
-					puntitot += DeterministicAI.puntiPerCarta[c%10];
+				for (Integer c : cardsAssignment.get(p))
+				{
+					puntitot += DeterministicAI.puntiPerCarta[c % 10];
 					cardsTeam2.add(c);
 					cards.add(c);
 				}
 		}
-		
-		for(Integer c: cardsTeam1)
-			for(Integer gc: cards)
-				if(c/10 == gc/10 && DeterministicAI.dominioPerCarta[c%10]>DeterministicAI.dominioPerCarta[gc%10])
-					dom1+=1;
-		
-		for(Integer c: cardsTeam2)
-			for(Integer gc: cards)
-				if(c/10 == gc/10 && DeterministicAI.dominioPerCarta[c%10]>DeterministicAI.dominioPerCarta[gc%10])
-					dom2+=1;
-		
+
+		for (Integer c : cardsTeam1)
+			for (Integer gc : cards)
+				if (c / 10 == gc / 10
+						&& DeterministicAI.dominioPerCarta[c % 10] > DeterministicAI.dominioPerCarta[gc % 10])
+					dom1 += 1;
+
+		for (Integer c : cardsTeam2)
+			for (Integer gc : cards)
+				if (c / 10 == gc / 10
+						&& DeterministicAI.dominioPerCarta[c % 10] > DeterministicAI.dominioPerCarta[gc % 10])
+					dom2 += 1;
+
 		double lambda;
-		
-		if(maxNode ^ (currentPlayer%2==0))
-			lambda=dom2;
-		else lambda=dom1;
-			
-		lambda/= dom1+dom2;
-		
-		return (puntitot*lambda - puntitot* (1.0-lambda)) + scoreSoFar;
+
+		if (maxNode ^ (currentPlayer % 2 == 0))
+			lambda = dom2;
+		else
+			lambda = dom1;
+
+		lambda /= dom1 + dom2;
+
+		return (puntitot * lambda - puntitot * (1.0 - lambda)) + scoreSoFar;
 	}
 
 	/**
 	 * @return the cardsAssignment
 	 */
-	public List<List<Integer>> getCardsAssignment() {
+	public List<List<Integer>> getCardsAssignment()
+	{
 		return Collections.unmodifiableList(cardsAssignment);
 	}
 
 	/**
 	 * @return the cardsOnTable
 	 */
-	public List<Integer> getCardsOnTable() {
+	public List<Integer> getCardsOnTable()
+	{
 		return Collections.unmodifiableList(cardsOnTable);
 	}
 
 	/**
 	 * @return the currentPlayer
 	 */
-	public int getCurrentPlayer() {
+	public int getCurrentPlayer()
+	{
 		return currentPlayer;
 	}
 
-	public double getScoreSoFar() {
+	public double getScoreSoFar()
+	{
 		return scoreMyTeam - scoreOtherTeam;
 	}
 
-	public double getScoreMyTeam() {
+	public double getScoreMyTeam()
+	{
 		return scoreMyTeam;
 	}
 
-	public double getScoreOtherTeam() {
+	public double getScoreOtherTeam()
+	{
 		return scoreOtherTeam;
 	}
-	
+
 	public boolean isCardsOnTableEmpty()
 	{
 		return cardsOnTable.isEmpty();
@@ -259,7 +286,8 @@ public class AIGameState {
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
-	public int hashCode() {
+	public int hashCode()
+	{
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((cardsAssignment == null) ? 0 : cardsAssignment.hashCode());
@@ -276,7 +304,8 @@ public class AIGameState {
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(Object obj)
+	{
 		if (this == obj)
 			return true;
 		if (obj == null)
@@ -284,12 +313,14 @@ public class AIGameState {
 		if (getClass() != obj.getClass())
 			return false;
 		AIGameState other = (AIGameState) obj;
-		if (cardsAssignment == null) {
+		if (cardsAssignment == null)
+		{
 			if (other.cardsAssignment != null)
 				return false;
 		} else if (!cardsAssignment.equals(other.cardsAssignment))
 			return false;
-		if (cardsOnTable == null) {
+		if (cardsOnTable == null)
+		{
 			if (other.cardsOnTable != null)
 				return false;
 		} else if (!cardsOnTable.equals(other.cardsOnTable))
