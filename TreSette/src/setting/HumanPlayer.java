@@ -1,6 +1,4 @@
-package AI;
-
-import setting.Card;
+package setting;
 
 public class HumanPlayer extends Player
 {

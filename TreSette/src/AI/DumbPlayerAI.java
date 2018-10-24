@@ -4,6 +4,7 @@ import java.util.List;
 
 import setting.Card;
 import setting.Game;
+import setting.Player;
 
 /**
  * A test AI to check if Game is working correctly.

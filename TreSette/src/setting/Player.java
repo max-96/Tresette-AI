@@ -1,9 +1,6 @@
-package AI;
+package setting;
 
 import java.util.List;
-
-import setting.Card;
-import setting.Game;
 
 public abstract class Player
 {

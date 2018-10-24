@@ -12,6 +12,7 @@ import java.util.concurrent.atomic.LongAdder;
 import minmax.AlphaBeta.AlphaBetaSlave;
 import setting.Card;
 import setting.Game;
+import setting.Player;
 import setting.Game.Info;
 
 public class PlayerAB extends Player

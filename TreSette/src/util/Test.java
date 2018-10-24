@@ -1,6 +1,6 @@
 package util;
 
-import AI.Player;
+import setting.Player;
 
 public class Test
 {

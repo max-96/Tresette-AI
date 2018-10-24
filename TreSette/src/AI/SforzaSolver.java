@@ -32,24 +32,6 @@ public class SforzaSolver
 	// private int idPlayer;
 	private int numeroSoluzioni;
 
-	/********************
-	 * Solver parallelo che produce soluzioni distribuendo le carte
-	 * equiprobabilmente ai giocatori.
-	 * 
-	 * @param id
-	 *            Id del player
-	 * @param CarteScartate
-	 *            Insieme di carte scartate
-	 * @param carteInMano
-	 *            Lista delle carte in mano al giocatore
-	 * @param carteMancanti
-	 *            Numero di carte sconosciute che ha in mano ogni player
-	 * @param semiAttivi
-	 *            SemiAttivi[p][s] indica se il giocatore p puo' avere seme s
-	 * @param numeroSoluzioni
-	 *            Il numero di soluzioni da produrre
-	 */
-
 	public SforzaSolver(int id, Set<Integer> CarteScartate, List<Integer> carteInMano, int[] carteMancanti,
 			boolean[][] semiAttivi, int numeroSoluzioni)
 	{

@@ -3,17 +3,8 @@ package setting;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
-import AI.DumbPlayerAI;
-import AI.Player;
-import setting.Card.Suit;
-import setting.Card.Value;
 import util.CardsUtils;
 
 public class Game
@@ -117,33 +108,30 @@ public class Game
 	
 	public void run()
 	{
-		int turno = 1;
-		while (true)
-		{
-			switch (this.status)
-			{
-				case GAMEREADY:
-					this.status = Status.INGOING;
-					System.out.println("We are starting the game");
-					break;
-				case INGOING:
-					System.out.println("Starting turn number " + turno);
-					playHand();
-					turno++;
-					if (turno > 10)
-						status = Status.GAMEEND;
-					break;
-	
-				case GAMEEND:
-					System.out.println("Now let's check who's the winner!");
-					if (punteggi[0] > punteggi[1])
-						System.out.println("The winner is team 1 with " + punteggi[0] + " points!");
-					else
-						System.out.println("The winnes is team 2 with " + punteggi[1] + " points!");
-					return;
-
-			}
-		}
+//		int turno = 1;
+//		while (true)
+//			switch (this.status)
+//			{
+//				case GAMEREADY:
+//					this.status = Status.INGOING;
+//					System.out.println("We are starting the game");
+//					break;
+//				case INGOING:
+//					System.out.println("Starting turn number " + turno);
+//					playHand();
+//					turno++;
+//					if (turno > 10)
+//						status = Status.GAMEEND;
+//					break;
+//	
+//				case GAMEEND:
+//					System.out.println("Now let's check who's the winner!");
+//					if (punteggi[0] > punteggi[1])
+//						System.out.println("The winner is team 1 with " + punteggi[0] + " points!");
+//					else
+//						System.out.println("The winnes is team 2 with " + punteggi[1] + " points!");
+//					return;
+//			}
 
 	}
 
@@ -154,128 +142,42 @@ public class Game
 
 	private void playHand()
 	{
-
-		System.out.println("The player " + startingPlayer + " starts.");
-		int nextPlayer = startingPlayer;
-		int dominatingPlayer = nextPlayer;
-		Card dominatingCard = null;
-		float points = 0;
-		do
-		{
-
-			Card temp = players[nextPlayer].getMossa();
-			// se e' la prima carta buttata allora e' sia palo sia cartadominante
-			if (startingPlayer == nextPlayer)
-				dominatingCard = temp;
-			else // altrimenti controlliamo se la carta appena buttata diventa la dominante
-			if (temp.compareTo(dominatingCard) > 0)
-			{
-				dominatingCard = temp;
-				dominatingPlayer = nextPlayer;
-			}
-
-			points += temp.getPunti(); // aggiorno i punti
-			cardsOnTable.put(nextPlayer, temp); // aggiungo la carta al "tavolo"
-			carteInGioco.remove(temp); // la rimuovo dalle carte in "gioco"
-			exCards.add(temp); // la aggiungo alle carte esplorate
-			nrCardsInHand[nextPlayer]--;
-			nextPlayer = Math.floorMod(nextPlayer - 1, 4); // il prossimo giocatore e' quello alla mia sinistra
-
-		} while (nextPlayer != startingPlayer);
-
-		cardsOnTable.clear();
-
-		if (dominatingPlayer % 2 == 0) // se i punti vanno alla squadra 1
-			punteggi[0] += points;
-		else // altrimenti vanno alla squadra 2
-			punteggi[1] += points;
-		System.out.println("The team " + (dominatingPlayer % 2 + 1) + " has scored " + points + " points.");
-		startingPlayer = dominatingPlayer;
+//		System.out.println("The player " + startingPlayer + " starts.");
+//		int nextPlayer = startingPlayer;
+//		int dominatingPlayer = nextPlayer;
+//		Card dominatingCard = null;
+//		float points = 0;
+//		do
+//		{
+//
+//			Card temp = players[nextPlayer].getMossa();
+//			// se e' la prima carta buttata allora e' sia palo sia cartadominante
+//			if (startingPlayer == nextPlayer)
+//				dominatingCard = temp;
+//			else // altrimenti controlliamo se la carta appena buttata diventa la dominante
+//			if (temp.compareTo(dominatingCard) > 0)
+//			{
+//				dominatingCard = temp;
+//				dominatingPlayer = nextPlayer;
+//			}
+//
+//			points += temp.getPunti(); // aggiorno i punti
+//			cardsOnTable.put(nextPlayer, temp); // aggiungo la carta al "tavolo"
+//			carteInGioco.remove(temp); // la rimuovo dalle carte in "gioco"
+//			exCards.add(temp); // la aggiungo alle carte esplorate
+//			nrCardsInHand[nextPlayer]--;
+//			nextPlayer = Math.floorMod(nextPlayer - 1, 4); // il prossimo giocatore e' quello alla mia sinistra
+//
+//		} while (nextPlayer != startingPlayer);
+//
+//		cardsOnTable.clear();
+//
+//		if (dominatingPlayer % 2 == 0) // se i punti vanno alla squadra 1
+//			punteggi[0] += points;
+//		else // altrimenti vanno alla squadra 2
+//			punteggi[1] += points;
+//		System.out.println("The team " + (dominatingPlayer % 2 + 1) + " has scored " + points + " points.");
+//		startingPlayer = dominatingPlayer;
 		return;
 	}
-
-	public Set<Card> getExCards()
-	{
-		return new HashSet<>(exCards);
-	}
-
-	/**
-	 * this method returns the set of card that can still be used
-	 * 
-	 * @return
-	 */
-	public Set<Card> getCardsInGame()
-	{
-		return new HashSet<>(carteInGioco);
-	}
-
-	/**
-	 * this method return the map of the cards on table
-	 * 
-	 * @return
-	 */
-	public Map<Integer, Card> getCardsOnTable()
-	{
-		return cardsOnTable;
-	}
-
-	/**
-	 * this method return the Card that your mate just throw on the table
-	 * 
-	 * @param player
-	 *            is the actual player who wants to check his mate card on the
-	 *            table. the mate index is calculated by doing player+2%4
-	 * @return
-	 */
-	public Card getMateCard(int player)
-	{
-		return cardsOnTable.get((player + 2) % 4);
-	}
-
-	/**
-	 * this method returns the number of cards that the player "player" has in his
-	 * hand.
-	 * 
-	 * @param player
-	 *            the player you want to know the number of cards
-	 * @return the number of cards in the hand of that player
-	 */
-	public int getNumberOfCardsInHand(int player)
-	{
-		return nrCardsInHand[player];
-	}
-
-	/**
-	 * this method returns an array containing the number of cards in hand for each
-	 * player
-	 * 
-	 * @param player
-	 * @return
-	 */
-	public int[] getAllCardsInHand()
-	{
-		return Arrays.copyOf(nrCardsInHand, nrCardsInHand.length);
-	}
-
-	public List<Card.Suit>[] getSemiAttivi()
-	{
-		List<Card.Suit>[] temp = (List<Card.Suit>[]) new LinkedList[4];
-		for (int i = 0; i < 4; i++)
-			Collections.copy(temp[i], semiAttivi[i]);
-		return temp;
-	}
-
-	/**
-	 * Distribuisce le carte e inizializza i player
-	 */
-
-	
-	/**
-	 * It holds the information to be given to the players.
-	 * All its methods are read-only and thread-safe.
-	 */
-	
-
-	}
-
 }

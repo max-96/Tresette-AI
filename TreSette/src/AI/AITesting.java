@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Locale;
 import MCTS.MonteCarloTreeSearch;
 import minmax.AlphaBeta;
+import setting.HumanPlayer;
 import util.*;
 
 public class AITesting
