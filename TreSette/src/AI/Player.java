@@ -9,14 +9,22 @@ public abstract class Player
 {
 	protected int id;
 	protected List<Card> carteInMano;
-	protected Game gioco;
-	
-	public Player(int id, List<Card> carte, Game gioco)
+	protected Game game;
+
+	public Player(int id)
 	{
 		this.id = id;
-		carteInMano = carte;
-		this.gioco=gioco;
+	}
+
+	public void setCards(List<Card> carteInMano)
+	{
+		this.carteInMano = carteInMano;
 	}
 	
-	public abstract Card getMossa();
+	public void setGame(Game game)
+	{
+		this.game = game;
+	}
+
+	public abstract Card getMove();
 }

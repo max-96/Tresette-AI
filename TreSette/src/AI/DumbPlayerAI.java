@@ -20,7 +20,7 @@ public class DumbPlayerAI extends Player{
 	}
 
 	@Override
-	public Card getMossa() {
+	public Card getMove() {
 		
 		int len = this.carteInMano.size();
 		return this.carteInMano.remove(len-1);

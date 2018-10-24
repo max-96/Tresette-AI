@@ -18,116 +18,140 @@ import util.CardsUtils;
 
 public class Game
 {
-
-	/**
-	 * list of the cards of each player. assCarte[i] returns the list of cards of
-	 * player i
-	 */
-	private List<Card>[] assCarte = new LinkedList[4];
-
-	/**
-	 * list of players active in the current game
-	 */
-	private Player[] players = new Player[4];
-
-	/**
-	 * Cards currently in game
-	 */
-	private Set<Card> carteInGioco = new HashSet<>();
-
-	/**
-	 * Cards that are used during the game
-	 */
-	private Set<Card> exCards = new HashSet<>();
-	/**
-	 * Point counter for each team
-	 */
-	private float[] punteggi = { 0, 0 };
-
-	/**
-	 * Suit active for each Player semiAttivi[i] returns the list of suits that the
-	 * player i can play.
-	 */
-	private List<Card.Suit>[] semiAttivi = new LinkedList[4]; // player x semi
-
-	/**
-	 * startingPlayer is the player that in this turn drop the card first.
-	 */
-	private int startingPlayer;
-
-	/**
-	 * actual gameState
-	 */
-	private GameState gameState;
-
-	/**
-	 * Map of integer,card that specifies the card used by each player, where 0,Card
-	 * indicates the card used by player 0
-	 */
-	Map<Integer, Card> cardsOnTable = new HashMap<Integer, Card>();
-
-	private int[] nrCardsInHand = { 10, 10, 10, 10 };
-
-	private enum GameState
+	private Player[] players;
+	private List<List<Card>> assCarte= new ArrayList<>(4);;
+	private Info info = new Info();
+	private Status status;
+	
+	private enum Status
 	{
 		GAMEREADY, INGOING, GAMEEND
 	}
 
-	public Game()
+	public static class Info
 	{
+		private float[] scores = { 0, 0 };
+		private int startingPlayer;
+		private List<List<Integer>> accusi;
+		private List<List<Card.Suit>> semiAttivi;
+		private List<Integer> seenCards = new ArrayList<>();
+		private List<Integer> cardsOnTable = new ArrayList<>();
+
+		private Info() {}
+		
+		public double getTeamScore(int i)
+		{
+			assert i >= 0 && i < 2;
+			return scores[i];
+		}
+		
+		public List<Integer> getAccusiOfPlayer(int player)
+		{
+			assert  player >= 0 && player < 4;
+			return Collections.unmodifiableList(accusi.get(player));
+		}
+		
+		public List<Integer> getSeenCards()
+		{
+			return Collections.unmodifiableList(seenCards);
+		}
+
+		public List<Integer> getKnownCardsOfPlayer(int player)
+		{
+			assert  player >= 0 && player < 4;
+			
+			List<Integer> l = new ArrayList<>();	
+			if (startingPlayer == player)
+				l.add(CardsUtils.QUATTRODIDENARI);
+			l.addAll(accusi.get(player));
+			
+			return l;
+		}
+
+		public List<Integer> getCardsOnTable()
+		{
+			return Collections.unmodifiableList(cardsOnTable);
+		}
+	}
+	
+	public Game(Player... players)
+	{
+		assert players.length == 4;
+		this.players = players;
+		for (Player p : players)
+			p.setGame(this);
 		initialise();
 	}
+	
+	private void initialise()
+	{
+		List<Integer> deck = new ArrayList<>(40);
+		for (int i = 0; i < 40; i++)
+			deck.add(i);
 
-	/**
-	 * esegue il gioco
-	 */
+		Collections.shuffle(deck);
+		
+		for (int i = 0; i < 4; i++)
+		{
+			List<Card> carteInMano = new ArrayList<>();
+			
+			for (int j = 0; j < 10; j++)
+				carteInMano.add(new Card(deck.remove(0)));
+
+			players[i].setCards(new ArrayList<>(carteInMano));
+			assCarte.add(carteInMano);
+			info.semiAttivi.add(Arrays.asList(Card.Suit.values()));
+			//TODO inizializzare accusi
+			
+			if (carteInMano.contains(new Card(CardsUtils.QUATTRODIDENARI)))
+				info.startingPlayer = i;
+		}
+		
+		status = Status.GAMEREADY;
+	}
+
+	public Info getInfo()
+	{
+		return info;
+	}
+	
 	public void run()
 	{
-		// counter of game hands
 		int turno = 1;
 		while (true)
 		{
-			switch (this.gameState)
+			switch (this.status)
 			{
-			case GAMEREADY:
-				this.gameState = GameState.INGOING;
-				System.out.println("We are starting the game");
-				break;
-			case INGOING:
-				System.out.println("Starting turn number " + turno);
-				playHand();
-				turno++;
-				if (turno > 10)
-					gameState = GameState.GAMEEND;
-				break;
-
-			case GAMEEND:
-				System.out.println("Now let's check who's the winner!");
-				if (punteggi[0] > punteggi[1])
-					System.out.println("The winner is team 1 with " + punteggi[0] + " points!");
-				else if (punteggi[1] > punteggi[0])
-					System.out.println("The winnes is team 2 with " + punteggi[1] + " points!");
-				else
-					System.out.println("Incredible! draw game!");
-				return;
+				case GAMEREADY:
+					this.status = Status.INGOING;
+					System.out.println("We are starting the game");
+					break;
+				case INGOING:
+					System.out.println("Starting turn number " + turno);
+					playHand();
+					turno++;
+					if (turno > 10)
+						status = Status.GAMEEND;
+					break;
+	
+				case GAMEEND:
+					System.out.println("Now let's check who's the winner!");
+					if (punteggi[0] > punteggi[1])
+						System.out.println("The winner is team 1 with " + punteggi[0] + " points!");
+					else
+						System.out.println("The winnes is team 2 with " + punteggi[1] + " points!");
+					return;
 
 			}
 		}
 
 	}
 
-	/**
-	 * this method restarts the game
-	 */
 	public void restart()
 	{
 		initialise();
 	}
 
-	/**
-	 * this method plays a full hand of tresette, handling correctly the player's
-	 * turn
-	 */
 	private void playHand()
 	{
 
@@ -244,99 +268,13 @@ public class Game
 	/**
 	 * Distribuisce le carte e inizializza i player
 	 */
-	private void initialise()
-	{
-		List<Integer> temp = new LinkedList<>();
-		for (int i = 0; i < 40; i++)
-			temp.add(i);
-
-		Collections.shuffle(temp);
-		Card fourDenari = new Card(Suit.DENARI, Value.QUATTRO);
-		for (int i = 0; i < 4; i++)
-		{
-			List<Card> carteInMano = new LinkedList<>();
-
-			for (int j = 0; j < 10; j++)
-				carteInMano.add(new Card(temp.remove(0)));
-
-			carteInGioco.addAll(carteInMano); // adding these cards to the card "in game"
-			assCarte[i] = carteInMano;
-			// semiAttivi[i] = Arrays.asList(Card.Suit.values());
-			nrCardsInHand[i] = 10;
-			players[i] = new DumbPlayerAI(i, carteInMano, this);
-			// se questo giocatore possiede il 4 di denari, allora iniziera la mano
-			if (carteInMano.contains(fourDenari))
-				startingPlayer = i;
-		}
-		this.gameState = GameState.GAMEREADY;
-	}
-
-	public Info getInfo()
-	{
-		// TODO
-		return null;
-	}
 
 	
 	/**
 	 * It holds the information to be given to the players.
 	 * All its methods are read-only and thread-safe.
 	 */
-	public static class Info
-	{
-
-		private double[] scores = { 0.0, 0.0 };
-		private List<List<List<List<Integer>>>> accusi;
-		private int fourOfDenariPlayer;
-		private Set<Integer> seenCards;
-		private List<Integer> cardsOnTable; 
-
-		public List<List<List<Integer>>> getAccusiOfPlayer(int player)
-		{
-			assert player < 4 && player >= 0;
-			List<List<List<Integer>>> j = new ArrayList<>();
-			for (List<List<Integer>> a : accusi.get(player))
-			{
-				List<List<Integer>> b = new ArrayList<>();
-				for (List<Integer> c : a)
-					b.add(Collections.unmodifiableList(c));
-				j.add(b);
-			}
-
-			return j;
-		}
-		
-		public Set<Integer> getSeenCards()
-		{
-			return Collections.unmodifiableSet(seenCards);
-			
-		}
-
-		public Set<Integer> getKnownCardsOfPlayer(int player)
-		{
-			assert player < 4 && player >= 0;
-
-			Set<Integer> k = new HashSet<>();
-			if (fourOfDenariPlayer == player)
-				k.add(Integer.valueOf(CardsUtils.QUATTRODIDENARI));
-			
-			for(List<Integer> a: accusi.get(player).get(0))
-				k.addAll(a);
-			for(List<Integer> a: accusi.get(player).get(1))
-				k.addAll(a);
-			return k;
-		}
-
-		public double getTeamScore(int i)
-		{
-			assert i < 2 && i >= 0;
-			return scores[i];
-		}
-
-		public List<Integer> getCardsOnTable()
-		{
-			return Collections.unmodifiableList(cardsOnTable);
-		}
+	
 
 	}
 
