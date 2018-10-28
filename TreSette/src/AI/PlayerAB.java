@@ -20,24 +20,23 @@ public class PlayerAB extends Player
 
 	private final int N_TRAILS = 30;
 
-	public PlayerAB(int id, List<Card> carte, Game gioco)
+	public PlayerAB(int id)
 	{
-		super(id, carte, gioco);
+		super(id);
 	}
 
 	@Override
 	public Card getMove()
 	{
 		int depth = 10;
-		Info info = gioco.getInfo();
-		double ourScore= info.getTeamScore(id % 2);
-		double opponentsScore= info.getTeamScore(1-(id % 2));
+		Info info = game.getInfo();
+		double ourScore= info.getTeamScore(id);
+		double opponentsScore= info.getOpponentScore(id);
 		List<Integer> cardsOnTable = info.getCardsOnTable();
-		SforzaSolver deter = new SforzaSolver(0, info, N_TRAILS);
 		
-		
+		SforzaSolver deter = new SforzaSolver(id, carteInMano, info, N_TRAILS);
 		deter.startProducing();
-		BlockingQueue<List<List<Integer>>> sols = deter.possibiliAssegnamenti;
+		BlockingQueue<List<List<Integer>>> sols = deter.getPossibiliAssegnamenti();
 		ConcurrentHashMap<Integer, LongAdder> punti = new ConcurrentHashMap<>();
 
 		try

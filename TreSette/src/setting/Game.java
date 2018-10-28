@@ -25,27 +25,39 @@ public class Game
 		private int startingPlayer;
 		private List<List<Integer>> accusi;
 		private List<List<Card.Suit>> semiAttivi;
-		private List<Integer> seenCards = new ArrayList<>();
+		private List<Integer> availableCards = new ArrayList<>();
 		private List<Integer> cardsOnTable = new ArrayList<>();
+		private int[] numeroCarteInMano = {10, 10, 10, 10};
 
 		private Info() {}
 		
-		public double getTeamScore(int i)
+		public double getTeamScore(int player)
 		{
-			assert i >= 0 && i < 2;
-			return scores[i];
+			assert player >= 0 && player < 4;
+			return scores[player % 2];
 		}
 		
-		public List<Integer> getAccusiOfPlayer(int player)
+		public double getOpponentScore(int player)
 		{
-			assert  player >= 0 && player < 4;
-			return Collections.unmodifiableList(accusi.get(player));
+			assert player >= 0 && player < 4;
+			return scores[(player + 1) % 2];
 		}
 		
-		public List<Integer> getSeenCards()
+		public List<Integer> getAvailableCards()
 		{
-			return Collections.unmodifiableList(seenCards);
+			return new ArrayList<>(availableCards);
 		}
+
+		public List<Integer> getCardsOnTable()
+		{
+			return Collections.unmodifiableList(cardsOnTable);
+		}
+
+//		public List<Integer> getAccusiOfPlayer(int player)
+//		{
+//			assert  player >= 0 && player < 4;
+//			return Collections.unmodifiableList(accusi.get(player));
+//		}
 
 		public List<Integer> getKnownCardsOfPlayer(int player)
 		{
@@ -58,10 +70,15 @@ public class Game
 			
 			return l;
 		}
-
-		public List<Integer> getCardsOnTable()
+		
+		public boolean isSemeAttivoForPlayer(int player, int suit)
 		{
-			return Collections.unmodifiableList(cardsOnTable);
+			return semiAttivi.get(player).contains(Card.intToSuit[suit]);
+		}
+		
+		public int getNumeroCarteInMano(int player)
+		{
+			return numeroCarteInMano[player];
 		}
 	}
 	
@@ -79,7 +96,8 @@ public class Game
 		List<Integer> deck = new ArrayList<>(40);
 		for (int i = 0; i < 40; i++)
 			deck.add(i);
-
+		info.availableCards = new ArrayList<>(deck);
+		
 		Collections.shuffle(deck);
 		
 		for (int i = 0; i < 4; i++)

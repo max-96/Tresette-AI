@@ -32,8 +32,8 @@ public class Card implements Comparable<Card>
 	}
 	
 
-	private static final Suit[] intToSuit = {Suit.COPPE, Suit.DENARI, Suit.BASTONI, Suit.SPADE};
-	private static final Value[] intToValue = {Value.TRE, Value.DUE, Value.ASSO, Value.RE, Value.CAVALLO, Value.FANTE, Value.SETTE,
+	public static final Suit[] intToSuit = {Suit.COPPE, Suit.DENARI, Suit.BASTONI, Suit.SPADE};
+	public static final Value[] intToValue = {Value.TRE, Value.DUE, Value.ASSO, Value.RE, Value.CAVALLO, Value.FANTE, Value.SETTE,
 			Value.SEI, Value.CINQUE, Value.QUATTRO};
 	
 	private Suit seme;
@@ -47,7 +47,7 @@ public class Card implements Comparable<Card>
 	
 	public Card(int intRepr)
 	{
-		if (intRepr < 0 || intRepr > 39) return;
+		assert intRepr >= 0 && intRepr < 40;
 		
 		this.seme = intToSuit[intRepr / 10];
 		this.valore = intToValue[intRepr % 10];
@@ -62,7 +62,7 @@ public class Card implements Comparable<Card>
 	public int toInt() { return seme.getVal() + valore.getVal(); }
 	
 	/**
-	 * metodo temporaneo creato per comparare le carte: può e forse deve essere rifatto meglio.
+	 * metodo temporaneo creato per comparare le carte: puo' e forse deve essere rifatto meglio.
 	 * vieni utilizzato da Game per trovare il giocatore con il 4 di danari(ovvero il giocatore che inizia)
 	 * @param other
 	 * @return
