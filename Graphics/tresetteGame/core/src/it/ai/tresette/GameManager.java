@@ -262,6 +262,7 @@ public class GameManager {
 		System.out.println("The team " + (dominatingPlayer % 2 + 1) + " has scored " + points + " points.");
 		startingPlayer = dominatingPlayer;
 		
+		
 		cardsOnTable.reset();														//elimino le carte sul tavolo
 		
 																					//incremento il contatore del turno

@@ -10,6 +10,8 @@ import it.ai.tresette.player.Player;
 public class CardsInHand {
 	
 	
+	
+	
 	private List<Card> cardsInHand;
 	
 	//private Player player; 
@@ -65,15 +67,48 @@ public class CardsInHand {
 	
 	public void draw(SpriteBatch batch)
 	{
-		if(this.playerNumber != 0)
-			return;
-		int startingX = (Constants.WINDOW_WIDTH - Constants.TABLE_EDGE)/2;
-		int startingY = (Constants.WINDOW_HEIGTH - Constants.TABLE_EDGE)/2;
-		for(Card a : this.cardsInHand)
+		int startingX,startingY;
+		
+		switch(this.playerNumber)
 		{
-			a.draw(batch, startingX, startingY);
-			startingX += Constants.TABLE_EDGE/this.cardsInHand.size();
+			case 0:
+				startingX = (Constants.WINDOW_WIDTH - Constants.TABLE_EDGE)/2;
+				startingY = (Constants.WINDOW_HEIGTH - Constants.TABLE_EDGE)/2;
+				for(Card a : this.cardsInHand)
+				{
+					a.draw(batch, startingX, startingY);
+					startingX += Constants.TABLE_EDGE/this.cardsInHand.size();
+				}
+				break;
+			case 1:
+				startingX = (Constants.WINDOW_WIDTH + Constants.TABLE_EDGE)/2;
+				startingY = (Constants.WINDOW_HEIGTH - Constants.TABLE_EDGE)/2;
+				for(Card a: this.cardsInHand)
+				{
+					a.draw(batch, startingX, startingY,this.playerNumber); //da fixare vengono ruotate al contrario
+					startingY += Constants.TABLE_EDGE/this.cardsInHand.size();
+				}
+				break;
+			case 2:
+				startingX = (Constants.WINDOW_WIDTH + Constants.TABLE_EDGE)/2;
+				startingY = (Constants.WINDOW_HEIGTH + Constants.TABLE_EDGE)/2;
+				for(Card a: this.cardsInHand)
+				{
+					a.draw(batch, startingX, startingY,this.playerNumber); //da fixare vengono ruotate al contrario
+					startingX -= Constants.TABLE_EDGE/this.cardsInHand.size();
+				}
+				break;
+			case 3:
+				startingX = (Constants.WINDOW_WIDTH - Constants.TABLE_EDGE)/2;
+				startingY = (Constants.WINDOW_HEIGTH + Constants.TABLE_EDGE)/2;
+				for(Card a: this.cardsInHand)
+				{
+					a.draw(batch, startingX, startingY,this.playerNumber); //da fixare vengono rotate al contrario
+					startingY -= Constants.TABLE_EDGE/this.cardsInHand.size();
+				}
+				break;
 		}
+		
 			
 	}
 	

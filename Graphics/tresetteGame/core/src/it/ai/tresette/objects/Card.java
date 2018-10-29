@@ -8,10 +8,15 @@ public class Card extends Entity {
 
 	private String path = "";
 	
+	private final String cardsBack = "cards/dorso_sapienza_1.png";
 	
-	private Texture texture;
+	private Texture frontTexture;
 	
-	private TextureRegion texRegion;
+	private Texture backTexture;
+	
+	private TextureRegion frontTexRegion;
+	
+	private TextureRegion backTexRegion;
 	
 	private int textureWidth = Constants.TABLE_EDGE/10;
 	
@@ -104,8 +109,10 @@ public class Card extends Entity {
 		this.suit = intToSuit[cardNr/10];
 		this.val = intToVal[cardNr%10];
 		this.path = "cards/"+suit.toString() + "_" + val.toString() + ".png";
-		this.texture = new Texture(this.path);
-		texRegion = new TextureRegion(texture);
+		this.frontTexture = new Texture(this.path);
+		frontTexRegion = new TextureRegion(frontTexture);
+		this.backTexture = new Texture(this.cardsBack);
+		this.backTexRegion = new TextureRegion(backTexture);
 	}
 	
 	/**
@@ -117,9 +124,13 @@ public class Card extends Entity {
 	{
 		this.suit = suit;
 		this.val = val;
-		this.path = "cards/"+suit.toString() + "_" + val.toString() + ".png";
-		this.texture = new Texture(this.path);
-		texRegion = new TextureRegion(texture);
+		this.path = "cards/"+this.suit.toString() + "_" + this.val.toString() + ".png";
+		this.frontTexture = new Texture(this.path);
+		frontTexRegion = new TextureRegion(frontTexture);
+		frontTexRegion = new TextureRegion(frontTexture);
+		this.backTexture = new Texture(this.cardsBack);
+		this.backTexRegion = new TextureRegion(backTexture);
+		
 		
 		
 	}
@@ -133,7 +144,7 @@ public class Card extends Entity {
 	{
 		
 		//batch.draw(texture, (float)x, (float)y, 0f, 0f, (float)textureWidth, (float)textureHeight, 1f, 1f);
-		batch.draw(texRegion, x, y, 0, 0, textureWidth, textureHeight, 1, 1, 0);
+		batch.draw(frontTexRegion, x, y, 0, 0, textureWidth, textureHeight, 1, 1, 0);
 	}
 	/**
 	 * this method draws the card in the coordinates x,y and with rotation rot
@@ -142,6 +153,22 @@ public class Card extends Entity {
 	 */
 	public void draw(SpriteBatch batch, int x ,int y,int rot)
 	{
+		
+		switch(rot)
+		{
+			case 0:
+				batch.draw(frontTexRegion, x, y, 0, 0, textureWidth, textureHeight, 1, 1, rot*90);
+				break;
+			case 1:
+				batch.draw(backTexRegion, x, y, 0, 0, textureWidth, textureHeight, 1, 1, rot*90);
+				break;
+			case 2:
+				batch.draw(backTexRegion, x, y, 0, 0, textureWidth, textureHeight, 1, 1, rot*90);
+				break;
+			case 3:
+				batch.draw(backTexRegion, x, y, 0, 0, textureWidth, textureHeight, 1, 1, rot*90);
+				break;
+		}
 		
 	}
 	
