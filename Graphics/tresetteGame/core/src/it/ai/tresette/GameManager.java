@@ -300,7 +300,7 @@ public class GameManager {
 	{
 		//Chiediamo la mossa al player artificiale
 		Card temp = players[actualPlayer].getMossa(actualPlayer,this.info.getAllKnownCardsOfPlayers(),cardsOnTable,this.punteggi[actualPlayer%2],this.punteggi[(actualPlayer + 1)%2]);
-	
+		System.out.println( "prova");
 		turnPlayed(temp);
 		
 		
