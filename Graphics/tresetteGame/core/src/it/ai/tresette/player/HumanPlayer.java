@@ -25,7 +25,7 @@ public class HumanPlayer extends Player {
 		
 		
 		List<Integer> possMosse;
-		//le mosse possibili -> in un futuro questo andrà tradotto in qualcosa di piu potente, per evidenziare graficamente le carte che posso utilizzare
+		//le mosse possibili -> in un futuro questo andrï¿½ tradotto in qualcosa di piu potente, per evidenziare graficamente le carte che posso utilizzare
 		if(!carteInGioco.isEmpty())
 			possMosse = GameManager.possibiliMosse(this.getCardsInHand(), carteInGioco.getActualSuit()); //we use carteInGioco.get(0) because it should be the first card dropped on table
 		else
@@ -44,11 +44,11 @@ public class HumanPlayer extends Player {
 		do {
 			
 			System.out.println("che carta butti");
-			myint = keyboard.nextInt();
+			myint = keyboard.nextInt() - 1;
 			
-			}while((!possMosse.contains(myint)));
+			}while(myint < 0 || myint >= possMosse.size());
 		
-		return this.myCards.remove(myint);
+		return this.myCards.remove(possMosse.get(myint));
 		
 		//TODO pick a cards of the available one and removes it from the cards in hand
 		
