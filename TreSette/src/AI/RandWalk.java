@@ -4,24 +4,35 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class RandWalk extends DeterministicAI {
+import setting.Game.Info;
+
+public class RandWalk extends DeterministicAI
+{
+	private Random rand;
 	
-	private int playerId;
+	public static class Factory extends DeterministicAI.Factory
+	{
+		@Override
+		public DeterministicAI getAI(int playerID)
+		{
+			return new RandWalk(playerID);
+		}
+	}
 	
-	public RandWalk(int player) {
-		playerId=player;
+	public RandWalk(int playerID)
+	{
+		super(playerID);
+		rand = new Random();
 	}
 
 	@Override
-	public Integer getBestMove(List<List<Integer>> assegnamentoCarte, List<Integer> carteInGioco, double scoreMyTeam,
-			double scoreOtherTeam) {
-		List<Integer> mosse = carteInGioco.isEmpty() ? new ArrayList<>(assegnamentoCarte.get(playerId))
-				: DeterministicAI.possibiliMosse(assegnamentoCarte.get(playerId), carteInGioco.get(0) / 10);
-		
-		Random r=new Random();
-		
-		return mosse.get(r.nextInt(mosse.size()));
-		
+	public int getBestMove(List<List<Integer>> assegnamentoCarte, Info info)
+	{
+		List<Integer> mosse = info.getTurn() == 0 ? new ArrayList<>(assegnamentoCarte.get(playerID))
+				: DeterministicAI.possibiliMosse(assegnamentoCarte.get(playerID), info.getCardsOnTable().get(0) / 10);
+
+		return mosse.get(rand.nextInt(mosse.size()));
+
 	}
 
 }

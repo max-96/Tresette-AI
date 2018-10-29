@@ -9,42 +9,56 @@ import java.util.concurrent.atomic.LongAdder;
 
 import AI.AIGameState;
 import AI.DeterministicAI;
+import setting.Game.Info;
 import util.CardsUtils;
 import util.MovesStats;
 
 public class AlphaBeta extends DeterministicAI
 {
+	private static final int MAX_CACHE_SIZE = 4;
+
+	private int playerID;
+	private int depth;
+	private int forkCounter = 0;
+	private int alphapruning = 0;
+	private int betapruning = 0;
+
+	public double winningValue = 0;
+
+	private List<List<Integer>> alphaMoves;
+	private byte[] alphaMovesClock = new byte[40];
+	private List<List<Integer>> betaMoves;
+	private byte[] betaMovesClock = new byte[40];
+
+	private static boolean inizializzata = false;
+	private static long[] alphacount = new long[10];
+	private static long[] betacount = new long[10];
 
 	public static long maxExecTime = 0;
 	public static long sumExecTime = 0;
 	public static int numExec = 0;
-
-	/**
-	 * Player's ID
-	 */
-	private int playerId;
-	private int forkCounter = 0;
-	private int alphapruning = 0;
-	private int betapruning = 0;
+	
 	public long executionTime = 0;
 
-	public double winningValue = 0;
-	private int depth;
-
-	public List<List<Integer>> alphaMoves;
-	private byte[] alphaMovesClock = new byte[40];
-	public List<List<Integer>> betaMoves;
-	private byte[] betaMovesClock = new byte[40];
-
-	private static boolean inizializzata = false;
-	public static long[] alphacount = new long[10];
-	public static long[] betacount = new long[10];
-
-	public static final int MAX_CACHE_SIZE = 4;
-
-	public AlphaBeta(int playerId, int depth)
+	public static class Factory extends DeterministicAI.Factory
 	{
-		this.playerId = playerId;
+		private int depth;
+
+		public Factory(int depth)
+		{
+			this.depth = depth;
+		}
+		
+		@Override
+		public DeterministicAI getAI(int playerID)
+		{
+			return new AlphaBeta(playerID, depth);
+		}
+	}
+	
+	public AlphaBeta(int playerID, int depth)
+	{
+		super(playerID);
 		this.depth = depth;
 
 		alphaMoves = new ArrayList<>(40);
@@ -68,8 +82,7 @@ public class AlphaBeta extends DeterministicAI
 	}
 
 	@Override
-	public Integer getBestMove(List<List<Integer>> assegnamentoCarte, List<Integer> cardsOnTable, double scoreMyTeam,
-			double scoreOtherTeam)
+	public int getBestMove(List<List<Integer>> assegnamentoCarte, Info info)
 	{
 		/*
 		 * Il caso in cui le carte rimaste siano 0 o 1 non e' considerato, e' necessario
@@ -80,15 +93,17 @@ public class AlphaBeta extends DeterministicAI
 		alphapruning = 0;
 		betapruning = 0;
 		executionTime = System.currentTimeMillis();
-		int turno = cardsOnTable.size();
+		
+		List<Integer> cardsOnTable = info.getCardsOnTable();
+		int turno = info.getTurn();
 
-		List<Integer> mosse = turno == 0 ? new ArrayList<>(assegnamentoCarte.get(playerId))
-				: DeterministicAI.possibiliMosse(assegnamentoCarte.get(playerId), cardsOnTable.get(0) / 10);
+		List<Integer> mosse = turno == 0 ? new ArrayList<>(assegnamentoCarte.get(playerID))
+				: DeterministicAI.possibiliMosse(assegnamentoCarte.get(playerID), cardsOnTable.get(0) / 10);
 
 		assert mosse.size() > 1;
 
-		AIGameState init = new AIGameState(assegnamentoCarte, cardsOnTable, playerId, true, scoreMyTeam,
-				scoreOtherTeam);
+		AIGameState init = new AIGameState(assegnamentoCarte, cardsOnTable, playerID, true, info.getTeamScore(playerID),
+				info.getOpponentScore(playerID));
 
 		/*
 		 * L'insieme delle mosse e' definito, ora dobbiamo valutarle
@@ -121,18 +136,19 @@ public class AlphaBeta extends DeterministicAI
 			}
 
 		}
+		
 		executionTime = System.currentTimeMillis() - executionTime;
 		if (executionTime > maxExecTime)
 			maxExecTime = executionTime;
 		sumExecTime += executionTime;
-		numExec += 1;
+		numExec++;
 
 		winningValue = bestActionVal;
 
-		if (true)
+		if (CardsUtils.STATS_COLLECT)
 		{
 			MovesStats ms = MovesStats.getInstance();
-			int d = 10 - assegnamentoCarte.get(playerId).size();
+			int d = 10 - assegnamentoCarte.get(playerID).size();
 			int domCard = (turno == 0) ? 10 : CardsUtils.getDominantCard(cardsOnTable);
 			ms.addStats(d, domCard, bestAction);
 		}
@@ -142,7 +158,6 @@ public class AlphaBeta extends DeterministicAI
 
 	private double alphabeta(AIGameState gs, double alpha, double beta, int depth, final int maxDepth)
 	{
-
 		forkCounter++;
 
 		if (gs.terminal)
@@ -186,7 +201,8 @@ public class AlphaBeta extends DeterministicAI
 					break;
 				}
 
-			} else
+			}
+			else
 			{
 				if (alphabetaVal < bestActionVal)
 					bestActionVal = alphabetaVal;
@@ -212,8 +228,8 @@ public class AlphaBeta extends DeterministicAI
 					break;
 				}
 			}
-
 		}
+		
 		return bestActionVal;
 	}
 
@@ -227,44 +243,23 @@ public class AlphaBeta extends DeterministicAI
 		if (isMax)
 		{
 			for (Integer killerMove : alphaMoves.get(currDepth))
-			{
 				if (mosse.contains(killerMove))
 				{
 					mosse.remove(killerMove);
 					mosse.add(0, killerMove);
 				}
-			}
-		} else
+		}
+		else
 		{
 			for (Integer killerMove : betaMoves.get(currDepth))
-			{
 				if (mosse.contains(killerMove))
 				{
 					mosse.remove(killerMove);
 					mosse.add(0, killerMove);
 				}
-			}
 		}
-
 	}
 
-	/**
-	 * 
-	 * @param oldassegnamentoCarte
-	 * @param startingPlayer
-	 * @param oldcardsOnTable
-	 * @param carta
-	 * @param currPlayer
-	 * @param maximise
-	 * @param evenScore
-	 * @param oddScore
-	 * @param alpha
-	 * @param beta
-	 * @return
-	 */
-	/**
-	 * @return the forkCounter
-	 */
 	public int getForkCounter()
 	{
 		return forkCounter;

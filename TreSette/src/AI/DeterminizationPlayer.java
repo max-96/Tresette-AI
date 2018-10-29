@@ -9,32 +9,33 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.atomic.LongAdder;
 
+import AI.DeterministicAI.Factory;
 import minmax.AlphaBeta.AlphaBetaSlave;
 import setting.Card;
-import setting.Game;
-import setting.Player;
 import setting.Game.Info;
+import setting.Player;
 
-public class PlayerAB extends Player
+public class DeterminizationPlayer extends Player
 {
+	private Factory aiFactory;
+	private int n_TRAILS;
 
-	private final int N_TRAILS = 30;
-
-	public PlayerAB(int id)
+	public DeterminizationPlayer(int id, Factory aiFactory, int n_TRAILS)
 	{
 		super(id);
+		this.aiFactory = aiFactory;
+		this.n_TRAILS = n_TRAILS;
 	}
 
 	@Override
 	public Card getMove()
 	{
-		int depth = 10;
 		Info info = game.getInfo();
 		double ourScore= info.getTeamScore(id);
 		double opponentsScore= info.getOpponentScore(id);
 		List<Integer> cardsOnTable = info.getCardsOnTable();
 		
-		SforzaSolver deter = new SforzaSolver(id, carteInMano, info, N_TRAILS);
+		SforzaSolver deter = new SforzaSolver(id, carteInMano, info, n_TRAILS);
 		deter.startProducing();
 		BlockingQueue<List<List<Integer>>> sols = deter.getPossibiliAssegnamenti();
 		ConcurrentHashMap<Integer, LongAdder> punti = new ConcurrentHashMap<>();
@@ -45,7 +46,6 @@ public class PlayerAB extends Player
 			ForkJoinPool pool= ForkJoinPool.commonPool();
 			
 			List<List<Integer>> s = sols.take();
-			
 			while (s != Collections.EMPTY_LIST)
 			{
 
@@ -77,8 +77,7 @@ public class PlayerAB extends Player
 				bestVal=k.getValue().intValue();
 			}
 		}
+		
 		return new Card(bestMove);
-
 	}
-
 }

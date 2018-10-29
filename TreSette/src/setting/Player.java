@@ -5,7 +5,7 @@ import java.util.List;
 public abstract class Player
 {
 	protected int id;
-	protected List<Card> carteInMano;
+	protected List<Integer> carteInMano;
 	protected Game game;
 
 	public Player(int id)
@@ -13,7 +13,7 @@ public abstract class Player
 		this.id = id;
 	}
 
-	public void setCards(List<Card> carteInMano)
+	public void setCards(List<Integer> carteInMano)
 	{
 		this.carteInMano = carteInMano;
 	}

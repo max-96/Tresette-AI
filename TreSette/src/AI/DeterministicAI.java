@@ -3,16 +3,22 @@ package AI;
 import java.util.ArrayList;
 import java.util.List;
 
+import setting.Game.Info;
+
 public abstract class DeterministicAI
 {
-
-	// utilizzando conversione Asso, 2, 3, 4, 5, 6, 7, fante, cavallo, re
-	public final static double[] puntiPerCarta = { 1, 1.0 / 3, 1.0 / 3, 0, 0, 0, 0, 1.0 / 3, 1.0 / 3, 1.0 / 3 };
-	public final static int[] dominioPerCarta = { 7, 8, 9, 0, 1, 2, 3, 4, 5, 6 };
-
-	public abstract Integer getBestMove(List<List<Integer>> assegnamentoCarte, List<Integer> carteInGioco,
-			double scoreMyTeam, double scoreOtherTeam);
-
+	protected int playerID;
+	
+	public abstract static class Factory
+	{
+		public abstract DeterministicAI getAI(int playerID);
+	}
+	
+	public DeterministicAI(int playerID)
+	{
+		this.playerID = playerID;
+	}
+	
 	public static List<Integer> possibiliMosse(List<Integer> carte, int semeAttuale)
 	{
 		List<Integer> mosse = new ArrayList<>();
@@ -28,4 +34,5 @@ public abstract class DeterministicAI
 		return mosse;
 	}
 
+	public abstract int getBestMove(List<List<Integer>> assegnamentoCarte, Info info);
 }

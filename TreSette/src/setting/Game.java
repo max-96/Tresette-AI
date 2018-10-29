@@ -10,7 +10,7 @@ import util.CardsUtils;
 public class Game
 {
 	private Player[] players;
-	private List<List<Card>> assCarte= new ArrayList<>(4);;
+	private List<List<Integer>> assCarte= new ArrayList<>(4);;
 	private Info info = new Info();
 	private Status status;
 	
@@ -30,6 +30,11 @@ public class Game
 		private int[] numeroCarteInMano = {10, 10, 10, 10};
 
 		private Info() {}
+		
+		public int getTurn()
+		{
+			return cardsOnTable.size();
+		}
 		
 		public double getTeamScore(int player)
 		{
@@ -102,17 +107,17 @@ public class Game
 		
 		for (int i = 0; i < 4; i++)
 		{
-			List<Card> carteInMano = new ArrayList<>();
+			List<Integer> carteInMano = new ArrayList<>();
 			
 			for (int j = 0; j < 10; j++)
-				carteInMano.add(new Card(deck.remove(0)));
+				carteInMano.add(deck.remove(0));
 
 			players[i].setCards(new ArrayList<>(carteInMano));
 			assCarte.add(carteInMano);
 			info.semiAttivi.add(Arrays.asList(Card.Suit.values()));
 			//TODO inizializzare accusi
 			
-			if (carteInMano.contains(new Card(CardsUtils.QUATTRODIDENARI)))
+			if (carteInMano.contains(CardsUtils.QUATTRODIDENARI))
 				info.startingPlayer = i;
 		}
 		
