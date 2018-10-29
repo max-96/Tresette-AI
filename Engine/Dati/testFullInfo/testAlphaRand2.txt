@@ -1,0 +1,6 @@
+Su 5000
+AlphaBeta prof. 8 (A) vs RandWalk (B)
+A:	4345
+B:	655
+
+86.90%
