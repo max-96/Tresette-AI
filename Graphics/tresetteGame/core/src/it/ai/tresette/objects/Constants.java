@@ -10,6 +10,9 @@ public class Constants {
 	
 	//TABLE SIZE CONSTANTS
 	public static final int TABLE_EDGE = 600;
+	public static final int CARDS_OFFSIDE_ORIZZONTAL = 120;
+	public static final int CARDS_OFFSIDE_VERTICAL = 30;
+	public static final int TABLE_CARDS_OFFSIDE = 20;
 	
 	// SETTINGS SCREEN CONSTANTS 
 	public static final int EXIT_BUTTON_WIDTH = 800;

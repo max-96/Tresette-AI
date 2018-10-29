@@ -18,9 +18,9 @@ public class Card extends Entity {
 	
 	private TextureRegion backTexRegion;
 	
-	private int textureWidth = Constants.TABLE_EDGE/10;
+	private static int textureWidth = Constants.TABLE_EDGE/10;
 	
-	private int textureHeight =(int) ((int) (Constants.TABLE_EDGE/10) * 1.5); //cosi facendo le proporzioni sono 6/9 tra larghezze e altezza
+	private static int textureHeight =(int) ((int) (Constants.TABLE_EDGE/10) * 1.5); //cosi facendo le proporzioni sono 6/9 tra larghezze e altezza
 	
 	private static final Suit[] intToSuit = {Suit.COPPE, Suit.DENARI, Suit.BASTONI, Suit.SPADE};
 	private static final Val[] intToVal = {Val.ASSO, Val.DUE, Val.TRE, Val.QUATTRO, Val.CINQUE, Val.SEI, Val.SETTE, Val.FANTE, Val.CAVALLO, Val.RE};
@@ -172,7 +172,9 @@ public class Card extends Entity {
 		
 	}
 	
+	public static int getWidth() { return textureWidth;}
 	
+	public static int getHeigth() {return textureHeight;}
 	
 	public int toInt()
 	{

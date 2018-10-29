@@ -8,6 +8,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -187,7 +188,7 @@ public class GameManager {
 	
 	private enum HandState
 	{
-		INITIALISINGHAND, INGOINGHAND, CONCLUDINGHAND
+		INITIALISINGHAND, INGOINGHAND, CONCLUDINGHAND, SHOWINGFOURTHCARD,
 	}
 	
 	public enum KindOfPlayer
@@ -248,11 +249,27 @@ public class GameManager {
 			case CONCLUDINGHAND:
 				concludeHand();
 				break;
+			case SHOWINGFOURTHCARD:
+				showFourthCard();
+				break;
 			default:
 				break; 
 		}
 	}
 	
+	private void showFourthCard() {
+		
+		try {
+			TimeUnit.SECONDS.sleep(1);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		this.handState = HandState.CONCLUDINGHAND;
+		
+	}
+
 	private void concludeHand()
 	{
 		if (dominatingPlayer % 2 == 0) 												// se i punti vanno alla squadra 1
@@ -261,13 +278,10 @@ public class GameManager {
 			punteggi[1] += points;
 		System.out.println("The team " + (dominatingPlayer % 2 + 1) + " has scored " + points + " points.");
 		startingPlayer = dominatingPlayer;
-		
-		
 		cardsOnTable.reset();														//elimino le carte sul tavolo
-		
 																					//incremento il contatore del turno
-		
 		this.handState = HandState.INITIALISINGHAND;
+		
 		return;
 		
 	}
@@ -320,7 +334,7 @@ public class GameManager {
 	
 	private void turnPlayed(Card card)
 	{
-		if (startingPlayer == actualPlayer)										//se e la prima carta buttata, allora è dominante
+		if (startingPlayer == actualPlayer)										//se e la prima carta buttata, allora ï¿½ dominante
 			dominatingCard = card;
 		else 																	// altrimenti controlliamo se la carta appena buttata diventa la dominante
 			if (card.compareTo(dominatingCard) > 0)
@@ -336,7 +350,7 @@ public class GameManager {
 		exCards.add(card); 														// la aggiungo alle carte esplorate
 		actualPlayer = Math.floorMod(actualPlayer - 1, 4); 						// il prossimo giocatore e' quello alla mia sinistra
 		if(actualPlayer == startingPlayer)										// se ha giocato l'ultimo giocatore, entro nella fase conclusiva della mano
-			this.handState = HandState.CONCLUDINGHAND;
+			this.handState = HandState.SHOWINGFOURTHCARD;
 		else																	//altrimenti devo stabilire se il prossimo player e umano
 		{
 			this.playerKind = players[actualPlayer].getKind();
@@ -387,6 +401,7 @@ public class GameManager {
 	{
 		for(int i = 0;i<4;i++)
 			players[i].draw(batch);
+		this.cardsOnTable.draw(batch);
 	}
 	
 	public static List<Integer> possibiliMosse(List<Integer> carte, int semeAttuale)

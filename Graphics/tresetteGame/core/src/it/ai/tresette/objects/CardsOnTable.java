@@ -2,6 +2,8 @@ package it.ai.tresette.objects;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 /**
  * A class created in order to manage the drawing of cards on the table
  * @author Zamma
@@ -44,9 +46,45 @@ public class CardsOnTable {
 		return res;
 	}
 	
-	public void draw()
+	public void draw(SpriteBatch batch)
 	{
+		int x;
+		int y = Constants.WINDOW_HEIGTH/2 - Card.getHeigth();
 		if(cardsOnTable == 0) return;
+		else if(cardsOnTable == 1)								//se dobbiamo disegnare una carta, la disegniamo al centro
+		{
+			x = (Constants.WINDOW_WIDTH/2) - Card.getWidth()/2;
+			for(Card a : this.cards)
+				a.draw(batch,x,y);
+		}
+		else if(cardsOnTable == 2)								//se sono due...
+		{
+			x = (Constants.WINDOW_WIDTH/2) - Card.getWidth() - Constants.TABLE_CARDS_OFFSIDE/2;
+			for(Card a : this.cards)
+			{
+				a.draw(batch,x,y);
+				x += Card.getWidth() + Constants.TABLE_CARDS_OFFSIDE/2;
+			}
+		}
+		else if (cardsOnTable == 3)
+		{
+			x = (Constants.WINDOW_WIDTH/2) - Card.getWidth() - Constants.TABLE_CARDS_OFFSIDE - Card.getWidth()/2;
+			for(Card a : this.cards)
+			{
+				a.draw(batch,x,y);
+				x += Card.getWidth() + Constants.TABLE_CARDS_OFFSIDE;
+			}
+		}
+		else if(cardsOnTable == 4)								//se sono 4...
+		{
+			x = (Constants.WINDOW_WIDTH/2) - Card.getWidth()*2 - Constants.TABLE_CARDS_OFFSIDE*3/2;
+			for(Card a : this.cards)
+			{
+				a.draw(batch,x,y);
+				x += Card.getWidth() + Constants.TABLE_CARDS_OFFSIDE/2;
+			}
+		}
+		
 	
 	}
 
