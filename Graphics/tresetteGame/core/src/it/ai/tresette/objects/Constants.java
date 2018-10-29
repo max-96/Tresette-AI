@@ -14,6 +14,9 @@ public class Constants {
 	public static final int CARDS_OFFSIDE_VERTICAL = 30;
 	public static final int TABLE_CARDS_OFFSIDE = 20;
 	
+	
+	//CARD CONSTANTS
+	public static final float TABLE_CARD_SCALE = 1.2f;
 	// SETTINGS SCREEN CONSTANTS 
 	public static final int EXIT_BUTTON_WIDTH = 800;
 	public static final int EXIT_BUTTON_HEIGHT =120;

@@ -49,21 +49,21 @@ public class CardsOnTable {
 	public void draw(SpriteBatch batch)
 	{
 		int x;
-		int y = Constants.WINDOW_HEIGTH/2 - Card.getHeigth();
+		int y = Constants.WINDOW_HEIGTH/2 - Card.getHeigth()/2;
 		if(cardsOnTable == 0) return;
 		else if(cardsOnTable == 1)								//se dobbiamo disegnare una carta, la disegniamo al centro
 		{
 			x = (Constants.WINDOW_WIDTH/2) - Card.getWidth()/2;
 			for(Card a : this.cards)
-				a.draw(batch,x,y);
+				a.draw(batch,x,y,Constants.TABLE_CARD_SCALE);
 		}
 		else if(cardsOnTable == 2)								//se sono due...
 		{
 			x = (Constants.WINDOW_WIDTH/2) - Card.getWidth() - Constants.TABLE_CARDS_OFFSIDE/2;
 			for(Card a : this.cards)
 			{
-				a.draw(batch,x,y);
-				x += Card.getWidth() + Constants.TABLE_CARDS_OFFSIDE/2;
+				a.draw(batch,x,y,Constants.TABLE_CARD_SCALE);
+				x += Card.getWidth() + Constants.TABLE_CARDS_OFFSIDE;
 			}
 		}
 		else if (cardsOnTable == 3)
@@ -71,7 +71,7 @@ public class CardsOnTable {
 			x = (Constants.WINDOW_WIDTH/2) - Card.getWidth() - Constants.TABLE_CARDS_OFFSIDE - Card.getWidth()/2;
 			for(Card a : this.cards)
 			{
-				a.draw(batch,x,y);
+				a.draw(batch,x,y,Constants.TABLE_CARD_SCALE);
 				x += Card.getWidth() + Constants.TABLE_CARDS_OFFSIDE;
 			}
 		}
@@ -80,8 +80,8 @@ public class CardsOnTable {
 			x = (Constants.WINDOW_WIDTH/2) - Card.getWidth()*2 - Constants.TABLE_CARDS_OFFSIDE*3/2;
 			for(Card a : this.cards)
 			{
-				a.draw(batch,x,y);
-				x += Card.getWidth() + Constants.TABLE_CARDS_OFFSIDE/2;
+				a.draw(batch,x,y,Constants.TABLE_CARD_SCALE);
+				x += Card.getWidth() + Constants.TABLE_CARDS_OFFSIDE;
 			}
 		}
 		

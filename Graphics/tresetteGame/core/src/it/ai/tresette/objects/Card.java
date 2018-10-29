@@ -171,7 +171,11 @@ public class Card extends Entity {
 		}
 		
 	}
-	
+
+	public void draw(SpriteBatch batch, int x, int y,float scale)
+	{
+		batch.draw(frontTexRegion, x, y, 0, 0, textureWidth, textureHeight, scale, scale, 0);
+	}
 	public static int getWidth() { return textureWidth;}
 	
 	public static int getHeigth() {return textureHeight;}
