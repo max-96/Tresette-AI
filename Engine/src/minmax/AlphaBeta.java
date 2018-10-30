@@ -50,9 +50,9 @@ public class AlphaBeta extends DeterministicAI
 		}
 		
 		@Override
-		public DeterministicAI getAI(int playerID)
+		public RecursiveAction getAI(int playerID, List<List<Integer>> assegnamentoCarte, Info info)
 		{
-			return new AlphaBeta(playerID, depth);
+			return new Slave(playerID, depth, assegnamentoCarte, info, punti);
 		}
 	}
 	
@@ -285,28 +285,23 @@ public class AlphaBeta extends DeterministicAI
 		return betaMoves;
 	}
 
-	public static class AlphaBetaSlave extends RecursiveAction
+	public static class Slave extends RecursiveAction
 	{
-
 		private static final long serialVersionUID = 1L;
+		
 		private int playerId;
 		private int depth;
 		private List<List<Integer>> assegnamentoCarte;
-		private List<Integer> cardsOnTable;
-		private double scoreMyTeam;
-		private double scoreOtherTeam;
+		private Info info;
 		private ConcurrentHashMap<Integer, LongAdder> punti;
 
-		public AlphaBetaSlave(int playerId, int depth, List<List<Integer>> assegnamentoCarte,
-				List<Integer> cardsOnTable, double scoreMyTeam, double scoreOtherTeam,
-				ConcurrentHashMap<Integer, LongAdder> punti)
+		public Slave(int playerId, int depth, List<List<Integer>> assegnamentoCarte,
+				Info info, ConcurrentHashMap<Integer, LongAdder> punti)
 		{
 			this.playerId = playerId;
 			this.depth = depth;
 			this.assegnamentoCarte = assegnamentoCarte;
-			this.cardsOnTable = cardsOnTable;
-			this.scoreMyTeam = scoreMyTeam;
-			this.scoreOtherTeam = scoreOtherTeam;
+			this.info = info;
 			this.punti = punti;
 		}
 
@@ -314,10 +309,8 @@ public class AlphaBeta extends DeterministicAI
 		protected void compute()
 		{
 			AlphaBeta k = new AlphaBeta(playerId, depth);
-			Integer r = k.getBestMove(assegnamentoCarte, cardsOnTable, scoreMyTeam, scoreOtherTeam);
+			int r = k.getBestMove(assegnamentoCarte, info);
 			punti.computeIfAbsent(r, key -> new LongAdder()).increment();
-
 		}
-
 	}
 }

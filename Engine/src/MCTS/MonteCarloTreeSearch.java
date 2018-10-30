@@ -1,9 +1,13 @@
 package MCTS;
 
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.RecursiveAction;
+import java.util.concurrent.atomic.LongAdder;
 
 import AI.AIGameState;
 import AI.DeterministicAI;
+import minmax.AlphaBeta;
 import setting.Game.Info;
 
 public class MonteCarloTreeSearch extends DeterministicAI
@@ -26,9 +30,9 @@ public class MonteCarloTreeSearch extends DeterministicAI
 		}
 		
 		@Override
-		public DeterministicAI getAI(int playerID)
+		public RecursiveAction getAI(int playerID, List<List<Integer>> assegnamentoCarte, Info info)
 		{
-			return new MonteCarloTreeSearch(playerID, iterations, C_PARAM);
+			return new Slave(playerID, iterations, C_PARAM, assegnamentoCarte, info, punti);
 		}
 	}
 	
@@ -54,5 +58,36 @@ public class MonteCarloTreeSearch extends DeterministicAI
 			maxExecTime = execTime;
 
 		return m;
+	}
+	
+	public static class Slave extends RecursiveAction
+	{
+		private static final long serialVersionUID = 1L;
+		
+		private int playerId;
+		private int iterations;
+		private double C_PARAM;
+		private List<List<Integer>> assegnamentoCarte;
+		private Info info;
+		private ConcurrentHashMap<Integer, LongAdder> punti;
+
+		public Slave(int playerId, int iterations, double c_param, List<List<Integer>> assegnamentoCarte,
+				Info info, ConcurrentHashMap<Integer, LongAdder> punti)
+		{
+			this.playerId = playerId;
+			this.iterations = iterations;
+			C_PARAM = c_param;
+			this.assegnamentoCarte = assegnamentoCarte;
+			this.info = info;
+			this.punti = punti;
+		}
+
+		@Override
+		protected void compute()
+		{
+			MonteCarloTreeSearch k = new MonteCarloTreeSearch(playerId, iterations, C_PARAM);
+			int r = k.getBestMove(assegnamentoCarte, info);
+			punti.computeIfAbsent(r, key -> new LongAdder()).increment();
+		}
 	}
 }

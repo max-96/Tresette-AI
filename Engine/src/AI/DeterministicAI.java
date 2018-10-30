@@ -2,6 +2,9 @@ package AI;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.RecursiveAction;
+import java.util.concurrent.atomic.LongAdder;
 
 import setting.Game.Info;
 
@@ -11,7 +14,14 @@ public abstract class DeterministicAI
 	
 	public abstract static class Factory
 	{
-		public abstract DeterministicAI getAI(int playerID);
+		protected ConcurrentHashMap<Integer, LongAdder> punti = new ConcurrentHashMap<>();;
+		
+		public ConcurrentHashMap<Integer, LongAdder> getPunti()
+		{
+			return punti;
+		}
+		
+		public abstract RecursiveAction getAI(int playerID, List<List<Integer>> assegnamentoCarte, Info info);
 	}
 	
 	public DeterministicAI(int playerID)
