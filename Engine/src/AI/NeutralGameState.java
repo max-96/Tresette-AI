@@ -5,8 +5,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import AI.DeterministicAI;
+import util.CardsUtils;
 
 public class NeutralGameState {
 
@@ -47,7 +46,7 @@ public class NeutralGameState {
 		 * In mosse mettiamo tutte le mosse legali
 		 */
 		List<Integer> mosse = cardsOnTable.isEmpty() ? new ArrayList<>(cardsAssignment.get(currentPlayer))
-				: DeterministicAI.possibiliMosse(cardsAssignment.get(currentPlayer), cardsOnTable.get(0) / 10);
+				: CardsUtils.possibiliMosse(cardsAssignment.get(currentPlayer), cardsOnTable.get(0) / 10);
 
 		/*
 		 * 
@@ -77,7 +76,7 @@ public class NeutralGameState {
 		 * In mosse mettiamo tutte le mosse legali
 		 */
 		return cardsOnTable.isEmpty() ? new ArrayList<>(cardsAssignment.get(currentPlayer))
-				: DeterministicAI.possibiliMosse(cardsAssignment.get(currentPlayer), cardsOnTable.get(0) / 10);
+				: CardsUtils.possibiliMosse(cardsAssignment.get(currentPlayer), cardsOnTable.get(0) / 10);
 
 	}
 
@@ -118,12 +117,12 @@ public class NeutralGameState {
 		int playerDominante = startingPlayer;
 		int cartaDominante = newCardsOnTable.get(0);
 		int semeDominante = cartaDominante / 10;
-		double punteggio = DeterministicAI.puntiPerCarta[cartaDominante % 10];
+		double punteggio = CardsUtils.puntiPerCarta[cartaDominante % 10];
 		for (int p = 1; p < 4; p++) {
 			int cartaTemp = newCardsOnTable.get(p);
-			punteggio += DeterministicAI.puntiPerCarta[cartaTemp % 10];
-			if (semeDominante == cartaTemp / 10 && DeterministicAI.dominioPerCarta[cartaDominante
-					% 10] < DeterministicAI.dominioPerCarta[cartaTemp % 10]) {
+			punteggio += CardsUtils.puntiPerCarta[cartaTemp % 10];
+			if (semeDominante == cartaTemp / 10 && CardsUtils.dominioPerCarta[cartaDominante
+					% 10] < CardsUtils.dominioPerCarta[cartaTemp % 10]) {
 				if (print)
 					System.out
 							.println("sto sostituendo " + ((cartaDominante % 10) + 1) + " con " + (cartaTemp % 10 + 1));
