@@ -49,7 +49,7 @@ public class CardsOnTable {
 	public void draw(SpriteBatch batch)
 	{
 		int x;
-		int y = Constants.WINDOW_HEIGTH/2 - Card.getHeigth()/2;
+		int y = Constants.WINDOW_HEIGHT/2 - Card.getHeigth()/2;
 		if(cardsOnTable == 0) return;
 		else if(cardsOnTable == 1)								//se dobbiamo disegnare una carta, la disegniamo al centro
 		{

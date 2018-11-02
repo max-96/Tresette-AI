@@ -11,7 +11,7 @@ public class DesktopLauncher {
 		config.foregroundFPS = 60;
 		
 		//la grandezza della finestra
-		config.height = Constants.WINDOW_HEIGTH;
+		config.height = Constants.WINDOW_HEIGHT;
 		config.width = Constants.WINDOW_WIDTH;
 		
 		//non puo essere modificata

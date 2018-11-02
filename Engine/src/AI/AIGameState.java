@@ -9,6 +9,7 @@ import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 import AI.DeterministicAI;
+import setting.Game.Info;
 
 public class AIGameState
 {
@@ -23,24 +24,25 @@ public class AIGameState
 	public final double scoreOtherTeam;
 	public final boolean maxNode;
 
-	public AIGameState(List<List<Integer>> cardsAssignment, List<Integer> cardsOnTable, int currentPlayer,
-			boolean maxNode, double score1, double score2)
+	public AIGameState(int currentPlayer, List<List<Integer>> cardsAssignment, Info info, boolean maxNode)
 	{
 		this.cardsAssignment = cardsAssignment;
-		this.cardsOnTable = cardsOnTable;
+		this.cardsOnTable = info.getCardsOnTable();
 		this.currentPlayer = currentPlayer;
 		terminal = cardsAssignment.get(currentPlayer).isEmpty();
+		
+		double score1 = info.getTeamScore(currentPlayer);
+		double score2 = info.getOpponentScore(currentPlayer);
 		if (terminal)
 		{
 			if (maxNode)
-				score1 += 1.0 / 3;
+				score1 += 1;
 			else
-				score2 += 1.0 / 3;
+				score2 += 1;
 		}
-		double score = score1 - score2;
 		scoreMyTeam = score1;
 		scoreOtherTeam = score2;
-		scoreSoFar = score;
+		scoreSoFar = score1 - score2;
 		this.maxNode = maxNode;
 	}
 
@@ -61,9 +63,6 @@ public class AIGameState
 		List<Integer> mosse = cardsOnTable.isEmpty() ? new ArrayList<>(cardsAssignment.get(currentPlayer))
 				: DeterministicAI.possibiliMosse(cardsAssignment.get(currentPlayer), cardsOnTable.get(0) / 10);
 
-		/*
-		 * 
-		 */
 		HashMap<Integer, AIGameState> mappa = new HashMap<>();
 
 		for (Integer m : mosse)

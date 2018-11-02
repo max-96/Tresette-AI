@@ -73,7 +73,7 @@ public class CardsInHand {
 		{
 			case 0:
 				startingX = (Constants.WINDOW_WIDTH - Constants.TABLE_EDGE)/2;
-				startingY = (Constants.WINDOW_HEIGTH - Constants.TABLE_EDGE)/2 - Constants.CARDS_OFFSIDE_VERTICAL;
+				startingY = (Constants.WINDOW_HEIGHT - Constants.TABLE_EDGE)/2 - Constants.CARDS_OFFSIDE_VERTICAL;
 				for(Card a : this.cardsInHand)
 				{
 					a.draw(batch, startingX, startingY);
@@ -82,7 +82,7 @@ public class CardsInHand {
 				break;
 			case 1:
 				startingX = (Constants.WINDOW_WIDTH + Constants.TABLE_EDGE)/2 + Constants.CARDS_OFFSIDE_ORIZZONTAL;
-				startingY = (Constants.WINDOW_HEIGTH - Constants.TABLE_EDGE)/2;
+				startingY = (Constants.WINDOW_HEIGHT - Constants.TABLE_EDGE)/2;
 				for(Card a: this.cardsInHand)
 				{
 					a.draw(batch, startingX, startingY,this.playerNumber); //da fixare vengono ruotate al contrario
@@ -91,7 +91,7 @@ public class CardsInHand {
 				break;
 			case 2:
 				startingX = (Constants.WINDOW_WIDTH + Constants.TABLE_EDGE)/2;
-				startingY = (Constants.WINDOW_HEIGTH + Constants.TABLE_EDGE)/2 + Constants.CARDS_OFFSIDE_VERTICAL;
+				startingY = (Constants.WINDOW_HEIGHT + Constants.TABLE_EDGE)/2 + Constants.CARDS_OFFSIDE_VERTICAL;
 				for(Card a: this.cardsInHand)
 				{
 					a.draw(batch, startingX, startingY,this.playerNumber); //da fixare vengono ruotate al contrario
@@ -100,7 +100,7 @@ public class CardsInHand {
 				break;
 			case 3:
 				startingX = (Constants.WINDOW_WIDTH - Constants.TABLE_EDGE)/2 - Constants.CARDS_OFFSIDE_ORIZZONTAL;
-				startingY = (Constants.WINDOW_HEIGTH + Constants.TABLE_EDGE)/2;
+				startingY = (Constants.WINDOW_HEIGHT + Constants.TABLE_EDGE)/2;
 				for(Card a: this.cardsInHand)
 				{
 					a.draw(batch, startingX, startingY,this.playerNumber); //da fixare vengono rotate al contrario

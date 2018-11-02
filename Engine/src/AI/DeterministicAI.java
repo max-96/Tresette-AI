@@ -1,6 +1,5 @@
 package AI;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.RecursiveAction;
@@ -14,7 +13,7 @@ public abstract class DeterministicAI
 	
 	public abstract static class Factory
 	{
-		protected ConcurrentHashMap<Integer, LongAdder> punti = new ConcurrentHashMap<>();;
+		protected ConcurrentHashMap<Integer, LongAdder> punti = new ConcurrentHashMap<>();
 		
 		public ConcurrentHashMap<Integer, LongAdder> getPunti()
 		{
@@ -29,20 +28,20 @@ public abstract class DeterministicAI
 		this.playerID = playerID;
 	}
 	
-	public static List<Integer> possibiliMosse(List<Integer> carte, int semeAttuale)
-	{
-		List<Integer> mosse = new ArrayList<>();
-		for (Integer c : carte)
-		{
-			if (c / 10 == semeAttuale)
-				mosse.add(c);
-		}
-
-		if (mosse.isEmpty())
-			mosse.addAll(carte);
-
-		return mosse;
-	}
+//	public static List<Integer> possibiliMosse(List<Integer> carte, int semeAttuale)
+//	{
+//		List<Integer> mosse = new ArrayList<>();
+//		for (Integer c : carte)
+//		{
+//			if (c / 10 == semeAttuale)
+//				mosse.add(c);
+//		}
+//
+//		if (mosse.isEmpty())
+//			mosse.addAll(carte);
+//
+//		return mosse;
+//	}
 
 	public abstract int getBestMove(List<List<Integer>> assegnamentoCarte, Info info);
 }

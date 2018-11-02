@@ -48,8 +48,7 @@ public class MonteCarloTreeSearch extends DeterministicAI
 	{
 		long execTime = System.currentTimeMillis();
 		
-		AIGameState starting = new AIGameState(assegnamentoCarte, cardsOnTable, playerId, true, scoreMyTeam,
-				scoreOtherTeam);
+		AIGameState starting = new AIGameState(playerID, assegnamentoCarte, info, true);
 		MonteCarloTree MCT = new MonteCarloTree(starting, C_PARAM);
 		int m = MCT.execute(iterations);
 		

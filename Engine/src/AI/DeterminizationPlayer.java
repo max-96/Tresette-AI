@@ -31,8 +31,6 @@ public class DeterminizationPlayer extends Player
 	public Card getMove()
 	{
 		Info info = game.getInfo();
-		List<Integer> cardsOnTable = info.getCardsOnTable();
-
 		SforzaSolver deter = new SforzaSolver(id, carteInMano, info, n_TRAILS); // TODO
 																				// Carte
 																				// Card

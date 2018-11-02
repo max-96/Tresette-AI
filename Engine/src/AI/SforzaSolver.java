@@ -120,6 +120,7 @@ public class SforzaSolver
 	private class SforzaSlave extends RecursiveAction
 	{
 		private static final long serialVersionUID = 1L;
+		
 		private List<List<Integer>> assCarte = new ArrayList<>(4);
 		private int[] carteManc;
 		private List<Integer> carteLib = new ArrayList<>();

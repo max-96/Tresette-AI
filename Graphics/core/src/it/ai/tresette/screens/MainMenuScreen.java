@@ -106,21 +106,21 @@ public class MainMenuScreen implements Screen{
 	private boolean isInExitButtonArea()
 	{
 		if(Gdx.input.getX() >= Constants.WINDOW_WIDTH/2 - Constants.EXIT_BUTTON_WIDTH/2 && Gdx.input.getX()<= Constants.WINDOW_WIDTH/2 + Constants.EXIT_BUTTON_WIDTH/2)
-			if(Constants.WINDOW_HEIGTH - Gdx.input.getY() >= Constants.EXIT_BUTTON_Y && Constants.WINDOW_HEIGTH - Gdx.input.getY() <= Constants.EXIT_BUTTON_Y + Constants.EXIT_BUTTON_HEIGHT)
+			if(Constants.WINDOW_HEIGHT - Gdx.input.getY() >= Constants.EXIT_BUTTON_Y && Constants.WINDOW_HEIGHT - Gdx.input.getY() <= Constants.EXIT_BUTTON_Y + Constants.EXIT_BUTTON_HEIGHT)
 				return true;
 		return false;
 	}
 	private boolean isInStartButtonArea()
 	{
 		if(Gdx.input.getX() >= Constants.WINDOW_WIDTH/2 - Constants.START_BUTTON_WIDTH/2 && Gdx.input.getX()<= Constants.WINDOW_WIDTH/2 + Constants.START_BUTTON_WIDTH/2)
-			if(Constants.WINDOW_HEIGTH - Gdx.input.getY() >= Constants.START_BUTTON_Y && Constants.WINDOW_HEIGTH - Gdx.input.getY() <= Constants.START_BUTTON_Y + Constants.START_BUTTON_HEIGHT)
+			if(Constants.WINDOW_HEIGHT - Gdx.input.getY() >= Constants.START_BUTTON_Y && Constants.WINDOW_HEIGHT - Gdx.input.getY() <= Constants.START_BUTTON_Y + Constants.START_BUTTON_HEIGHT)
 				return true;
 		return false;
 	}
 	private boolean isInSettingsButtonArea()
 	{
 		if(Gdx.input.getX() >= Constants.WINDOW_WIDTH/2 - Constants.SETTINGS_BUTTON_WIDTH/2 && Gdx.input.getX()<= Constants.WINDOW_WIDTH/2 + Constants.SETTINGS_BUTTON_WIDTH/2)
-			if(Constants.WINDOW_HEIGTH - Gdx.input.getY() >= Constants.SETTINGS_BUTTON_Y && Constants.WINDOW_HEIGTH - Gdx.input.getY() <= Constants.SETTINGS_BUTTON_Y + Constants.SETTINGS_BUTTON_HEIGHT)
+			if(Constants.WINDOW_HEIGHT - Gdx.input.getY() >= Constants.SETTINGS_BUTTON_Y && Constants.WINDOW_HEIGHT - Gdx.input.getY() <= Constants.SETTINGS_BUTTON_Y + Constants.SETTINGS_BUTTON_HEIGHT)
 				return true;
 		return false;
 	}
