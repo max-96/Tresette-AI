@@ -12,7 +12,7 @@ public class Test
 	private Player[] players;
 	private int noMatches;
 
-	public Test(Player... players, int noMatches)
+	public Test(int noMatches, Player... players)
 	{
 		this.players = players;
 		this.noMatches = noMatches;
@@ -20,8 +20,6 @@ public class Test
 
 	public void exec()
 	{
-<<<<<<< HEAD
-=======
 		int[] winnings = { 0, 0 };
 
 		System.out.println("Even Players:");
@@ -32,7 +30,6 @@ public class Test
 		System.out.println(players[3]);
 		System.out.println();
 
->>>>>>> 8a9a2520f22bbd0fe72d3adc619de75b6ce0b0d1
 		for (int i = 0; i < noMatches; i++)
 		{
 			Game gm = new Game();
@@ -40,13 +37,10 @@ public class Test
 			winnings[res] += 1;
 			System.out.println(String.format("Match %d won by team %d", i, res));
 		}
-<<<<<<< HEAD
-=======
 		System.out.println();
 		System.out.println(String.format("Team Even:%d\tTeam Odd:%d\n", winnings[0], winnings[1]));
 		System.out.println(getStats(winnings[0], winnings[1]));
 
->>>>>>> 8a9a2520f22bbd0fe72d3adc619de75b6ce0b0d1
 	}
 
 	public void dump(String filename)
@@ -66,7 +60,7 @@ public class Test
 		int noMatches = 10;
 		//TODO assegnamento da args
 		
-		Test test = new Test(players, noMatches);
+		Test test = new Test(noMatches, players);
 		
 		test.exec();
 	}
