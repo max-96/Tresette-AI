@@ -28,7 +28,7 @@ public class InformationSetMCTS
 		C_PARAM = c_param;
 	}
 
-	public Integer getBestMove(Info info, List<Integer> cardsOnTable, double scoreMyTeam, double scoreOtherTeam)
+	public Integer getBestMove(List<Integer> cardsOnTable, double scoreMyTeam, double scoreOtherTeam)
 	{
 		long execTime = System.currentTimeMillis();
 

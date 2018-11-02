@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import MCTS.MonteCarloTreeSearch;
+import it.ai.tresette.player.Player;
 import minmax.AlphaBeta;
 import setting.HumanPlayer;
 import util.*;
@@ -22,11 +23,6 @@ public class AITesting
 		int[] a = { 1, 1020, 1, 1020 };
 		test1(a);
 		System.out.println(MovesStats.getInstance().dump());
-		// System.out.println("--------");
-		//// float[] alphaP= AlphaBetaTest.normalize(AlphaBetaKiller3.alphacount);
-		//// float[] betaP= AlphaBetaTest.normalize(AlphaBetaKiller3.betacount);
-		//// System.out.println(Arrays.toString(alphaP));
-		//// System.out.println(Arrays.toString(betaP));
 		System.out.println(String.format("ABK Max Time:\t%.3f s", (double) AlphaBeta.maxExecTime / 1000));
 		System.out.println(
 				String.format("ABK Avg Time:\t%.3f s", (((double) AlphaBeta.sumExecTime) / AlphaBeta.numExec) / 1000));
@@ -34,6 +30,24 @@ public class AITesting
 		// System.out.println(
 		// String.format("MonteCarloTS Max Time:\t%.3f", (double)
 		// MonteCarloTreeSearch.maxExecTime / 1000));
+	}
+
+	private static int test4(Player[] players)
+	{
+		assert players.length == 4;
+		List<List<Integer>> randomAssignment = randomAssignment();
+		List<Integer> cardsOnTable = new ArrayList<>();
+		int currentplayer = CardsUtils.FindFourOfDenari(randomAssignment);
+		int initTeam = currentplayer & 1;
+
+		System.out.print(initTeam + " ");
+
+		double scoreEven = computeAccusiTeamScore(randomAssignment, 0);
+		double scoreOdd = computeAccusiTeamScore(randomAssignment, 1);
+
+		NeutralGameState gs = new NeutralGameState(randomAssignment, cardsOnTable, currentplayer, scoreEven, scoreOdd);
+
+		return 0;
 	}
 
 	private static void test1(int[] assignmentAI)
@@ -403,6 +417,8 @@ public class AITesting
 		String format = "Avg:\t%.5f\nSsd:\t%.5f\nCI:\t[ %.5f ; %.5f ]\n";
 		return String.format(format, avg, ssd, infBound, uppBound);
 	}
+
+	
 
 	public static RandWalk genRandWalk(int player)
 	{

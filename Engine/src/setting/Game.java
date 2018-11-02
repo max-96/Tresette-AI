@@ -129,7 +129,7 @@ public class Game
 		return info;
 	}
 	
-	public void run()
+	public int run()
 	{
 //		int turno = 1;
 //		while (true)
@@ -156,6 +156,7 @@ public class Game
 //					return;
 //			}
 
+		return 0;
 	}
 
 	public void restart()
