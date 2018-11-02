@@ -27,6 +27,11 @@ public abstract class DeterministicAI
 	{
 		this.playerID = playerID;
 	}
+
+	public int getPlayerID()
+	{
+		return playerID;
+	}
 	
 //	public static List<Integer> possibiliMosse(List<Integer> carte, int semeAttuale)
 //	{

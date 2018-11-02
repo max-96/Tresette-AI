@@ -1,5 +1,7 @@
 package AI;
 
+import java.util.List;
+
 import setting.Game.Info;
 
 public abstract class PartialInfoAI
@@ -11,6 +13,10 @@ public abstract class PartialInfoAI
 		this.playerID = playerID;
 	}
 
-	public abstract int getBestMove(, Info info);
-
+	public int getPlayerID()
+	{
+		return playerID;
+	}
+		
+	public abstract int getBestMove(List<Integer> carteInMano, Info info);
 }
