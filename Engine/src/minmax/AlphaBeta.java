@@ -98,12 +98,11 @@ public class AlphaBeta extends DeterministicAI
 		int turno = info.getTurn();
 
 		List<Integer> mosse = turno == 0 ? new ArrayList<>(assegnamentoCarte.get(playerID))
-				: DeterministicAI.possibiliMosse(assegnamentoCarte.get(playerID), cardsOnTable.get(0) / 10);
+				: CardsUtils.possibiliMosse(assegnamentoCarte.get(playerID), cardsOnTable.get(0) / 10);
 
 		assert mosse.size() > 1;
 
-		AIGameState init = new AIGameState(assegnamentoCarte, cardsOnTable, playerID, true, info.getTeamScore(playerID),
-				info.getOpponentScore(playerID));
+		AIGameState init = new AIGameState(playerID, assegnamentoCarte, info);
 
 		/*
 		 * L'insieme delle mosse e' definito, ora dobbiamo valutarle
