@@ -36,7 +36,7 @@ public class InformationSet
 
 	}
 
-	public List<Integer> generateActions(Object determinizzazione)
+	public List<Integer> generateActions(List<List<Integer>> det)
 	{
 
 		if (terminal)
@@ -44,20 +44,21 @@ public class InformationSet
 
 		// TODO aggiornare con determinizzazione
 
-		return null;
-
+		return cardsOnTable.isEmpty() ? new ArrayList<>(det.get(currentPlayer))
+				: DeterministicAI.possibiliMosse(det.get(currentPlayer), cardsOnTable.get(0) / 10);
 	}
 
 	public InformationSet genSuccessor(Integer mossa)
 	{
 		if (terminal)
 			return null;
-		
+
 		assert possibleCards.get(currentPlayer).contains(mossa);
-		
+
 		List<Set<Integer>> newPossibleCards = new ArrayList<>(possibleCards);
 		List<Integer> newCardsOnTable = new ArrayList<>(cardsOnTable);
-		newPossibleCards.get(currentPlayer).remove(mossa);
+		for(int i=0; i<4;i++)
+			newPossibleCards.get(i).remove(mossa);
 		newCardsOnTable.add(mossa);
 		byte[] newCardsLeft = Arrays.copyOf(cardsLeft, 4);
 		newCardsLeft[currentPlayer] -= 1;
@@ -120,4 +121,8 @@ public class InformationSet
 				&& possibleCards.get(3).containsAll(determ.get(3));
 	}
 
+	public int getCurrentPlayer()
+	{
+		return currentPlayer;
+	}
 }

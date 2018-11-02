@@ -52,26 +52,28 @@ public class ISMCNode implements Comparable<ISMCNode>
 		}
 	}
 
-	public void generateChildren(Object determin)
+	public void generateChildren(List<List<Integer>> determin)
 	{
 		if (!children.isEmpty() || infoset.terminal)
 			return;
 
-		// TODO aggiornare con la determinizzazione corretta
-
 		List<Integer> mosse = infoset.generateActions(determin);
-		children = new ArrayList<>();
-		for (Integer node : mosse)
+
+		if(children == Collections.EMPTY_LIST)
+			children = new ArrayList<>();
+		
+		
+		for (Integer gaction : mosse)
 		{
-			ISMCNode child = new ISMCNode(this, node, tree);
-			children.add(child);
+			ISMCNode child = new ISMCNode(this, gaction, tree);
+			if (!children.contains(child))
+				children.add(child);
 		}
 		isLeaf = false;
 	}
 
 	protected double playout(List<List<Integer>> determin)
 	{
-		// TODO update con determin vera
 		init();
 		InformationSet is = infoset;
 		while (!is.terminal)
@@ -89,13 +91,17 @@ public class ISMCNode implements Comparable<ISMCNode>
 				+ C_PARAM * Math.sqrt(Math.log(parent.visitCount) / (visitCount + EPS));
 	}
 
-	protected void backpropagateStats(boolean isWin) {
+	protected void backpropagateStats(boolean isWin)
+	{
 		ISMCNode node = this;
-		while (node != null) {
-			if (node.isBlackNode) {
+		while (node != null)
+		{
+			if (node.isBlackNode)
+			{
 				if (isWin)
 					node.winCount += 1;
-			} else {
+			} else
+			{
 				if (!isWin)
 					node.winCount += 1;
 			}
@@ -103,10 +109,12 @@ public class ISMCNode implements Comparable<ISMCNode>
 			node = node.parent;
 		}
 	}
-	
+
 	public boolean isCompatible(List<List<Integer>> determ)
 	{
 		return infoset.isCompatible(determ);
+		// return
+		// determ.get(parent.infoset.getCurrentPlayer()).contains(generatingAction);
 	}
 
 	@Override
@@ -114,6 +122,71 @@ public class ISMCNode implements Comparable<ISMCNode>
 	{
 		return (int) Math.signum(getPriority() - other.getPriority());
 	}
-	
-	
+
+	public Integer getBestMove()
+	{
+
+		int maxVisite = 0;
+		Integer bestAction = -1;
+		for (ISMCNode c : children)
+		{
+			if (c.visitCount > maxVisite)
+			{
+				maxVisite = c.visitCount;
+				bestAction = c.generatingAction;
+			}
+		}
+		return bestAction;
+	}
+
+	public boolean isTerminal()
+	{
+		return infoset.terminal;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode()
+	{
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((generatingAction == null) ? 0 : generatingAction.hashCode());
+		result = prime * result + ((infoset == null) ? 0 : infoset.hashCode());
+		return result;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj)
+	{
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ISMCNode other = (ISMCNode) obj;
+		if (generatingAction == null)
+		{
+			if (other.generatingAction != null)
+				return false;
+		} else if (!generatingAction.equals(other.generatingAction))
+			return false;
+		if (infoset == null)
+		{
+			if (other.infoset != null)
+				return false;
+		} else if (!infoset.equals(other.infoset))
+			return false;
+		return true;
+	}
+
 }

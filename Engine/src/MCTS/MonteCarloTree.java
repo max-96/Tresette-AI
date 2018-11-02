@@ -10,7 +10,6 @@ public class MonteCarloTree {
 	private MCNode root;
 	public final double c_param;
 
-	//public Set<MCNode> frontier;
  
 	public MonteCarloTree(AIGameState gamestate, double c_param) {
 		root=new MCNode(null, null, gamestate, this);

@@ -9,6 +9,7 @@ import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 import AI.DeterministicAI;
+import util.CardsUtils;
 
 public class AIGameState
 {
@@ -86,10 +87,6 @@ public class AIGameState
 
 		if (terminal)
 			return null;
-
-		/*
-		 * In mosse mettiamo tutte le mosse legali
-		 */
 		return cardsOnTable.isEmpty() ? new ArrayList<>(cardsAssignment.get(currentPlayer))
 				: DeterministicAI.possibiliMosse(cardsAssignment.get(currentPlayer), cardsOnTable.get(0) / 10);
 
@@ -148,13 +145,13 @@ public class AIGameState
 			int playerDominante = startingPlayer;
 			int cartaDominante = newCardsOnTable.get(0);
 			int semeDominante = cartaDominante / 10;
-			double punteggio = DeterministicAI.puntiPerCarta[cartaDominante % 10];
+			double punteggio = CardsUtils.puntiPerCarta[cartaDominante % 10];
 			for (int p = 1; p < 4; p++)
 			{
 				int cartaTemp = newCardsOnTable.get(p);
-				punteggio += DeterministicAI.puntiPerCarta[cartaTemp % 10];
-				if (semeDominante == cartaTemp / 10 && DeterministicAI.dominioPerCarta[cartaDominante
-						% 10] < DeterministicAI.dominioPerCarta[cartaTemp % 10])
+				punteggio += CardsUtils.puntiPerCarta[cartaTemp % 10];
+				if (semeDominante == cartaTemp / 10
+						&& CardsUtils.dominioPerCarta[cartaDominante % 10] < CardsUtils.dominioPerCarta[cartaTemp % 10])
 				{
 					if (print)
 						System.out.println(
@@ -199,14 +196,14 @@ public class AIGameState
 			if (p % 2 == 0)
 				for (Integer c : cardsAssignment.get(p))
 				{
-					puntitot += DeterministicAI.puntiPerCarta[c % 10];
+					puntitot += CardsUtils.puntiPerCarta[c % 10];
 					cardsTeam1.add(c);
 					cards.add(c);
 				}
 			else
 				for (Integer c : cardsAssignment.get(p))
 				{
-					puntitot += DeterministicAI.puntiPerCarta[c % 10];
+					puntitot += CardsUtils.puntiPerCarta[c % 10];
 					cardsTeam2.add(c);
 					cards.add(c);
 				}
@@ -214,14 +211,12 @@ public class AIGameState
 
 		for (Integer c : cardsTeam1)
 			for (Integer gc : cards)
-				if (c / 10 == gc / 10
-						&& DeterministicAI.dominioPerCarta[c % 10] > DeterministicAI.dominioPerCarta[gc % 10])
+				if (c / 10 == gc / 10 && CardsUtils.dominioPerCarta[c % 10] > CardsUtils.dominioPerCarta[gc % 10])
 					dom1 += 1;
 
 		for (Integer c : cardsTeam2)
 			for (Integer gc : cards)
-				if (c / 10 == gc / 10
-						&& DeterministicAI.dominioPerCarta[c % 10] > DeterministicAI.dominioPerCarta[gc % 10])
+				if (c / 10 == gc / 10 && CardsUtils.dominioPerCarta[c % 10] > CardsUtils.dominioPerCarta[gc % 10])
 					dom2 += 1;
 
 		double lambda;
