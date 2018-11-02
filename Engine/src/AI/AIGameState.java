@@ -25,15 +25,22 @@ public class AIGameState
 	public final double scoreOtherTeam;
 	public final boolean maxNode;
 
-	public AIGameState(int currentPlayer, List<List<Integer>> cardsAssignment, Info info, boolean maxNode)
+	public AIGameState(int currentPlayer, List<List<Integer>> cardsAssignment, Info info)
+	{
+		this(currentPlayer, cardsAssignment, info.getCardsOnTable(), info.getTeamScore(currentPlayer),
+				info.getOpponentScore(currentPlayer), true);
+	}
+	
+	private AIGameState(int currentPlayer, List<List<Integer>> cardsAssignment, List<Integer> cardsOnTable,
+			double scoreMyTeam, double scoreOtherTeam, boolean maxNode)
 	{
 		this.cardsAssignment = cardsAssignment;
-		this.cardsOnTable = info.getCardsOnTable();
+		this.cardsOnTable = cardsOnTable;
 		this.currentPlayer = currentPlayer;
 		terminal = cardsAssignment.get(currentPlayer).isEmpty();
 		
-		double score1 = info.getTeamScore(currentPlayer);
-		double score2 = info.getOpponentScore(currentPlayer);
+		double score1 = scoreMyTeam;
+		double score2 = scoreOtherTeam;
 		if (terminal)
 		{
 			if (maxNode)
@@ -41,8 +48,8 @@ public class AIGameState
 			else
 				score2 += 1;
 		}
-		scoreMyTeam = score1;
-		scoreOtherTeam = score2;
+		this.scoreMyTeam = score1;
+		this.scoreOtherTeam = score2;
 		scoreSoFar = score1 - score2;
 		this.maxNode = maxNode;
 	}
@@ -130,8 +137,8 @@ public class AIGameState
 		if (newCardsOnTable.size() < 4)
 		{
 			newCurrentPlayer = (currentPlayer + 1) % 4;
-			AIGameState newGS = new AIGameState(newCardsAssignment, newCardsOnTable, newCurrentPlayer, !maxNode,
-					scoreMyTeam, scoreOtherTeam);
+			AIGameState newGS = new AIGameState( newCurrentPlayer, newCardsAssignment, newCardsOnTable,
+					scoreMyTeam, scoreOtherTeam, !maxNode);
 			return newGS;
 		} else
 		{
@@ -174,8 +181,8 @@ public class AIGameState
 			// assegno il maximise (stessa squadra)
 			// svuoto la lista di carte sul tavolo
 			newCardsOnTable.clear();
-			AIGameState newGS = new AIGameState(newCardsAssignment, newCardsOnTable, newCurrentPlayer, newMaxNode,
-					newScoreMyTeam, newScoreOtherTeam);
+			AIGameState newGS = new AIGameState(newCurrentPlayer, newCardsAssignment, newCardsOnTable,
+					newScoreMyTeam, newScoreOtherTeam, newMaxNode);
 			return newGS;
 
 		}
@@ -274,58 +281,58 @@ public class AIGameState
 		return cardsOnTable.isEmpty();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#hashCode()
-	 */
-	@Override
-	public int hashCode()
-	{
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((cardsAssignment == null) ? 0 : cardsAssignment.hashCode());
-		result = prime * result + ((cardsOnTable == null) ? 0 : cardsOnTable.hashCode());
-		result = prime * result + currentPlayer;
-		result = prime * result + (maxNode ? 1231 : 1237);
-		result = prime * result + (terminal ? 1231 : 1237);
-		return result;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
-	@Override
-	public boolean equals(Object obj)
-	{
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		AIGameState other = (AIGameState) obj;
-		if (cardsAssignment == null)
-		{
-			if (other.cardsAssignment != null)
-				return false;
-		} else if (!cardsAssignment.equals(other.cardsAssignment))
-			return false;
-		if (cardsOnTable == null)
-		{
-			if (other.cardsOnTable != null)
-				return false;
-		} else if (!cardsOnTable.equals(other.cardsOnTable))
-			return false;
-		if (currentPlayer != other.currentPlayer)
-			return false;
-		if (maxNode != other.maxNode)
-			return false;
-		if (terminal != other.terminal)
-			return false;
-		return true;
-	}
+//	/*
+//	 * (non-Javadoc)
+//	 * 
+//	 * @see java.lang.Object#hashCode()
+//	 */
+//	@Override
+//	public int hashCode()
+//	{
+//		final int prime = 31;
+//		int result = 1;
+//		result = prime * result + ((cardsAssignment == null) ? 0 : cardsAssignment.hashCode());
+//		result = prime * result + ((cardsOnTable == null) ? 0 : cardsOnTable.hashCode());
+//		result = prime * result + currentPlayer;
+//		result = prime * result + (maxNode ? 1231 : 1237);
+//		result = prime * result + (terminal ? 1231 : 1237);
+//		return result;
+//	}
+//
+//	/*
+//	 * (non-Javadoc)
+//	 * 
+//	 * @see java.lang.Object#equals(java.lang.Object)
+//	 */
+//	@Override
+//	public boolean equals(Object obj)
+//	{
+//		if (this == obj)
+//			return true;
+//		if (obj == null)
+//			return false;
+//		if (getClass() != obj.getClass())
+//			return false;
+//		AIGameState other = (AIGameState) obj;
+//		if (cardsAssignment == null)
+//		{
+//			if (other.cardsAssignment != null)
+//				return false;
+//		} else if (!cardsAssignment.equals(other.cardsAssignment))
+//			return false;
+//		if (cardsOnTable == null)
+//		{
+//			if (other.cardsOnTable != null)
+//				return false;
+//		} else if (!cardsOnTable.equals(other.cardsOnTable))
+//			return false;
+//		if (currentPlayer != other.currentPlayer)
+//			return false;
+//		if (maxNode != other.maxNode)
+//			return false;
+//		if (terminal != other.terminal)
+//			return false;
+//		return true;
+//	}
 
 }

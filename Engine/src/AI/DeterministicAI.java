@@ -32,21 +32,6 @@ public abstract class DeterministicAI
 	{
 		return playerID;
 	}
-	
-//	public static List<Integer> possibiliMosse(List<Integer> carte, int semeAttuale)
-//	{
-//		List<Integer> mosse = new ArrayList<>();
-//		for (Integer c : carte)
-//		{
-//			if (c / 10 == semeAttuale)
-//				mosse.add(c);
-//		}
-//
-//		if (mosse.isEmpty())
-//			mosse.addAll(carte);
-//
-//		return mosse;
-//	}
 
 	public abstract int getBestMove(List<List<Integer>> assegnamentoCarte, Info info);
 }
