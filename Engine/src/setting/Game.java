@@ -189,7 +189,7 @@ public class Game
 					currentPlayer = nextPlayer(currentPlayer);
 				}
 
-				int winningPlayer = getDominantPlayer(info.cardsOnTable, nextPlayer(currentPlayer));
+				int winningPlayer = getDominantPlayer(info.cardsOnTable, currentPlayer);
 				info.scores[getTeam(winningPlayer)] += getPointsOfCards(info.cardsOnTable);
 
 				currentPlayer = winningPlayer;

@@ -4,6 +4,7 @@ import AI.CheatingPlayer;
 import AI.PartialInfoPlayer;
 import AI.RandWalk;
 import MCTS.MonteCarloTreeSearch;
+import minmax.AlphaBeta;
 import setting.Game;
 import setting.Player;
 
@@ -63,7 +64,7 @@ public class Test
 	public static void main(String[] args)
 	{
 		Player[] players = new Player[4];
-		int noMatches = 10;
+		int noMatches = 100;
 		
 		players[0] = new CheatingPlayer(new MonteCarloTreeSearch(0, 20000, 0.75));
 		players[1] = new PartialInfoPlayer(new RandWalk(1));
@@ -73,6 +74,11 @@ public class Test
 //		players[1] = new PartialInfoPlayer(new RandWalk(1));
 //		players[2] = new PartialInfoPlayer(new RandWalk(2));
 //		players[3] = new PartialInfoPlayer(new RandWalk(3));
+		
+//		players[1] = new CheatingPlayer(new AlphaBeta(1, 8));
+//		players[0] = new PartialInfoPlayer(new RandWalk(0));
+//		players[3] = new CheatingPlayer(new AlphaBeta(3, 8));
+//		players[2] = new PartialInfoPlayer(new RandWalk(2));
 		
 		//TODO assegnamento da args
 		

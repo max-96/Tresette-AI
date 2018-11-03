@@ -46,7 +46,7 @@ public class AITesting
 		double scoreOdd = computeAccusiTeamScore(randomAssignment, 1);
 
 		NeutralGameState gs = new NeutralGameState(randomAssignment, cardsOnTable, currentplayer, scoreEven, scoreOdd);
-
+		
 		return 0;
 	}
 

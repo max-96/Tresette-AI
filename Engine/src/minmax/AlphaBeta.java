@@ -98,7 +98,7 @@ public class AlphaBeta extends DeterministicAI
 
 		List<Integer> mosse = CardsUtils.getPossibiliMosse(assegnamentoCarte.get(playerID), cardsOnTable);
 
-		assert mosse.size() > 1;
+//		assert mosse.size() > 1;
 
 		AIGameState init = new AIGameState(playerID, assegnamentoCarte, info);
 
