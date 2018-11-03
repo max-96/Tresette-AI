@@ -21,7 +21,8 @@ public class Game
 {
 	private Player[] players;
 	private List<List<Integer>> assCarte;
-	private Info info = new Info();
+	private Info info;
+	private double[] totalScores = { 0, 0 };
 
 	public static class Info
 	{
@@ -102,15 +103,6 @@ public class Game
 			return new byte[] { (byte) numeroCarteInMano[0], (byte) numeroCarteInMano[1], (byte) numeroCarteInMano[2],
 					(byte) numeroCarteInMano[3] };
 		}
-
-		public void clear()
-		{
-			accusi = new ArrayList<>();
-			semiAttivi = new ArrayList<>();
-			availableCards = new ArrayList<>();
-			cardsOnTable = new ArrayList<>();
-			numeroCarteInMano = new int[] { 10, 10, 10, 10 };
-		}
 	}
 
 	public Game(Player... players)
@@ -123,12 +115,11 @@ public class Game
 
 	private void initialise()
 	{
-		info.clear();
-
+		info = new Info();
+		
 		List<Integer> deck = new ArrayList<>(40);
 		for (int i = 0; i < 40; i++)
 			deck.add(i);
-
 		info.availableCards = new ArrayList<>(deck);
 
 		Collections.shuffle(deck);
@@ -162,8 +153,7 @@ public class Game
 
 	public int run()
 	{
-
-		while ((info.scores[0] < WINNING_SCORE && info.scores[1] < WINNING_SCORE) || info.scores[0] == info.scores[1])
+		while ((totalScores[0] < WINNING_SCORE && totalScores[1] < WINNING_SCORE) || totalScores[0] == totalScores[1])
 		{
 			initialise();
 			int currentPlayer = info.startingPlayer;
@@ -211,8 +201,9 @@ public class Game
 					info.scores[0] = Math.floor(info.scores[0] + EPS);
 					info.scores[1] = Math.floor(info.scores[1] + EPS);
 				}
-				//System.out.println(info.scores);
 			}
+			totalScores[0] += info.scores[0];
+			totalScores[1] += info.scores[1];
 		}
 
 		return info.scores[0] > info.scores[1] ? 0 : 1;
