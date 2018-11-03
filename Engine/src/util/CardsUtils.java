@@ -88,6 +88,11 @@ public class CardsUtils
 	{
 		return card / 10;
 	}
+	
+	public static int getCardValue(int card)
+	{
+		return card % 10;
+	}
 
 	public static double getCardPoints(int card)
 	{
@@ -111,20 +116,21 @@ public class CardsUtils
 			s += puntiPerCarta[i % 10];
 		return s;
 	}
-	// public static int getDominantCard(List<Integer> cards)
-	// {
-	// assert cards.size() > 0;
-	// int d = cards.get(0);
-	// for (int i = 1; i < cards.size(); i++)
-	// {
-	// int s = cards.get(i);
-	// if (d / 10 != s / 10)
-	// continue;
-	// if (dominioPerCarta[s % 10] > dominioPerCarta[d % 10])
-	// d = s;
-	// }
-	// return d;
-	// }
+	
+	public static int getDominantCard(List<Integer> cards)
+	{
+		assert cards.size() > 0;
+		int d = cards.get(0);
+		for (int i = 1; i < cards.size(); i++)
+		{
+			int s = cards.get(i);
+			if (d / 10 != s / 10)
+				continue;
+			if (dominioPerCarta[s % 10] > dominioPerCarta[d % 10])
+				d = s;
+		}
+		return d;
+	}
 
 	public static int getTeam(int player)
 	{

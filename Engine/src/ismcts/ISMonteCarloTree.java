@@ -1,14 +1,9 @@
 package ismcts;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.ThreadLocalRandom;
-
-import AI.AIGameState;
-import MCTS.MCNode;
 
 public class ISMonteCarloTree
 {

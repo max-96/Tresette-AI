@@ -113,11 +113,6 @@ public class AlphaBeta extends DeterministicAI
 
 		for (Integer mossa : mosse)
 		{
-
-			// double mmaxval = minmax(assegnamentoCarte, (playerId - turno + 4) % 4,
-			// cardsOnTable, mossa, playerId, false,
-			// alpha, Double.POSITIVE_INFINITY, depth, 1, 0);
-			//
 			double mmaxval = alphabeta(init.genSuccessor(mossa), alpha, Double.POSITIVE_INFINITY, 1, depth);
 
 			if (mmaxval > bestActionVal)
@@ -132,7 +127,6 @@ public class AlphaBeta extends DeterministicAI
 				alpha = mmaxval;
 
 			}
-
 		}
 		
 		executionTime = System.currentTimeMillis() - executionTime;
@@ -161,7 +155,7 @@ public class AlphaBeta extends DeterministicAI
 		if (gs.terminal)
 			return gs.getScoreSoFar();
 		if (depth >= maxDepth && gs.isCardsOnTableEmpty())
-			return gs.scoreSoFar;
+			return gs.getScoreSoFar();
 
 		boolean isMaximise = gs.maxNode;
 
@@ -195,7 +189,7 @@ public class AlphaBeta extends DeterministicAI
 						}
 
 					}
-					alphacount[mossa % 10] += 1;
+					alphacount[CardsUtils.getCardValue(mossa)] += 1;
 					break;
 				}
 

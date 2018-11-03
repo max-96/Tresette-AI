@@ -15,8 +15,9 @@ public class MovesStats
 	private static MovesStats instance = null;
 	private String name;
 	private List<Map<Integer, Map<Integer, Long>>> stats;
-	//depth x domTeam x dominante x carta
-	private long[][][][] stats2=new long[10][2][10][10];
+	
+	// depth x domTeam x dominante x carta
+	private long[][][][] stats2 = new long[10][2][10][10];
 
 	public static MovesStats getInstance()
 	{
@@ -27,15 +28,16 @@ public class MovesStats
 
 	public MovesStats()
 	{
-		this.name = "Lalala";
+		this.name = "Moves statistics for alpha-beta";
 		this.stats = new ArrayList<>();
 		for (int i = 0; i < 10; i++)
 			stats.add(new HashMap<>());
-		
-		for(long[][][] a: stats2 )
-			for(long[][] b: a)
-				for(long[] c: b)
-					Arrays.fill(c, 0L);;
+
+		for (long[][][] a : stats2)
+			for (long[][] b : a)
+				for (long[] c : b)
+					Arrays.fill(c, 0L);
+		;
 
 	}
 
@@ -54,14 +56,14 @@ public class MovesStats
 		s.get(key).merge(val, Long.valueOf(1), Long::sum);
 		return this;
 	}
-	
+
 	public MovesStats addStats2(int depth, int domCard, int domTeam, int chosenCard)
 	{
 		if (domCard / 10 != chosenCard / 10)
 			return this;
 
-		stats2[depth][domTeam][domCard][chosenCard]+=1;
-		
+		stats2[depth][domTeam][domCard][chosenCard] += 1;
+
 		return this;
 	}
 
@@ -87,21 +89,23 @@ public class MovesStats
 		}
 		return s.toString();
 	}
-	
+
 	public void dumpToFile(String filename)
 	{
 		try
 		{
-			FileOutputStream fileOutputStream
-			  = new FileOutputStream(filename);
-			ObjectOutputStream objectOutputStream 
-			  = new ObjectOutputStream(fileOutputStream);
+			FileOutputStream fileOutputStream = new FileOutputStream(filename);
+			ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
 			objectOutputStream.writeObject(stats2);
 			objectOutputStream.flush();
 			objectOutputStream.close();
 		} catch (FileNotFoundException e)
-		{e.printStackTrace();} catch (IOException e)
-		{e.printStackTrace();}
+		{
+			e.printStackTrace();
+		} catch (IOException e)
+		{
+			e.printStackTrace();
+		}
 	}
 
 	public static Map<Integer, Double> normalize(Map<Integer, Long> dati)

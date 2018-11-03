@@ -12,17 +12,15 @@ import setting.Game.Info;
 public class InformationSetMCTS extends PartialInfoAI
 {
 	private int iterations;
-	private final double C_PARAM;
 	
 	public long execTime;
 	public static long maxExecTime = 0;
 
-	public InformationSetMCTS(int playerID, int iterations, double c_param)
+	public InformationSetMCTS(int playerID, int iterations)
 	{
 		super(playerID);
 		
 		this.iterations = iterations;
-		C_PARAM = c_param;
 	}
 	
 	@Override
@@ -43,14 +41,17 @@ public class InformationSetMCTS extends PartialInfoAI
 			possibleCards.add(pCards);
 		}
 		
+		InformationSet is = new InformationSet(playerID, possibleCards, info);
+		ISMonteCarloTree ismct = new ISMonteCarloTree(is);
 		
+		int bestMove = ismct.execute(deter.getPossibiliAssegnamenti(), iterations);
 		
 		execTime = System.currentTimeMillis() - execTime;
 		this.execTime = execTime;
 		if (execTime > maxExecTime)
 			maxExecTime = execTime;
 
-		return 0;
+		return bestMove;
 	}
 
 }

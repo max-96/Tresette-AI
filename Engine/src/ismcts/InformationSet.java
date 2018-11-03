@@ -3,7 +3,6 @@ package ismcts;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
@@ -73,7 +72,7 @@ public class InformationSet
 			int startPlayer = (currentPlayer + 1) % 4;
 			int domPlayer = CardsUtils.getDominantPlayer(newCardsOnTable, startPlayer);
 			double[] newScores = Arrays.copyOf(scores, 2);
-			newScores[domPlayer & 1] += CardsUtils.getPointsOfCards(newCardsOnTable);
+			newScores[CardsUtils.getTeam(domPlayer)] += CardsUtils.getPointsOfCards(newCardsOnTable);
 			newCardsOnTable = Collections.emptyList();
 			InformationSet is = new InformationSet(newScores, newPossibleCards, newCardsOnTable, domPlayer,
 					newCardsLeft, maxTeam);

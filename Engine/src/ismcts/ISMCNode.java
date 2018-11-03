@@ -4,10 +4,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import AI.AIGameState;
-import MCTS.MCNode;
-import MCTS.MonteCarloTree;
-
 public class ISMCNode implements Comparable<ISMCNode>
 {
 
@@ -113,8 +109,6 @@ public class ISMCNode implements Comparable<ISMCNode>
 	public boolean isCompatible(List<List<Integer>> determ)
 	{
 		return infoset.isCompatible(determ);
-		// return
-		// determ.get(parent.infoset.getCurrentPlayer()).contains(generatingAction);
 	}
 
 	@Override
@@ -144,49 +138,49 @@ public class ISMCNode implements Comparable<ISMCNode>
 		return infoset.terminal;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#hashCode()
-	 */
-	@Override
-	public int hashCode()
-	{
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((generatingAction == null) ? 0 : generatingAction.hashCode());
-		result = prime * result + ((infoset == null) ? 0 : infoset.hashCode());
-		return result;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
-	@Override
-	public boolean equals(Object obj)
-	{
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		ISMCNode other = (ISMCNode) obj;
-		if (generatingAction == null)
-		{
-			if (other.generatingAction != null)
-				return false;
-		} else if (!generatingAction.equals(other.generatingAction))
-			return false;
-		if (infoset == null)
-		{
-			if (other.infoset != null)
-				return false;
-		} else if (!infoset.equals(other.infoset))
-			return false;
-		return true;
-	}
+//	/*
+//	 * (non-Javadoc)
+//	 * 
+//	 * @see java.lang.Object#hashCode()
+//	 */
+//	@Override
+//	public int hashCode()
+//	{
+//		final int prime = 31;
+//		int result = 1;
+//		result = prime * result + ((generatingAction == null) ? 0 : generatingAction.hashCode());
+//		result = prime * result + ((infoset == null) ? 0 : infoset.hashCode());
+//		return result;
+//	}
+//
+//	/*
+//	 * (non-Javadoc)
+//	 * 
+//	 * @see java.lang.Object#equals(java.lang.Object)
+//	 */
+//	@Override
+//	public boolean equals(Object obj)
+//	{
+//		if (this == obj)
+//			return true;
+//		if (obj == null)
+//			return false;
+//		if (getClass() != obj.getClass())
+//			return false;
+//		ISMCNode other = (ISMCNode) obj;
+//		if (generatingAction == null)
+//		{
+//			if (other.generatingAction != null)
+//				return false;
+//		} else if (!generatingAction.equals(other.generatingAction))
+//			return false;
+//		if (infoset == null)
+//		{
+//			if (other.infoset != null)
+//				return false;
+//		} else if (!infoset.equals(other.infoset))
+//			return false;
+//		return true;
+//	}
 
 }

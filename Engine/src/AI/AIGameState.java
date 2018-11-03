@@ -253,12 +253,12 @@ public class AIGameState
 	// {
 	// return currentPlayer;
 	// }
-	//
-	// public double getScoreSoFar()
-	// {
-	// return scoreMyTeam - scoreOtherTeam;
-	// }
-	//
+	
+	 public double getScoreSoFar()
+	 {
+		 return scoreMyTeam - scoreOtherTeam;
+	 }
+	
 	// public double getScoreMyTeam()
 	// {
 	// return scoreMyTeam;
@@ -268,11 +268,11 @@ public class AIGameState
 	// {
 	// return scoreOtherTeam;
 	// }
-	//
-	// public boolean isCardsOnTableEmpty()
-	// {
-	// return cardsOnTable.isEmpty();
-	// }
+	
+	 public boolean isCardsOnTableEmpty()
+	 {
+		 return cardsOnTable.isEmpty();
+	 }
 
 	// /*
 	// * (non-Javadoc)
