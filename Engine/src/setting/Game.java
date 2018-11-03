@@ -209,9 +209,4 @@ public class Game
 //		startingPlayer = dominatingPlayer;
 		return;
 	}
-
-	public List<List<Integer>> getAssegnamentoCarte()
-	{
-		return assCarte;
-	}
 }
