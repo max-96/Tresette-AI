@@ -27,7 +27,7 @@ public class AIGameState
 		this(currentPlayer, cardsAssignment, info.getCardsOnTable(), info.getTeamScore(currentPlayer),
 				info.getOpponentScore(currentPlayer), true);
 	}
-	
+
 	private AIGameState(int currentPlayer, List<List<Integer>> cardsAssignment, List<Integer> cardsOnTable,
 			double scoreMyTeam, double scoreOtherTeam, boolean maxNode)
 	{
@@ -35,7 +35,7 @@ public class AIGameState
 		this.cardsOnTable = cardsOnTable;
 		this.currentPlayer = currentPlayer;
 		terminal = cardsAssignment.get(currentPlayer).isEmpty();
-		
+
 		double score1 = scoreMyTeam;
 		double score2 = scoreOtherTeam;
 		if (terminal)
@@ -65,8 +65,7 @@ public class AIGameState
 		/*
 		 * In mosse mettiamo tutte le mosse legali
 		 */
-		List<Integer> mosse = cardsOnTable.isEmpty() ? new ArrayList<>(cardsAssignment.get(currentPlayer))
-				: CardsUtils.possibiliMosse(cardsAssignment.get(currentPlayer), cardsOnTable.get(0) / 10);
+		List<Integer> mosse = CardsUtils.getPossibiliMosse(cardsAssignment.get(currentPlayer), cardsOnTable);
 
 		HashMap<Integer, AIGameState> mappa = new HashMap<>();
 
@@ -90,8 +89,7 @@ public class AIGameState
 
 		if (terminal)
 			return null;
-		return cardsOnTable.isEmpty() ? new ArrayList<>(cardsAssignment.get(currentPlayer))
-				: CardsUtils.possibiliMosse(cardsAssignment.get(currentPlayer), cardsOnTable.get(0) / 10);
+		return CardsUtils.getPossibiliMosse(cardsAssignment.get(currentPlayer), cardsOnTable);
 
 	}
 
@@ -100,8 +98,8 @@ public class AIGameState
 		if (rand == null)
 			rand = new Random();
 
-		List<Integer> mosse = cardsOnTable.isEmpty() ? new ArrayList<>(cardsAssignment.get(currentPlayer))
-				: CardsUtils.possibiliMosse(cardsAssignment.get(currentPlayer), cardsOnTable.get(0) / 10);
+		List<Integer> mosse = CardsUtils.getPossibiliMosse(cardsAssignment.get(currentPlayer), cardsOnTable);
+		;
 
 		int pos = rand.nextInt(mosse.size());
 
@@ -128,19 +126,20 @@ public class AIGameState
 			newCardsOnTable.add(mossa);
 		}
 		/*
-		 * Caso semplice: non e' finita la passata ne la mano. Si passa al prossimo
-		 * player e lo score rimane inalterato
+		 * Caso semplice: non e' finita la passata ne la mano. Si passa al
+		 * prossimo player e lo score rimane inalterato
 		 */
 		if (newCardsOnTable.size() < 4)
 		{
 			newCurrentPlayer = (currentPlayer + 1) % 4;
-			AIGameState newGS = new AIGameState( newCurrentPlayer, newCardsAssignment, newCardsOnTable,
-					scoreMyTeam, scoreOtherTeam, !maxNode);
+			AIGameState newGS = new AIGameState(newCurrentPlayer, newCardsAssignment, newCardsOnTable, scoreMyTeam,
+					scoreOtherTeam, !maxNode);
 			return newGS;
 		} else
 		{
 			/*
-			 * Siamo a fine di una passata. Dobbiamo assegnare i punti e la dominanza
+			 * Siamo a fine di una passata. Dobbiamo assegnare i punti e la
+			 * dominanza
 			 */
 
 			assert newCardsOnTable.size() == 4 : newCardsOnTable.size();
@@ -148,11 +147,11 @@ public class AIGameState
 			int playerDominante = startingPlayer;
 			int cartaDominante = newCardsOnTable.get(0);
 			int semeDominante = cartaDominante / 10;
-			double punteggio = CardsUtils.puntiPerCarta[cartaDominante % 10];
+			double punteggio = CardsUtils.getCardPoints(cartaDominante);
 			for (int p = 1; p < 4; p++)
 			{
 				int cartaTemp = newCardsOnTable.get(p);
-				punteggio += CardsUtils.puntiPerCarta[cartaTemp % 10];
+				punteggio += CardsUtils.getCardPoints(cartaTemp);
 				if (semeDominante == cartaTemp / 10
 						&& CardsUtils.dominioPerCarta[cartaDominante % 10] < CardsUtils.dominioPerCarta[cartaTemp % 10])
 				{
@@ -161,7 +160,6 @@ public class AIGameState
 								"sto sostituendo " + ((cartaDominante % 10) + 1) + " con " + (cartaTemp % 10 + 1));
 					playerDominante = (startingPlayer + p) % 4;
 					cartaDominante = cartaTemp;
-
 				}
 			}
 
@@ -178,8 +176,8 @@ public class AIGameState
 			// assegno il maximise (stessa squadra)
 			// svuoto la lista di carte sul tavolo
 			newCardsOnTable.clear();
-			AIGameState newGS = new AIGameState(newCurrentPlayer, newCardsAssignment, newCardsOnTable,
-					newScoreMyTeam, newScoreOtherTeam, newMaxNode);
+			AIGameState newGS = new AIGameState(newCurrentPlayer, newCardsAssignment, newCardsOnTable, newScoreMyTeam,
+					newScoreOtherTeam, newMaxNode);
 			return newGS;
 
 		}
@@ -199,14 +197,14 @@ public class AIGameState
 			if (p % 2 == 0)
 				for (Integer c : cardsAssignment.get(p))
 				{
-					puntitot += CardsUtils.puntiPerCarta[c % 10];
+					puntitot += CardsUtils.getCardPoints(c);
 					cardsTeam1.add(c);
 					cards.add(c);
 				}
 			else
 				for (Integer c : cardsAssignment.get(p))
 				{
-					puntitot += CardsUtils.puntiPerCarta[c % 10];
+					puntitot += CardsUtils.getCardPoints(c);
 					cardsTeam2.add(c);
 					cards.add(c);
 				}
@@ -234,102 +232,104 @@ public class AIGameState
 		return (puntitot * lambda - puntitot * (1.0 - lambda)) + scoreSoFar;
 	}
 
-	/**
-	 * @return the cardsAssignment
-	 */
-	public List<List<Integer>> getCardsAssignment()
-	{
-		return Collections.unmodifiableList(cardsAssignment);
-	}
+	// /**
+	// * @return the cardsAssignment
+	// */
+	// public List<List<Integer>> getCardsAssignment()
+	// {
+	// return Collections.unmodifiableList(cardsAssignment);
+	// }
+	//
+	// /**
+	// * @return the cardsOnTable
+	// */
+	// public List<Integer> getCardsOnTable()
+	// {
+	// return Collections.unmodifiableList(cardsOnTable);
+	// }
+	//
+	// /**
+	// * @return the currentPlayer
+	// */
+	// public int getCurrentPlayer()
+	// {
+	// return currentPlayer;
+	// }
+	//
+	// public double getScoreSoFar()
+	// {
+	// return scoreMyTeam - scoreOtherTeam;
+	// }
+	//
+	// public double getScoreMyTeam()
+	// {
+	// return scoreMyTeam;
+	// }
+	//
+	// public double getScoreOtherTeam()
+	// {
+	// return scoreOtherTeam;
+	// }
+	//
+	// public boolean isCardsOnTableEmpty()
+	// {
+	// return cardsOnTable.isEmpty();
+	// }
 
-	/**
-	 * @return the cardsOnTable
-	 */
-	public List<Integer> getCardsOnTable()
-	{
-		return Collections.unmodifiableList(cardsOnTable);
-	}
-
-	/**
-	 * @return the currentPlayer
-	 */
-	public int getCurrentPlayer()
-	{
-		return currentPlayer;
-	}
-
-	public double getScoreSoFar()
-	{
-		return scoreMyTeam - scoreOtherTeam;
-	}
-
-	public double getScoreMyTeam()
-	{
-		return scoreMyTeam;
-	}
-
-	public double getScoreOtherTeam()
-	{
-		return scoreOtherTeam;
-	}
-
-	public boolean isCardsOnTableEmpty()
-	{
-		return cardsOnTable.isEmpty();
-	}
-
-//	/*
-//	 * (non-Javadoc)
-//	 * 
-//	 * @see java.lang.Object#hashCode()
-//	 */
-//	@Override
-//	public int hashCode()
-//	{
-//		final int prime = 31;
-//		int result = 1;
-//		result = prime * result + ((cardsAssignment == null) ? 0 : cardsAssignment.hashCode());
-//		result = prime * result + ((cardsOnTable == null) ? 0 : cardsOnTable.hashCode());
-//		result = prime * result + currentPlayer;
-//		result = prime * result + (maxNode ? 1231 : 1237);
-//		result = prime * result + (terminal ? 1231 : 1237);
-//		return result;
-//	}
-//
-//	/*
-//	 * (non-Javadoc)
-//	 * 
-//	 * @see java.lang.Object#equals(java.lang.Object)
-//	 */
-//	@Override
-//	public boolean equals(Object obj)
-//	{
-//		if (this == obj)
-//			return true;
-//		if (obj == null)
-//			return false;
-//		if (getClass() != obj.getClass())
-//			return false;
-//		AIGameState other = (AIGameState) obj;
-//		if (cardsAssignment == null)
-//		{
-//			if (other.cardsAssignment != null)
-//				return false;
-//		} else if (!cardsAssignment.equals(other.cardsAssignment))
-//			return false;
-//		if (cardsOnTable == null)
-//		{
-//			if (other.cardsOnTable != null)
-//				return false;
-//		} else if (!cardsOnTable.equals(other.cardsOnTable))
-//			return false;
-//		if (currentPlayer != other.currentPlayer)
-//			return false;
-//		if (maxNode != other.maxNode)
-//			return false;
-//		if (terminal != other.terminal)
-//			return false;
-//		return true;
-//	}
+	// /*
+	// * (non-Javadoc)
+	// *
+	// * @see java.lang.Object#hashCode()
+	// */
+	// @Override
+	// public int hashCode()
+	// {
+	// final int prime = 31;
+	// int result = 1;
+	// result = prime * result + ((cardsAssignment == null) ? 0 :
+	// cardsAssignment.hashCode());
+	// result = prime * result + ((cardsOnTable == null) ? 0 :
+	// cardsOnTable.hashCode());
+	// result = prime * result + currentPlayer;
+	// result = prime * result + (maxNode ? 1231 : 1237);
+	// result = prime * result + (terminal ? 1231 : 1237);
+	// return result;
+	// }
+	//
+	// /*
+	// * (non-Javadoc)
+	// *
+	// * @see java.lang.Object#equals(java.lang.Object)
+	// */
+	// @Override
+	// public boolean equals(Object obj)
+	// {
+	// if (this == obj)
+	// return true;
+	// if (obj == null)
+	// return false;
+	// if (getClass() != obj.getClass())
+	// return false;
+	// AIGameState other = (AIGameState) obj;
+	// if (cardsAssignment == null)
+	// {
+	// if (other.cardsAssignment != null)
+	// return false;
+	// } else if (!cardsAssignment.equals(other.cardsAssignment))
+	// return false;
+	// if (cardsOnTable == null)
+	// {
+	// if (other.cardsOnTable != null)
+	// return false;
+	// } else if (!cardsOnTable.equals(other.cardsOnTable))
+	// return false;
+	// if (currentPlayer != other.currentPlayer)
+	// return false;
+	// if (maxNode != other.maxNode)
+	// return false;
+	// if (terminal != other.terminal)
+	// return false;
+	// return true;
+	// }
 
 }

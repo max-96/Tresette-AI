@@ -97,8 +97,7 @@ public class AlphaBeta extends DeterministicAI
 		List<Integer> cardsOnTable = info.getCardsOnTable();
 		int turno = info.getTurn();
 
-		List<Integer> mosse = turno == 0 ? new ArrayList<>(assegnamentoCarte.get(playerID))
-				: CardsUtils.possibiliMosse(assegnamentoCarte.get(playerID), cardsOnTable.get(0) / 10);
+		List<Integer> mosse = CardsUtils.getPossibiliMosse(assegnamentoCarte.get(playerID), cardsOnTable);
 
 		assert mosse.size() > 1;
 

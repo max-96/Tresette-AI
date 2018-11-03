@@ -1,10 +1,10 @@
 package AI;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 import setting.Game.Info;
+import util.CardsUtils;
 
 public class RandWalk extends PartialInfoAI
 {
@@ -19,8 +19,7 @@ public class RandWalk extends PartialInfoAI
 	@Override
 	public int getBestMove(List<Integer> carteInMano, Info info)
 	{
-		List<Integer> mosse = info.getTurn() == 0 ? new ArrayList<>(assegnamentoCarte.get(playerID))
-				: DeterministicAI.possibiliMosse(assegnamentoCarte.get(playerID), info.getCardsOnTable().get(0) / 10);
+		List<Integer> mosse = CardsUtils.getPossibiliMosse(carteInMano, info.getCardsOnTable());
 
 		return mosse.get(rand.nextInt(mosse.size()));
 	}

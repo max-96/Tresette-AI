@@ -1,7 +1,5 @@
 package AI;
 
-import java.util.List;
-
 import setting.Card;
 import setting.Player;
 

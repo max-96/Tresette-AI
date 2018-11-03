@@ -181,10 +181,10 @@ public class MCNode implements Comparable<MCNode>
 //		return true;
 //	}
 //
-//	@Override
-//	public int compareTo(MCNode other)
-//	{
-//		return (int) Math.signum(getPriority() - other.getPriority());
-//	}
+	@Override
+	public int compareTo(MCNode other)
+	{
+		return (int) Math.signum(getPriority() - other.getPriority());
+	}
 
 }

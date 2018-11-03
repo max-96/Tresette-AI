@@ -124,7 +124,7 @@ public class CardsUtils
 		return d;
 	}
 	
-	public static List<Integer> possibiliMosse(List<Integer> carteInMano, List<Integer> cardsOnTable)
+	public static List<Integer> getPossibiliMosse(List<Integer> carteInMano, List<Integer> cardsOnTable)
 	{
 		if (cardsOnTable.isEmpty())
 			return new ArrayList<>(carteInMano);

@@ -1,9 +1,5 @@
 package util;
 
-import java.util.Arrays;
-
-import AI.AITesting;
-import it.ai.tresette.GameManager;
 import setting.Game;
 import setting.Player;
 

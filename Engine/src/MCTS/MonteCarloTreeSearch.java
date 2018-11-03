@@ -7,7 +7,6 @@ import java.util.concurrent.atomic.LongAdder;
 
 import AI.AIGameState;
 import AI.DeterministicAI;
-import minmax.AlphaBeta;
 import setting.Game.Info;
 
 public class MonteCarloTreeSearch extends DeterministicAI
@@ -48,7 +47,7 @@ public class MonteCarloTreeSearch extends DeterministicAI
 	{
 		long execTime = System.currentTimeMillis();
 		
-		AIGameState starting = new AIGameState(playerID, assegnamentoCarte, info, true);
+		AIGameState starting = new AIGameState(playerID, assegnamentoCarte, info);
 		MonteCarloTree MCT = new MonteCarloTree(starting, C_PARAM);
 		int m = MCT.execute(iterations);
 		

@@ -44,8 +44,7 @@ public class InformationSet
 
 		// TODO aggiornare con determinizzazione
 
-		return cardsOnTable.isEmpty() ? new ArrayList<>(det.get(currentPlayer))
-				: DeterministicAI.possibiliMosse(det.get(currentPlayer), cardsOnTable.get(0) / 10);
+		return CardsUtils.getPossibiliMosse(det.get(currentPlayer), cardsOnTable);
 	}
 
 	public InformationSet genSuccessor(Integer mossa)
