@@ -17,7 +17,6 @@ public class AlphaBeta extends DeterministicAI
 {
 	private static final int MAX_CACHE_SIZE = 4;
 
-	private int playerID;
 	private int depth;
 	private int forkCounter = 0;
 	private int alphapruning = 0;

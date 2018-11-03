@@ -206,6 +206,6 @@ public class Game
 			totalScores[1] += info.scores[1];
 		}
 
-		return info.scores[0] > info.scores[1] ? 0 : 1;
+		return totalScores[0] > totalScores[1] ? 0 : 1;
 	}
 }
