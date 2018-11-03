@@ -129,62 +129,62 @@ public class MCNode implements Comparable<MCNode>
 		return bestAction;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#hashCode()
-	 */
-	@Override
-	public int hashCode()
-	{
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((gamestate == null) ? 0 : gamestate.hashCode());
-		result = prime * result + ((generatingAction == null) ? 0 : generatingAction.hashCode());
-		result = prime * result + ((parent == null) ? 0 : parent.hashCode());
-		return result;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
-	@Override
-	public boolean equals(Object obj)
-	{
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		MCNode other = (MCNode) obj;
-		if (gamestate == null)
-		{
-			if (other.gamestate != null)
-				return false;
-		} else if (!gamestate.equals(other.gamestate))
-			return false;
-		if (generatingAction == null)
-		{
-			if (other.generatingAction != null)
-				return false;
-		} else if (!generatingAction.equals(other.generatingAction))
-			return false;
-		if (parent == null)
-		{
-			if (other.parent != null)
-				return false;
-		} else if (!parent.equals(other.parent))
-			return false;
-		return true;
-	}
-
-	@Override
-	public int compareTo(MCNode other)
-	{
-		return (int) Math.signum(getPriority() - other.getPriority());
-	}
+//	/*
+//	 * (non-Javadoc)
+//	 * 
+//	 * @see java.lang.Object#hashCode()
+//	 */
+//	@Override
+//	public int hashCode()
+//	{
+//		final int prime = 31;
+//		int result = 1;
+//		result = prime * result + ((gamestate == null) ? 0 : gamestate.hashCode());
+//		result = prime * result + ((generatingAction == null) ? 0 : generatingAction.hashCode());
+//		result = prime * result + ((parent == null) ? 0 : parent.hashCode());
+//		return result;
+//	}
+//
+//	/*
+//	 * (non-Javadoc)
+//	 * 
+//	 * @see java.lang.Object#equals(java.lang.Object)
+//	 */
+//	@Override
+//	public boolean equals(Object obj)
+//	{
+//		if (this == obj)
+//			return true;
+//		if (obj == null)
+//			return false;
+//		if (getClass() != obj.getClass())
+//			return false;
+//		MCNode other = (MCNode) obj;
+//		if (gamestate == null)
+//		{
+//			if (other.gamestate != null)
+//				return false;
+//		} else if (!gamestate.equals(other.gamestate))
+//			return false;
+//		if (generatingAction == null)
+//		{
+//			if (other.generatingAction != null)
+//				return false;
+//		} else if (!generatingAction.equals(other.generatingAction))
+//			return false;
+//		if (parent == null)
+//		{
+//			if (other.parent != null)
+//				return false;
+//		} else if (!parent.equals(other.parent))
+//			return false;
+//		return true;
+//	}
+//
+//	@Override
+//	public int compareTo(MCNode other)
+//	{
+//		return (int) Math.signum(getPriority() - other.getPriority());
+//	}
 
 }

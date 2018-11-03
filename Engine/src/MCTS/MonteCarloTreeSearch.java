@@ -70,7 +70,7 @@ public class MonteCarloTreeSearch extends DeterministicAI
 		private Info info;
 		private ConcurrentHashMap<Integer, LongAdder> punti;
 
-		public Slave(int playerId, int iterations, double c_param, List<List<Integer>> assegnamentoCarte,
+		private Slave(int playerId, int iterations, double c_param, List<List<Integer>> assegnamentoCarte,
 				Info info, ConcurrentHashMap<Integer, LongAdder> punti)
 		{
 			this.playerId = playerId;

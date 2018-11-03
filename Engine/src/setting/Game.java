@@ -129,6 +129,11 @@ public class Game
 		return info;
 	}
 	
+	public List<List<Integer>> getAssegnamentoCarte()
+	{
+		return assCarte;
+	}
+	
 	public int run()
 	{
 //		int turno = 1;

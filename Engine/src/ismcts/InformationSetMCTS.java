@@ -1,34 +1,32 @@
 package ismcts;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import AI.PartialInfoAI;
 import setting.Game.Info;
-import AI.DeterministicAI;
-import AI.AIGameState;
 
-public class InformationSetMCTS
+public class InformationSetMCTS extends PartialInfoAI
 {
-
-	private int playerId;
 	private int iterations;
+	private final double C_PARAM;
+	
 	public long execTime;
 	public static long maxExecTime = 0;
-	public final double C_PARAM;
 
 	public InformationSetMCTS(int playerId, int iterations)
 	{
 		this(playerId, iterations, 0.75);
 	}
 
-	public InformationSetMCTS(int playerId, int iterations, double c_param)
+	public InformationSetMCTS(int playerID, int iterations, double c_param)
 	{
-		this.playerId = playerId;
+		super(playerID);
 		this.iterations = iterations;
 		C_PARAM = c_param;
 	}
-
-	public Integer getBestMove(List<Integer> cardsOnTable, double scoreMyTeam, double scoreOtherTeam)
+	
+	@Override
+	public int getBestMove(List<Integer> carteInmano, Info Info)
 	{
 		long execTime = System.currentTimeMillis();
 
