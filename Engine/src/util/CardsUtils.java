@@ -11,8 +11,7 @@ public class CardsUtils
 	public static final boolean STATS_COLLECT = false; // TODO Questo e' un setting
 	public static final int WINNING_SCORE = 21;
 	public static final double EPS = 0.01;
-	
-	
+
 	private final static double[] puntiPerCarta = { 1, 1.0 / 3, 1.0 / 3, 0, 0, 0, 0, 1.0 / 3, 1.0 / 3, 1.0 / 3 };
 	private final static int[] dominioPerCarta = { 7, 8, 9, 0, 1, 2, 3, 4, 5, 6 };
 
@@ -28,15 +27,15 @@ public class CardsUtils
 	public static int FindFourOfDenari(List<List<Integer>> l)
 	{
 		for (int i = 0; i < 4; i++)
-			if (l.get(i).contains(QUATTRODIDENARI))
+			if (l.get(i).contains((Integer) QUATTRODIDENARI))
 				return i;
-		return -1;
+		throw new RuntimeException("Non trovato quattro di denari");
 	}
 
 	public static double findAccusiOfPlayer(List<Integer> carteInMano, List<Integer> accusi)
 	{
 		assert accusi.isEmpty();
-		
+
 		double points = 0;
 		HashSet<Integer> accusoCards = new HashSet<>();
 		points += findBongioco(carteInMano, accusoCards);
@@ -93,7 +92,7 @@ public class CardsUtils
 	{
 		return card / 10;
 	}
-	
+
 	public static int getCardValue(int card)
 	{
 		return card % 10;
@@ -121,7 +120,7 @@ public class CardsUtils
 			s += puntiPerCarta[i % 10];
 		return s;
 	}
-	
+
 	public static int getDominantCard(List<Integer> cards)
 	{
 		assert cards.size() > 0;
@@ -141,30 +140,37 @@ public class CardsUtils
 	{
 		return player & 1;
 	}
-	
+
 	public static boolean sameTeam(int player1, int player2)
 	{
 		return (player1 & 1) == (player2 & 1);
 	}
-	
+
 	public static int nextPlayer(int currentPlayer)
 	{
 		return (currentPlayer + 1) % 4;
 	}
-	
+
 	public static int getDominantPlayer(List<Integer> cards, int startPlayer)
 	{
 		assert cards.size() > 0;
+		assert startPlayer >= 0;
+		
 		int d = cards.get(0);
+		int player = startPlayer;
 		for (int i = 1; i < cards.size(); i++)
 		{
 			int s = cards.get(i);
 			if (d / 10 != s / 10)
 				continue;
 			if (dominioPerCarta[s % 10] > dominioPerCarta[d % 10])
+			{
 				d = s;
+				player = (startPlayer + i) % 4;
+			}
 		}
-		return d;
+
+		return player;
 	}
 
 	public static List<Integer> getPossibiliMosse(List<Integer> carteInMano, List<Integer> cardsOnTable)

@@ -24,7 +24,7 @@ public class Test
 
 		for (int i = 0; i < noMatches; i++)
 		{
-			Game gm = new Game();
+			Game gm = new Game(players);
 			int res = gm.run();
 			winnings[res] += 1;
 			System.out.println(String.format("Match %d won by team %d", i, res));

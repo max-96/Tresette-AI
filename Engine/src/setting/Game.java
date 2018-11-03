@@ -20,9 +20,9 @@ import java.util.List;
 public class Game
 {
 	private Player[] players;
-	private List<List<Integer>> assCarte = new ArrayList<>(4);;
+	private List<List<Integer>> assCarte;
 	private Info info = new Info();
-	
+
 	public static class Info
 	{
 		private double[] scores = { 0, 0 };
@@ -33,7 +33,9 @@ public class Game
 		private List<Integer> cardsOnTable = new ArrayList<>();
 		private int[] numeroCarteInMano = { 10, 10, 10, 10 };
 
-		private Info() {}
+		private Info()
+		{
+		}
 
 		public int getTurn()
 		{
@@ -100,6 +102,15 @@ public class Game
 			return new byte[] { (byte) numeroCarteInMano[0], (byte) numeroCarteInMano[1], (byte) numeroCarteInMano[2],
 					(byte) numeroCarteInMano[3] };
 		}
+
+		public void clear()
+		{
+			accusi = new ArrayList<>();
+			semiAttivi = new ArrayList<>();
+			availableCards = new ArrayList<>();
+			cardsOnTable = new ArrayList<>();
+			numeroCarteInMano = new int[] { 10, 10, 10, 10 };
+		}
 	}
 
 	public Game(Player... players)
@@ -112,12 +123,16 @@ public class Game
 
 	private void initialise()
 	{
+		info.clear();
+
 		List<Integer> deck = new ArrayList<>(40);
 		for (int i = 0; i < 40; i++)
 			deck.add(i);
+
 		info.availableCards = new ArrayList<>(deck);
 
 		Collections.shuffle(deck);
+		assCarte = new ArrayList<>();
 
 		for (int i = 0; i < 4; i++)
 		{
@@ -129,9 +144,9 @@ public class Game
 			players[i].setCards(new ArrayList<>(carteInMano));
 			assCarte.add(carteInMano);
 			info.accusi.add(new ArrayList<>());
-			info.semiAttivi.add(Arrays.asList(0, 1, 2, 3));
+			info.semiAttivi.add(new ArrayList<>(Arrays.asList(0, 1, 2, 3)));
 		}
-		
+
 		info.startingPlayer = FindFourOfDenari(assCarte);
 	}
 
@@ -147,6 +162,7 @@ public class Game
 
 	public int run()
 	{
+
 		while (info.scores[0] < WINNING_SCORE && info.scores[1] < WINNING_SCORE)
 		{
 			initialise();
@@ -156,14 +172,16 @@ public class Game
 				int firstCard = 0;
 				for (int p = 0; p < 4; p++)
 				{
+					assert currentPlayer >= 0 && currentPlayer < 4 : currentPlayer;
+
 					List<Integer> carteInMano = assCarte.get(currentPlayer);
-					
+
 					if (round == 0)
 					{
 						List<Integer> accusi = info.accusi.get(currentPlayer);
 						info.scores[getTeam(currentPlayer)] += findAccusiOfPlayer(carteInMano, accusi);
 					}
-					
+
 					Integer move = players[currentPlayer].getMove();
 					players[currentPlayer].removeCard(move);
 
@@ -181,10 +199,11 @@ public class Game
 					currentPlayer = nextPlayer(currentPlayer);
 				}
 
-				int winningPlayer = getDominantPlayer(info.cardsOnTable,
-						nextPlayer(currentPlayer));
+				int winningPlayer = getDominantPlayer(info.cardsOnTable, nextPlayer(currentPlayer));
 				info.scores[getTeam(winningPlayer)] += getPointsOfCards(info.cardsOnTable);
+
 				currentPlayer = winningPlayer;
+				info.cardsOnTable.clear();
 
 				if (round == 9)
 				{
@@ -194,7 +213,7 @@ public class Game
 				}
 			}
 		}
-		
+
 		return info.scores[0] > info.scores[1] ? 0 : 1;
 	}
 }
