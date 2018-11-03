@@ -144,25 +144,29 @@ public class AIGameState
 
 			assert newCardsOnTable.size() == 4 : newCardsOnTable.size();
 			int startingPlayer = (currentPlayer + 1) % 4;
-			int playerDominante = startingPlayer;
-			int cartaDominante = newCardsOnTable.get(0);
-			int semeDominante = cartaDominante / 10;
-			double punteggio = CardsUtils.getCardPoints(cartaDominante);
-			for (int p = 1; p < 4; p++)
-			{
-				int cartaTemp = newCardsOnTable.get(p);
-				punteggio += CardsUtils.getCardPoints(cartaTemp);
-				if (semeDominante == cartaTemp / 10
-						&& CardsUtils.dominioPerCarta[cartaDominante % 10] < CardsUtils.dominioPerCarta[cartaTemp % 10])
-				{
-					if (print)
-						System.out.println(
-								"sto sostituendo " + ((cartaDominante % 10) + 1) + " con " + (cartaTemp % 10 + 1));
-					playerDominante = (startingPlayer + p) % 4;
-					cartaDominante = cartaTemp;
-				}
-			}
-
+			int playerDominante = CardsUtils.getDominantPlayer(newCardsOnTable, startingPlayer);
+			double punteggio = CardsUtils.getPointsOfCards(newCardsOnTable);
+			
+			
+//			int playerDominante = startingPlayer;
+//			int cartaDominante = newCardsOnTable.get(0);
+//			int semeDominante = cartaDominante / 10;
+//			double punteggio = CardsUtils.getCardPoints(cartaDominante);
+//			for (int p = 1; p < 4; p++)
+//			{
+//				int cartaTemp = newCardsOnTable.get(p);
+//				punteggio += CardsUtils.getCardPoints(cartaTemp);
+//				if (semeDominante == cartaTemp / 10
+//						&& CardsUtils.dominioPerCarta[cartaDominante % 10] < CardsUtils.dominioPerCarta[cartaTemp % 10])
+//				{
+//					if (print)
+//						System.out.println(
+//								"sto sostituendo " + ((cartaDominante % 10) + 1) + " con " + (cartaTemp % 10 + 1));
+//					playerDominante = (startingPlayer + p) % 4;
+//					cartaDominante = cartaTemp;
+//				}
+//			}
+//
 			boolean newMaxNode = (maxNode && playerDominante % 2 == currentPlayer % 2)
 					|| (!maxNode && playerDominante % 2 != currentPlayer % 2);
 			// assegno i punti
@@ -183,54 +187,54 @@ public class AIGameState
 		}
 	}
 
-	public double evaluationFunction()
-	{
-		double puntitot = 1.0 / 3;
-		int dom1 = 0;
-		int dom2 = 0;
-		ArrayList<Integer> cardsTeam1 = new ArrayList<>();
-		ArrayList<Integer> cardsTeam2 = new ArrayList<>();
-		ArrayList<Integer> cards = new ArrayList<>();
-
-		for (int p = 0; p < 4; p++)
-		{
-			if (p % 2 == 0)
-				for (Integer c : cardsAssignment.get(p))
-				{
-					puntitot += CardsUtils.getCardPoints(c);
-					cardsTeam1.add(c);
-					cards.add(c);
-				}
-			else
-				for (Integer c : cardsAssignment.get(p))
-				{
-					puntitot += CardsUtils.getCardPoints(c);
-					cardsTeam2.add(c);
-					cards.add(c);
-				}
-		}
-
-		for (Integer c : cardsTeam1)
-			for (Integer gc : cards)
-				if (c / 10 == gc / 10 && CardsUtils.dominioPerCarta[c % 10] > CardsUtils.dominioPerCarta[gc % 10])
-					dom1 += 1;
-
-		for (Integer c : cardsTeam2)
-			for (Integer gc : cards)
-				if (c / 10 == gc / 10 && CardsUtils.dominioPerCarta[c % 10] > CardsUtils.dominioPerCarta[gc % 10])
-					dom2 += 1;
-
-		double lambda;
-
-		if (maxNode ^ (currentPlayer % 2 == 0))
-			lambda = dom2;
-		else
-			lambda = dom1;
-
-		lambda /= dom1 + dom2;
-
-		return (puntitot * lambda - puntitot * (1.0 - lambda)) + scoreSoFar;
-	}
+//	public double evaluationFunction()
+//	{
+//		double puntitot = 1.0 / 3;
+//		int dom1 = 0;
+//		int dom2 = 0;
+//		ArrayList<Integer> cardsTeam1 = new ArrayList<>();
+//		ArrayList<Integer> cardsTeam2 = new ArrayList<>();
+//		ArrayList<Integer> cards = new ArrayList<>();
+//
+//		for (int p = 0; p < 4; p++)
+//		{
+//			if (p % 2 == 0)
+//				for (Integer c : cardsAssignment.get(p))
+//				{
+//					puntitot += CardsUtils.getCardPoints(c);
+//					cardsTeam1.add(c);
+//					cards.add(c);
+//				}
+//			else
+//				for (Integer c : cardsAssignment.get(p))
+//				{
+//					puntitot += CardsUtils.getCardPoints(c);
+//					cardsTeam2.add(c);
+//					cards.add(c);
+//				}
+//		}
+//
+//		for (Integer c : cardsTeam1)
+//			for (Integer gc : cards)
+//				if (c / 10 == gc / 10 && CardsUtils.dominioPerCarta[c % 10] > CardsUtils.dominioPerCarta[gc % 10])
+//					dom1 += 1;
+//
+//		for (Integer c : cardsTeam2)
+//			for (Integer gc : cards)
+//				if (c / 10 == gc / 10 && CardsUtils.dominioPerCarta[c % 10] > CardsUtils.dominioPerCarta[gc % 10])
+//					dom2 += 1;
+//
+//		double lambda;
+//
+//		if (maxNode ^ (currentPlayer % 2 == 0))
+//			lambda = dom2;
+//		else
+//			lambda = dom1;
+//
+//		lambda /= dom1 + dom2;
+//
+//		return (puntitot * lambda - puntitot * (1.0 - lambda)) + scoreSoFar;
+//	}
 
 	// /**
 	// * @return the cardsAssignment
