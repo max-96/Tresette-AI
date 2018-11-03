@@ -18,14 +18,6 @@ public class Test
 	{
 		int[] winnings = { 0, 0 };
 
-		System.out.println("Even Players:");
-		System.out.println(players[0]);
-		System.out.println(players[2]);
-		System.out.println("Odd Players:");
-		System.out.println(players[1]);
-		System.out.println(players[3]);
-		System.out.println();
-
 		for (int i = 0; i < noMatches; i++)
 		{
 			Game gm = new Game();
@@ -35,6 +27,13 @@ public class Test
 		}
 		System.out.println();
 		System.out.println(String.format("Team Even:%d\tTeam Odd:%d\n", winnings[0], winnings[1]));
+		System.out.println("====== SUMMARY ======");
+		System.out.println("Even Players:");
+		System.out.println(players[0]);
+		System.out.println(players[2]);
+		System.out.println("Odd Players:");
+		System.out.println(players[1]);
+		System.out.println(players[3]);
 		System.out.println(getStats(winnings[0], winnings[1]));
 
 	}
