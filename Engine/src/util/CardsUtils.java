@@ -10,8 +10,8 @@ public class CardsUtils
 {
 	public static final boolean STATS_COLLECT = false; //TODO Questo e' un setting
 
-	private final static double[] puntiPerCarta = { 1, 1.0 / 3, 1.0 / 3, 0, 0, 0, 0, 1.0 / 3, 1.0 / 3, 1.0 / 3 };
-	private final static int[] dominioPerCarta = { 7, 8, 9, 0, 1, 2, 3, 4, 5, 6 };
+	public final static double[] puntiPerCarta = { 1, 1.0 / 3, 1.0 / 3, 0, 0, 0, 0, 1.0 / 3, 1.0 / 3, 1.0 / 3 };
+	public final static int[] dominioPerCarta = { 7, 8, 9, 0, 1, 2, 3, 4, 5, 6 };
 
 	public static final int QUATTRODIDENARI = 3;
 
