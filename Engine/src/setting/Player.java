@@ -23,5 +23,10 @@ public abstract class Player
 		this.game = game;
 	}
 
+	public void removeCard(Integer card)
+	{
+		carteInMano.remove(card);
+	}
+	
 	public abstract int getMove();
 }

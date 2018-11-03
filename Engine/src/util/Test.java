@@ -1,5 +1,9 @@
 package util;
 
+import AI.CheatingPlayer;
+import AI.PartialInfoPlayer;
+import AI.RandWalk;
+import MCTS.MonteCarloTreeSearch;
 import setting.Game;
 import setting.Player;
 
@@ -35,29 +39,6 @@ public class Test
 		System.out.println(players[1]);
 		System.out.println(players[3]);
 		System.out.println(getStats(winnings[0], winnings[1]));
-
-	}
-
-	public void dump(String filename)
-	{
-		// TODO
-	}
-
-	public String dump()
-	{
-		// TODO
-		return null;
-	}
-
-	public static void main(String[] args)
-	{
-		Player[] players = new Player[4];
-		int noMatches = 10;
-		//TODO assegnamento da args
-		
-		Test test = new Test(noMatches, players);
-		
-		test.exec();
 	}
 	
 	public static String getStats(double evenWinnings, double oddWinnings)
@@ -77,5 +58,22 @@ public class Test
 
 		String format = "Avg:\t%.5f\nSsd:\t%.5f\nCI:\t[ %.5f ; %.5f ]\n";
 		return String.format(format, avg, ssd, infBound, uppBound);
+	}
+
+	public static void main(String[] args)
+	{
+		Player[] players = new Player[4];
+		int noMatches = 10;
+		
+		players[0] = new CheatingPlayer(new MonteCarloTreeSearch(0, 20000, 0.75));
+		players[1] = new PartialInfoPlayer(new RandWalk(1));
+		players[2] = new CheatingPlayer(new MonteCarloTreeSearch(2, 20000, 0.75));
+		players[3] = new PartialInfoPlayer(new RandWalk(3));
+		
+		//TODO assegnamento da args
+		
+		Test test = new Test(noMatches, players);
+		
+		test.exec();
 	}
 }

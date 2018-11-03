@@ -9,7 +9,10 @@ import java.util.List;
 public class CardsUtils
 {
 	public static final boolean STATS_COLLECT = false; // TODO Questo e' un setting
-
+	public static final int WINNING_SCORE = 21;
+	public static final double EPS = 0.01;
+	
+	
 	private final static double[] puntiPerCarta = { 1, 1.0 / 3, 1.0 / 3, 0, 0, 0, 0, 1.0 / 3, 1.0 / 3, 1.0 / 3 };
 	private final static int[] dominioPerCarta = { 7, 8, 9, 0, 1, 2, 3, 4, 5, 6 };
 
@@ -32,11 +35,13 @@ public class CardsUtils
 
 	public static double findAccusiOfPlayer(List<Integer> carteInMano, List<Integer> accusi)
 	{
+		assert accusi.isEmpty();
+		
 		double points = 0;
 		HashSet<Integer> accusoCards = new HashSet<>();
 		points += findBongioco(carteInMano, accusoCards);
 		points += findNapoli(carteInMano, accusoCards);
-		accusi = new ArrayList<>(accusoCards);
+		accusi.addAll(accusoCards);
 		return points;
 	}
 
