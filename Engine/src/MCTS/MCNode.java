@@ -32,7 +32,7 @@ public class MCNode implements Comparable<MCNode>
 		this.gamestate = gamestate;
 		this.tree = tree;
 		isLeaf = true;
-		isBlackNode = !this.gamestate.maxNode;
+		isBlackNode = ! this.gamestate.maxNode;
 	}
 
 	public MCNode(MCNode parent, Integer generatingAction, MonteCarloTree tree)

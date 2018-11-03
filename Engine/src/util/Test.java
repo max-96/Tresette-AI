@@ -69,6 +69,10 @@ public class Test
 		players[1] = new PartialInfoPlayer(new RandWalk(1));
 		players[2] = new CheatingPlayer(new MonteCarloTreeSearch(2, 20000, 0.75));
 		players[3] = new PartialInfoPlayer(new RandWalk(3));
+//		players[0] = new PartialInfoPlayer(new RandWalk(0));
+//		players[1] = new PartialInfoPlayer(new RandWalk(1));
+//		players[2] = new PartialInfoPlayer(new RandWalk(2));
+//		players[3] = new PartialInfoPlayer(new RandWalk(3));
 		
 		//TODO assegnamento da args
 		

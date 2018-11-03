@@ -163,7 +163,7 @@ public class Game
 	public int run()
 	{
 
-		while (info.scores[0] < WINNING_SCORE && info.scores[1] < WINNING_SCORE)
+		while ((info.scores[0] < WINNING_SCORE && info.scores[1] < WINNING_SCORE) || info.scores[0] == info.scores[1])
 		{
 			initialise();
 			int currentPlayer = info.startingPlayer;
@@ -209,8 +209,9 @@ public class Game
 				{
 					info.scores[getTeam(winningPlayer)]++;
 					info.scores[0] = Math.floor(info.scores[0] + EPS);
-					info.scores[0] = Math.floor(info.scores[1] + EPS);
+					info.scores[1] = Math.floor(info.scores[1] + EPS);
 				}
+				//System.out.println(info.scores);
 			}
 		}
 
