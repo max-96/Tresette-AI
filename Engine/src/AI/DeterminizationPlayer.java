@@ -11,6 +11,7 @@ import java.util.concurrent.atomic.LongAdder;
 
 import AI.DeterministicAI.Factory;
 import setting.Game.Info;
+import util.CardsUtils;
 import setting.Player;
 
 public class DeterminizationPlayer extends Player
@@ -28,6 +29,10 @@ public class DeterminizationPlayer extends Player
 	@Override
 	public int getMove()
 	{
+		List<Integer> mosse = CardsUtils.getPossibiliMosse(carteInMano, game.getInfo().getCardsOnTable());
+		if (mosse.size() == 1)
+			return mosse.get(0);
+		
 		Info info = game.getInfo();
 		SforzaSolver deter = new SforzaSolver(id, carteInMano, info, n_TRAILS);
 		deter.startProducing();
