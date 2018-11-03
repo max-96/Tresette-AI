@@ -35,12 +35,8 @@ public class InformationSet
 
 	public List<Integer> generateActions(List<List<Integer>> det)
 	{
-
 		if (terminal)
-			return null;
-
-		// TODO aggiornare con determinizzazione
-
+			return Collections.emptyList();
 		return CardsUtils.getPossibiliMosse(det.get(currentPlayer), cardsOnTable);
 	}
 
@@ -67,13 +63,11 @@ public class InformationSet
 		} else
 		{
 			// Compute dominante
-			double punteggio = CardsUtils.getPointsOfCards(newCardsOnTable);
 			int startPlayer = (currentPlayer + 1) % 4;
 			int domPlayer = CardsUtils.getDominantPlayer(newCardsOnTable, startPlayer);
 			double[] newScores = Arrays.copyOf(scores, 2);
-			newScores[domPlayer & 1] += punteggio;
+			newScores[domPlayer & 1] += CardsUtils.getPointsOfCards(newCardsOnTable);
 			newCardsOnTable = Collections.emptyList();
-
 			InformationSet is = new InformationSet(newScores, newPossibleCards, newCardsOnTable, domPlayer,
 					newCardsLeft, maxTeam);
 			return is;
