@@ -6,9 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
-
-import AI.DeterministicAI;
 import setting.Game.Info;
 import util.CardsUtils;
 
@@ -69,7 +66,7 @@ public class AIGameState
 		 * In mosse mettiamo tutte le mosse legali
 		 */
 		List<Integer> mosse = cardsOnTable.isEmpty() ? new ArrayList<>(cardsAssignment.get(currentPlayer))
-				: DeterministicAI.possibiliMosse(cardsAssignment.get(currentPlayer), cardsOnTable.get(0) / 10);
+				: CardsUtils.possibiliMosse(cardsAssignment.get(currentPlayer), cardsOnTable.get(0) / 10);
 
 		HashMap<Integer, AIGameState> mappa = new HashMap<>();
 
@@ -94,7 +91,7 @@ public class AIGameState
 		if (terminal)
 			return null;
 		return cardsOnTable.isEmpty() ? new ArrayList<>(cardsAssignment.get(currentPlayer))
-				: DeterministicAI.possibiliMosse(cardsAssignment.get(currentPlayer), cardsOnTable.get(0) / 10);
+				: CardsUtils.possibiliMosse(cardsAssignment.get(currentPlayer), cardsOnTable.get(0) / 10);
 
 	}
 
@@ -104,7 +101,7 @@ public class AIGameState
 			rand = new Random();
 
 		List<Integer> mosse = cardsOnTable.isEmpty() ? new ArrayList<>(cardsAssignment.get(currentPlayer))
-				: DeterministicAI.possibiliMosse(cardsAssignment.get(currentPlayer), cardsOnTable.get(0) / 10);
+				: CardsUtils.possibiliMosse(cardsAssignment.get(currentPlayer), cardsOnTable.get(0) / 10);
 
 		int pos = rand.nextInt(mosse.size());
 
