@@ -55,6 +55,7 @@ public class AIGameState
 	 * 
 	 * @return
 	 */
+	@Deprecated
 	public Map<Integer, AIGameState> generateSuccessors()
 	{
 
@@ -72,7 +73,6 @@ public class AIGameState
 		{
 			AIGameState g = genSuccessor(m);
 			mappa.put(m, g);
-
 		}
 
 		return mappa;
@@ -98,7 +98,6 @@ public class AIGameState
 			rand = new Random();
 
 		List<Integer> mosse = CardsUtils.getPossibiliMosse(cardsAssignment.get(currentPlayer), cardsOnTable);
-		;
 
 		int pos = rand.nextInt(mosse.size());
 
@@ -106,11 +105,6 @@ public class AIGameState
 	}
 
 	public AIGameState genSuccessor(Integer mossa)
-	{
-		return genSuccessor(mossa, false);
-	}
-
-	public AIGameState genSuccessor(Integer mossa, boolean print)
 	{
 		List<List<Integer>> newCardsAssignment = new ArrayList<>(cardsAssignment);
 		List<Integer> newCardsOnTable = new ArrayList<>(cardsOnTable);
@@ -130,7 +124,7 @@ public class AIGameState
 		 */
 		if (newCardsOnTable.size() < 4)
 		{
-			newCurrentPlayer = (currentPlayer + 1) % 4;
+			newCurrentPlayer = CardsUtils.nextPlayer(currentPlayer);
 			AIGameState newGS = new AIGameState(newCurrentPlayer, newCardsAssignment, newCardsOnTable, scoreMyTeam,
 					scoreOtherTeam, !maxNode);
 			return newGS;
@@ -140,9 +134,9 @@ public class AIGameState
 			 * Siamo a fine di una passata. Dobbiamo assegnare i punti e la
 			 * dominanza
 			 */
-
 			assert newCardsOnTable.size() == 4 : newCardsOnTable.size();
-			int startingPlayer = (currentPlayer + 1) % 4;
+			
+			int startingPlayer = CardsUtils.nextPlayer(currentPlayer);
 			int playerDominante = CardsUtils.getDominantPlayer(newCardsOnTable, startingPlayer);
 			double punteggio = CardsUtils.getPointsOfCards(newCardsOnTable);
 			
@@ -166,8 +160,8 @@ public class AIGameState
 //				}
 //			}
 //
-			boolean newMaxNode = (maxNode && playerDominante % 2 == currentPlayer % 2)
-					|| (!maxNode && playerDominante % 2 != currentPlayer % 2);
+			boolean newMaxNode = (maxNode && CardsUtils.sameTeam(playerDominante, currentPlayer))
+					|| (!maxNode && !CardsUtils.sameTeam(playerDominante, currentPlayer));
 			// assegno i punti
 			if (newMaxNode)
 				newScoreMyTeam += punteggio;
@@ -176,13 +170,14 @@ public class AIGameState
 
 			// assegno player
 			newCurrentPlayer = playerDominante;
+			
 			// assegno il maximise (stessa squadra)
 			// svuoto la lista di carte sul tavolo
 			newCardsOnTable.clear();
 			AIGameState newGS = new AIGameState(newCurrentPlayer, newCardsAssignment, newCardsOnTable, newScoreMyTeam,
 					newScoreOtherTeam, newMaxNode);
+			
 			return newGS;
-
 		}
 	}
 

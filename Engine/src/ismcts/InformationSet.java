@@ -3,9 +3,12 @@ package ismcts;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
+
+import setting.Game.Info;
 import util.CardsUtils;
 
 public class InformationSet
@@ -19,7 +22,12 @@ public class InformationSet
 	public final boolean maxNode;
 	public final byte maxTeam;
 
-	public InformationSet(double[] scores, List<Set<Integer>> possibleCards, List<Integer> cardsOnTable,
+	public InformationSet(int playerID, List<Set<Integer>> possibleCards, Info info)
+	{
+		this(info.getScores(), possibleCards, info.getCardsOnTable(), playerID, info.getNumeroCarteInMano(), (byte) CardsUtils.getTeam(playerID));
+	}
+
+	private InformationSet(double[] scores, List<Set<Integer>> possibleCards, List<Integer> cardsOnTable,
 			int currentPlayer, byte[] cardsLeft, byte maxTeam)
 	{
 		this.scores = scores;
@@ -30,7 +38,6 @@ public class InformationSet
 		this.terminal = cardsLeft[currentPlayer] == 0;
 		this.maxNode = (currentPlayer & 1) == maxTeam;
 		this.maxTeam = maxTeam;
-
 	}
 
 	public List<Integer> generateActions(List<List<Integer>> det)
@@ -49,7 +56,7 @@ public class InformationSet
 
 		List<Set<Integer>> newPossibleCards = new ArrayList<>(possibleCards);
 		List<Integer> newCardsOnTable = new ArrayList<>(cardsOnTable);
-		for(int i=0; i<4;i++)
+		for (int i = 0; i < 4; i++)
 			newPossibleCards.get(i).remove(mossa);
 		newCardsOnTable.add(mossa);
 		byte[] newCardsLeft = Arrays.copyOf(cardsLeft, 4);

@@ -126,6 +126,21 @@ public class CardsUtils
 	// return d;
 	// }
 
+	public static int getTeam(int player)
+	{
+		return player & 1;
+	}
+	
+	public static boolean sameTeam(int player1, int player2)
+	{
+		return (player1 & 1) == (player2 & 1);
+	}
+	
+	public static int nextPlayer(int currentPlayer)
+	{
+		return (currentPlayer + 1) % 4;
+	}
+	
 	public static int getDominantPlayer(List<Integer> cards, int startPlayer)
 	{
 		assert cards.size() > 0;

@@ -21,7 +21,7 @@ public class Game
 
 	public static class Info
 	{
-		private float[] scores = { 0, 0 };
+		private double[] scores = { 0, 0 };
 		private int startingPlayer;
 		private List<List<Integer>> accusi;
 		private List<List<Card.Suit>> semiAttivi;
@@ -34,6 +34,11 @@ public class Game
 		public int getTurn()
 		{
 			return cardsOnTable.size();
+		}
+		
+		public double[] getScores()
+		{
+			return Arrays.copyOf(scores, 2);
 		}
 		
 		public double getTeamScore(int player)
@@ -81,9 +86,10 @@ public class Game
 			return semiAttivi.get(player).contains(Card.intToSuit[suit]);
 		}
 		
-		public int getNumeroCarteInMano(int player)
+		public byte[] getNumeroCarteInMano()
 		{
-			return numeroCarteInMano[player];
+			return new byte[] { (byte) numeroCarteInMano[0], (byte) numeroCarteInMano[1],
+					(byte) numeroCarteInMano[2], (byte) numeroCarteInMano[3] };
 		}
 	}
 	
