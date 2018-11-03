@@ -3,12 +3,9 @@ package ismcts;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
-
-import AI.DeterministicAI;
 import util.CardsUtils;
 
 public class InformationSet
@@ -70,21 +67,9 @@ public class InformationSet
 		} else
 		{
 			// Compute dominante
-			double punteggio = 0;
-			int domCard = newCardsOnTable.get(0).intValue();
-			Integer startPlayer = Integer.valueOf((currentPlayer + 1) % 4);
-			Integer domPlayer = startPlayer;
-			for (int i = 1; i < 4; i++)
-			{
-				int c = newCardsOnTable.get(i).intValue();
-				punteggio += CardsUtils.puntiPerCarta[c % 10];
-				if (domCard / 10 == c / 10
-						&& CardsUtils.dominioPerCarta[c % 10] > CardsUtils.dominioPerCarta[domCard % 10])
-				{
-					domPlayer = Integer.valueOf((startPlayer.intValue() + i) % 4);
-					domCard = c;
-				}
-			}
+			double punteggio = CardsUtils.getPointsOfCards(newCardsOnTable);
+			int startPlayer = (currentPlayer + 1) % 4;
+			int domPlayer = CardsUtils.getDominantPlayer(newCardsOnTable, startPlayer);
 			double[] newScores = Arrays.copyOf(scores, 2);
 			newScores[domPlayer & 1] += punteggio;
 			newCardsOnTable = Collections.emptyList();
