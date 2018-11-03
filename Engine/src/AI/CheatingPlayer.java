@@ -1,6 +1,5 @@
 package AI;
 
-import setting.Card;
 import setting.Player;
 
 public class CheatingPlayer extends Player
@@ -14,9 +13,8 @@ public class CheatingPlayer extends Player
 	}
 	
 	@Override
-	public Card getMove()
+	public int getMove()
 	{		
-		int bestMove = ai.getBestMove(game.getAssegnamentoCarte(), game.getInfo());
-		return new Card(bestMove);
+		return ai.getBestMove(game.getAssegnamentoCarte(), game.getInfo());
 	}
 }

@@ -1,6 +1,5 @@
 package AI;
 
-import setting.Card;
 import setting.Player;
 
 public class PartialInfoPlayer extends Player
@@ -14,9 +13,8 @@ public class PartialInfoPlayer extends Player
 	}
 
 	@Override
-	public Card getMove()
+	public int getMove()
 	{
-		int bestMove = ai.getBestMove(carteInMano, game.getInfo());
-		return new Card(bestMove);
+		return ai.getBestMove(carteInMano, game.getInfo());
 	}
 }

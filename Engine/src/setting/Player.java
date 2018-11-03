@@ -23,5 +23,5 @@ public abstract class Player
 		this.game = game;
 	}
 
-	public abstract Card getMove();
+	public abstract int getMove();
 }

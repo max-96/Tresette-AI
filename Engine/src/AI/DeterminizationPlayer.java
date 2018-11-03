@@ -10,7 +10,6 @@ import java.util.concurrent.RecursiveAction;
 import java.util.concurrent.atomic.LongAdder;
 
 import AI.DeterministicAI.Factory;
-import setting.Card;
 import setting.Game.Info;
 import setting.Player;
 
@@ -27,7 +26,7 @@ public class DeterminizationPlayer extends Player
 	}
 
 	@Override
-	public Card getMove()
+	public int getMove()
 	{
 		Info info = game.getInfo();
 		SforzaSolver deter = new SforzaSolver(id, carteInMano, info, n_TRAILS);
@@ -68,6 +67,6 @@ public class DeterminizationPlayer extends Player
 			}
 		}
 
-		return new Card(bestMove);
+		return bestMove;
 	}
 }
