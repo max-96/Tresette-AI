@@ -91,9 +91,17 @@ public class CardsUtils
 	
 	public static double getCardPoints(int card)
 	{
-		return puntiPerCarta[card];
+		return puntiPerCarta[card%10];
 	}
 	
+	public static int getCardDominance(int card)
+	{
+		return dominioPerCarta[card%10];
+	}
+	public static boolean isSameSuit(int card1, int card2)
+	{
+		return card1/10 == card2/10;
+	}
 //	public static int getDominantCard(List<Integer> cards)
 //	{
 //		assert cards.size() > 0;
