@@ -24,7 +24,7 @@ public class InformationSetMCTS extends PartialInfoAI
 	}
 	
 	@Override
-	public int getBestMove(List<Integer> carteInMano, Info info)
+	public Integer getBestMove(List<Integer> carteInMano, Info info)
 	{
 		long execTime = System.currentTimeMillis();
 
@@ -51,7 +51,7 @@ public class InformationSetMCTS extends PartialInfoAI
 		if (execTime > maxExecTime)
 			maxExecTime = execTime;
 
-		return bestMove;
+		return Integer.valueOf(bestMove);
 	}
 
 }

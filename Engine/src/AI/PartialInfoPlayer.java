@@ -13,7 +13,7 @@ public class PartialInfoPlayer extends Player
 	}
 
 	@Override
-	protected int computeMove()
+	protected Integer computeMove()
 	{
 		return ai.getBestMove(carteInMano, game.getInfo());
 	}

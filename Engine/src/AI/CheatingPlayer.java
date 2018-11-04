@@ -13,7 +13,7 @@ public class CheatingPlayer extends Player
 	}
 	
 	@Override
-	protected int computeMove()
+	protected Integer computeMove()
 	{
 		return ai.getBestMove(game.getAssegnamentoCarte(), game.getInfo());
 	}

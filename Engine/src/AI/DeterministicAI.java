@@ -38,5 +38,5 @@ public abstract class DeterministicAI
 		return playerID;
 	}
 
-	public abstract int getBestMove(List<List<Integer>> assegnamentoCarte, Info info);
+	public abstract Integer getBestMove(List<List<Integer>> assegnamentoCarte, Info info);
 }

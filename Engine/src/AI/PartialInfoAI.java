@@ -18,5 +18,5 @@ public abstract class PartialInfoAI
 		return playerID;
 	}
 		
-	public abstract int getBestMove(List<Integer> carteInMano, Info info);
+	public abstract Integer getBestMove(List<Integer> carteInMano, Info info);
 }

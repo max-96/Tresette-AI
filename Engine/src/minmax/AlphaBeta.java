@@ -81,7 +81,7 @@ public class AlphaBeta extends DeterministicAI
 	}
 
 	@Override
-	public int getBestMove(List<List<Integer>> assegnamentoCarte, Info info)
+	public Integer getBestMove(List<List<Integer>> assegnamentoCarte, Info info)
 	{
 		/*
 		 * Il caso in cui le carte rimaste siano 0 o 1 non e' considerato, e' necessario
@@ -144,7 +144,7 @@ public class AlphaBeta extends DeterministicAI
 			ms.addStats(d, domCard, bestAction);
 		}
 
-		return bestAction;
+		return Integer.valueOf(bestAction);
 	}
 
 	private double alphabeta(AIGameState gs, double alpha, double beta, int depth, final int maxDepth)
@@ -300,7 +300,7 @@ public class AlphaBeta extends DeterministicAI
 		protected void compute()
 		{
 			AlphaBeta k = new AlphaBeta(playerId, depth);
-			int r = k.getBestMove(assegnamentoCarte, info);
+			Integer r = k.getBestMove(assegnamentoCarte, info);
 			punti.computeIfAbsent(r, key -> new LongAdder()).increment();
 		}
 	}

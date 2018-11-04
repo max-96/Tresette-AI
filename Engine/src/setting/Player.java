@@ -30,7 +30,7 @@ public abstract class Player
 		return this.id;
 	}
 	
-	protected abstract int computeMove();
+	protected abstract Integer computeMove();
 	
 	public int getMove()
 	{

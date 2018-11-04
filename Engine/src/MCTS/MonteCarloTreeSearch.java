@@ -43,7 +43,7 @@ public class MonteCarloTreeSearch extends DeterministicAI
 	}
 
 	@Override
-	public int getBestMove(List<List<Integer>> assegnamentoCarte, Info info)
+	public Integer getBestMove(List<List<Integer>> assegnamentoCarte, Info info)
 	{
 		long execTime = System.currentTimeMillis();
 		
@@ -84,7 +84,7 @@ public class MonteCarloTreeSearch extends DeterministicAI
 		protected void compute()
 		{
 			MonteCarloTreeSearch k = new MonteCarloTreeSearch(playerId, iterations, C_PARAM);
-			int r = k.getBestMove(assegnamentoCarte, info);
+			Integer r = k.getBestMove(assegnamentoCarte, info);
 			punti.computeIfAbsent(r, key -> new LongAdder()).increment();
 		}
 	}

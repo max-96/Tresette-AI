@@ -26,7 +26,7 @@ public class DeterminizationPlayer extends Player
 	}
 
 	@Override
-	protected int computeMove()
+	protected Integer computeMove()
 	{
 		Info info = game.getInfo();
 		SforzaSolver deter = new SforzaSolver(id, carteInMano, info, n_TRAILS);
@@ -56,7 +56,7 @@ public class DeterminizationPlayer extends Player
 			e.printStackTrace();
 		}
 
-		int bestMove = -1;
+		Integer bestMove = -1;
 		int bestVal = -1;
 
 		for (Entry<Integer, LongAdder> k : aiFactory.getPunti().entrySet())
