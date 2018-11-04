@@ -4,48 +4,53 @@ import java.util.List;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+import it.ai.tresette.GameManager;
 import it.ai.tresette.GameManager.KindOfPlayer;
 import it.ai.tresette.objects.Card;
 import it.ai.tresette.objects.CardsInHand;
-import it.ai.tresette.objects.CardsOnTable;
 
-public abstract class Player {
-
-	protected CardsInHand myCards;
-	
+public abstract class Player
+{
 	protected int id;
-	
+	protected CardsInHand myCards;
 	protected KindOfPlayer myKind;
-	
-	public Player(int id, CardsInHand cards)
+
+	public Player(int id, KindOfPlayer myKind)
 	{
 		this.id = id;
-		this.myCards = cards;
+		this.myKind = myKind;
 	}
-	
+
 	/**
 	 * questo metodo ritorna la mossa che il player esegue nel turno
 	 */
-	public abstract Card getMossa(int id,List<List<Integer>> assegnamentoCarte,CardsOnTable cardsOnTable,
-			double scoreMyTeam, double scoreOtherTeam);
-	
-	
-	public abstract Card getMossa();
-	
-	public abstract void draw(SpriteBatch batch);
-	/**
-	 * this methods return the cards in hand represented by a list of integers
-	 * @return
-	 */
-	public  List<Integer> getCardsInHand()
+	public abstract Card getMove();
+
+	public void draw(SpriteBatch batch)
 	{
-		return this.myCards.toIntList();
-		
+		this.myCards.draw(batch);
 	}
 	
+	public abstract void setInfo(GameManager game);
+	
+	public void setCardsInHand(List<Card> myCards)
+	{
+		this.myCards = new CardsInHand(myCards, id);
+	}
+	
+	/**
+	 * this methods return the cards in hand represented by a list of integers
+	 * 
+	 * @return
+	 */
+	public List<Integer> getCardsInHand()
+	{
+		return this.myCards.toIntList();
+	}
+
 	public KindOfPlayer getKind()
 	{
 		return this.myKind;
 	}
-	
+
 }
