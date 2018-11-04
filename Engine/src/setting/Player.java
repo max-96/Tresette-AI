@@ -2,6 +2,8 @@ package setting;
 
 import java.util.List;
 
+import util.CardsUtils;
+
 public abstract class Player
 {
 	protected int id;
@@ -28,5 +30,17 @@ public abstract class Player
 		return this.id;
 	}
 	
-	public abstract int getMove();
+	protected abstract int computeMove();
+	
+	public int getMove()
+	{
+		List<Integer> mosse = CardsUtils.getPossibiliMosse(carteInMano, game.getInfo().getCardsOnTable());
+		if (mosse.size() == 1)
+			return mosse.get(0);
+		
+		Integer bestMove = computeMove();
+		carteInMano.remove(bestMove);
+		
+		return bestMove;
+	}
 }

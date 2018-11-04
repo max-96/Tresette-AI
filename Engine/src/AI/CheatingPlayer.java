@@ -1,9 +1,6 @@
 package AI;
 
-import java.util.List;
-
 import setting.Player;
-import util.CardsUtils;
 
 public class CheatingPlayer extends Player
 {
@@ -16,15 +13,8 @@ public class CheatingPlayer extends Player
 	}
 	
 	@Override
-	public int getMove()
+	protected int computeMove()
 	{
-		List<Integer> mosse = CardsUtils.getPossibiliMosse(carteInMano, game.getInfo().getCardsOnTable());
-		if (mosse.size() == 1)
-			return mosse.get(0);
-		
-		Integer bestMove = ai.getBestMove(game.getAssegnamentoCarte(), game.getInfo());
-		carteInMano.remove(bestMove);
-		
-		return bestMove;
+		return ai.getBestMove(game.getAssegnamentoCarte(), game.getInfo());
 	}
 }

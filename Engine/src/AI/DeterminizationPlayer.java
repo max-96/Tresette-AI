@@ -11,7 +11,6 @@ import java.util.concurrent.atomic.LongAdder;
 
 import AI.DeterministicAI.Factory;
 import setting.Game.Info;
-import util.CardsUtils;
 import setting.Player;
 
 public class DeterminizationPlayer extends Player
@@ -27,12 +26,8 @@ public class DeterminizationPlayer extends Player
 	}
 
 	@Override
-	public int getMove()
+	protected int computeMove()
 	{
-		List<Integer> mosse = CardsUtils.getPossibiliMosse(carteInMano, game.getInfo().getCardsOnTable());
-		if (mosse.size() == 1)
-			return mosse.get(0);
-		
 		Info info = game.getInfo();
 		SforzaSolver deter = new SforzaSolver(id, carteInMano, info, n_TRAILS);
 		deter.startProducing();
@@ -61,7 +56,7 @@ public class DeterminizationPlayer extends Player
 			e.printStackTrace();
 		}
 
-		Integer bestMove = -1;
+		int bestMove = -1;
 		int bestVal = -1;
 
 		for (Entry<Integer, LongAdder> k : aiFactory.getPunti().entrySet())
@@ -72,8 +67,6 @@ public class DeterminizationPlayer extends Player
 				bestVal = k.getValue().intValue();
 			}
 		}
-
-		carteInMano.remove(bestMove);
 		
 		return bestMove;
 	}
