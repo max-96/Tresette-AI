@@ -66,9 +66,9 @@ public class Test
 		Player[] players = new Player[4];
 		int noMatches = 100;
 		
-		players[0] = new DeterminizationPlayer(0, new MonteCarloTreeSearch.Factory(20000, 0.75), 100);
+		players[0] = new DeterminizationPlayer(0, new MonteCarloTreeSearch.Factory(2000, 0.75), 10);
 		players[1] = new PartialInfoPlayer(new RandWalk(1));
-		players[2] = new DeterminizationPlayer(2, new MonteCarloTreeSearch.Factory(20000, 0.75), 100);
+		players[2] = new DeterminizationPlayer(2, new MonteCarloTreeSearch.Factory(2000, 0.75), 10);
 		players[3] = new PartialInfoPlayer(new RandWalk(3));
 //		players[0] = new PartialInfoPlayer(new RandWalk(0));
 //		players[1] = new PartialInfoPlayer(new RandWalk(1));

@@ -5,6 +5,6 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry excluding="AI/RandCSPSolver.java|MCTS/GameState.java|minmax/GreedyMinMax.java|minmax/GreedyMinMaxTest.java|minmax/ZamMax.java|AI/GreedyPlayerAI.java|minmax/DebugGraph.java|AI/CSPTest.java|minmax/AlphaBetaKiller.java|minmax/AlphaBetaKiller2.java|minmax/AlphaBetaOld.java|minmax/AlphaBetabk.java|AI/AlphaBeta.java|AI/DumbPlayerAI.java|AI/NeutralGameState.java|setting/HumanPlayer.java|setting/Card.java|AI/AITesting.java" kind="src" path="src"/>
+	<classpathentry excluding="AI/RandCSPSolver.java|MCTS/GameState.java|minmax/GreedyMinMax.java|minmax/GreedyMinMaxTest.java|minmax/ZamMax.java|AI/GreedyPlayerAI.java|minmax/DebugGraph.java|AI/CSPTest.java|minmax/AlphaBetaKiller.java|minmax/AlphaBetaKiller2.java|minmax/AlphaBetaOld.java|minmax/AlphaBetabk.java|AI/AlphaBeta.java|AI/DumbPlayerAI.java|AI/NeutralGameState.java|setting/HumanPlayer.java|setting/Card.java|AI/AITesting.java|MCTS/MCTSTest.java|minmax/AlphaBetaTest.java|minmax/AlphaBetaLBF.java" kind="src" path="src"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

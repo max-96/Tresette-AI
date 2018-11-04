@@ -17,7 +17,14 @@ public abstract class DeterministicAI
 		
 		public ConcurrentHashMap<Integer, LongAdder> getPunti()
 		{
-			return punti;
+			ConcurrentHashMap<Integer, LongAdder> p = punti;
+			clear();
+			return p;
+		}
+		
+		protected void clear()
+		{
+			punti = new ConcurrentHashMap<>();
 		}
 		
 		public abstract RecursiveAction getAI(int playerID, List<List<Integer>> assegnamentoCarte, Info info);
