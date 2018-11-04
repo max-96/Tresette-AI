@@ -21,7 +21,7 @@ public class MainGameScreen implements Screen{
 	public MainGameScreen(TreSette game)
 	{
 		this.game = game;
-		this.table = new GameManager();
+		this.table = new GameManager(game.getPlayers());
 	}
 	
 	

@@ -20,9 +20,9 @@ public class MonteCarloTreeSearch extends DeterministicAI
 	public static class Factory extends DeterministicAI.Factory
 	{
 		private int iterations;
-		private int C_PARAM;
+		private double C_PARAM;
 		
-		public Factory(int iterations, int c_param)
+		public Factory(int iterations, double c_param)
 		{
 			this.iterations = iterations;
 			C_PARAM = c_param;

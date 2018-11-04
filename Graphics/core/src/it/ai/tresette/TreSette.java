@@ -1,19 +1,27 @@
 package it.ai.tresette;
 
-import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-import it.ai.tresette.screens.MainGameScreen;
+import it.ai.tresette.player.Player;
 import it.ai.tresette.screens.MainMenuScreen;
 
 public class TreSette extends Game {
 	
 	public static final int WINDOW_WIDTH = 1280;
 	public static final int WINDOW_HEIGTH = 720;
+	
+	private Player[] players;
+	
+	public TreSette(Player... players)
+	{
+		this.players = players;
+	}
+	
+	public Player[] getPlayers()
+	{
+		return this.players;
+	}
 	
 	public SpriteBatch batch;
 	@Override

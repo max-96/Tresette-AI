@@ -17,8 +17,8 @@ public class SforzaSolver
 {
 	private Info info;
 	private int n_TRAILS;
-	private List<List<Integer>> assegnamentoCarte;
-	private int[] carteMancanti;
+	private List<List<Integer>> assegnamentoCarte = new ArrayList<>(4);
+	private int[] carteMancanti = new int[4];
 	private List<Integer> carteLibere;
 	private List<List<Integer>> carteLiberePerSeme = new ArrayList<>(4);
 

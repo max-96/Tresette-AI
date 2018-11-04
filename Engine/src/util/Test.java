@@ -1,10 +1,10 @@
 package util;
 
 import AI.CheatingPlayer;
+import AI.DeterminizationPlayer;
 import AI.PartialInfoPlayer;
 import AI.RandWalk;
 import MCTS.MonteCarloTreeSearch;
-import minmax.AlphaBeta;
 import setting.Game;
 import setting.Player;
 
@@ -66,9 +66,9 @@ public class Test
 		Player[] players = new Player[4];
 		int noMatches = 100;
 		
-		players[0] = new CheatingPlayer(new MonteCarloTreeSearch(0, 20000, 0.75));
+		players[0] = new DeterminizationPlayer(0, new MonteCarloTreeSearch.Factory(20000, 0.75), 100);
 		players[1] = new PartialInfoPlayer(new RandWalk(1));
-		players[2] = new CheatingPlayer(new MonteCarloTreeSearch(2, 20000, 0.75));
+		players[2] = new DeterminizationPlayer(2, new MonteCarloTreeSearch.Factory(20000, 0.75), 100);
 		players[3] = new PartialInfoPlayer(new RandWalk(3));
 //		players[0] = new PartialInfoPlayer(new RandWalk(0));
 //		players[1] = new PartialInfoPlayer(new RandWalk(1));

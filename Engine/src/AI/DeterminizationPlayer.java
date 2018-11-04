@@ -46,10 +46,11 @@ public class DeterminizationPlayer extends Player
 			List<List<Integer>> s = sols.take();
 			while (s != Collections.EMPTY_LIST)
 			{
-				s = sols.take();
 				RecursiveAction r = aiFactory.getAI(id, s, info);
 				pool.execute(r);
 				threads.add(r);
+				
+				s = sols.take();
 			}
 
 			for (RecursiveAction t : threads)

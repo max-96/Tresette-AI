@@ -28,16 +28,14 @@ public class Game
 	{
 		private double[] scores = { 0, 0 };
 		private int startingPlayer;
-		private List<List<Integer>> accusi = new ArrayList<>();;
-		private List<List<Integer>> semiAttivi = new ArrayList<>();;
+		private List<List<Integer>> accusi = new ArrayList<>();
+		private List<List<Integer>> semiAttivi = new ArrayList<>();
 		private List<Integer> availableCards = new ArrayList<>();
 		private List<Integer> cardsOnTable = new ArrayList<>();
 		private int[] numeroCarteInMano = { 10, 10, 10, 10 };
 
-		private Info()
-		{
-		}
-
+		private Info() {}
+		
 		public int getTurn()
 		{
 			return cardsOnTable.size();
@@ -113,7 +111,7 @@ public class Game
 			p.setGame(this);
 	}
 
-	private void initialise()
+	public void initialise()
 	{
 		info = new Info();
 		
@@ -141,6 +139,25 @@ public class Game
 		info.startingPlayer = FindFourOfDenari(assCarte);
 	}
 
+	public void updateInfo(Integer card, int startingPlayer, List<Integer> cardsOnTable,
+			List<List<Integer>> accusi, List<List<Integer>> semiAttivi)
+	{
+		for (int p = 0; p < 4; p++)
+			if (assCarte.get(p).remove(card))
+				info.numeroCarteInMano[p]--;
+				
+		info.startingPlayer = startingPlayer;
+		info.accusi = accusi;
+		info.semiAttivi = semiAttivi;
+		info.availableCards.remove(card);
+		info.cardsOnTable = cardsOnTable;
+	}
+	
+	public void updateScores(double[] scores)
+	{
+		info.scores = scores;
+	}
+	
 	public Info getInfo()
 	{
 		return info;
@@ -175,7 +192,7 @@ public class Game
 					Integer move = players[currentPlayer].getMove();
 					players[currentPlayer].removeCard(move);
 
-					assCarte.get(currentPlayer).remove(move);
+					carteInMano.remove(move);
 					info.availableCards.remove(move);
 					info.numeroCarteInMano[currentPlayer]--;
 
