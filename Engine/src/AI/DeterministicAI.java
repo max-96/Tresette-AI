@@ -17,12 +17,10 @@ public abstract class DeterministicAI
 		
 		public ConcurrentHashMap<Integer, LongAdder> getPunti()
 		{
-			ConcurrentHashMap<Integer, LongAdder> p = punti;
-			clear();
-			return p;
+			return punti;
 		}
 		
-		protected void clear()
+		public void clear()
 		{
 			punti = new ConcurrentHashMap<>();
 		}

@@ -68,6 +68,8 @@ public class DeterminizationPlayer extends Player
 			}
 		}
 		
+		aiFactory.clear();
+		
 		return bestMove;
 	}
 }
