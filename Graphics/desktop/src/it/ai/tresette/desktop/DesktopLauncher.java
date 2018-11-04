@@ -25,9 +25,9 @@ public class DesktopLauncher {
 		
 		Player[] players = new Player[4];
 		players[0] = new HumanPlayer(0);
-		players[1] = new AIPlayer(1, new PartialInfoPlayer(new RandWalk(1)));
-		players[2] = new AIPlayer(2, new PartialInfoPlayer(new RandWalk(2)));
-		players[3] = new AIPlayer(3, new PartialInfoPlayer(new RandWalk(3)));
+		players[1] = new AIPlayer(new PartialInfoPlayer(new RandWalk(1)));
+		players[2] = new AIPlayer(new PartialInfoPlayer(new RandWalk(2)));
+		players[3] = new AIPlayer(new PartialInfoPlayer(new RandWalk(3)));
 		
 		new LwjglApplication(new TreSette(players), config);
 	}

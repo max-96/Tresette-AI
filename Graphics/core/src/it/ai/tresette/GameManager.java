@@ -165,7 +165,6 @@ public class GameManager {
 				break;
 				
 			case INGOING:
-				System.out.println("Playing turn number " + turno);
 				handManager();
 				if(this.handState == HandState.INITIALISINGHAND)
 					turno++;
@@ -191,6 +190,7 @@ public class GameManager {
 		switch(this.handState)
 		{
 			case INITIALISINGHAND:
+				System.out.println("Playing hand number " + turno);
 				initialiseHand();
 				break;
 			case INGOINGHAND:
@@ -209,10 +209,11 @@ public class GameManager {
 	
 	private void showFourthCard() {
 		
-		try {
-			TimeUnit.SECONDS.sleep(1);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
+		try
+		{
+			TimeUnit.SECONDS.sleep(3);
+		} catch (InterruptedException e)
+		{
 			e.printStackTrace();
 		}
 		
@@ -250,7 +251,17 @@ public class GameManager {
 		if (turno == 1)
 		{
 			List<Integer> accusi = this.accusi.get(actualPlayer);
-			punteggi[getTeam(actualPlayer)] += findAccusiOfPlayer(game.getAssegnamentoCarte().get(actualPlayer), accusi);
+			double punti = findAccusiOfPlayer(game.getAssegnamentoCarte().get(actualPlayer), accusi);
+			
+			if (punti > 0)
+			{
+				punteggi[getTeam(actualPlayer)] += punti;
+				
+				System.out.print("Accuso! " + (int) punti + " points: ");
+				for (int i = 0; i < accusi.size() - 1; i++)
+					System.out.print(new Card(accusi.get(i)) + ", ");
+				System.out.println(new Card(accusi.get(accusi.size() - 1)));
+			}
 		}
 		
 		switch(this.playerKind)

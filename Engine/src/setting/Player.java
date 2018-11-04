@@ -23,5 +23,10 @@ public abstract class Player
 		this.game = game;
 	}
 	
+	public int getID()
+	{
+		return this.id;
+	}
+	
 	public abstract int getMove();
 }

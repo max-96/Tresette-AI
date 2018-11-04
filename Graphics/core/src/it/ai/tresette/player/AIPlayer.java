@@ -7,9 +7,9 @@ import it.ai.tresette.objects.Card;
 
 public class AIPlayer extends Player
 {
-	public AIPlayer(int id, setting.Player ai)
+	public AIPlayer(setting.Player ai)
 	{
-		super(id, ai, KindOfPlayer.AIPLAYER);
+		super(ai.getID(), ai, KindOfPlayer.AIPLAYER);
 	}
 	
 	@Override
