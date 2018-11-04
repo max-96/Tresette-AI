@@ -22,7 +22,7 @@ public class HumanPlayer extends Player
 		@Override
 		protected Integer computeMove()
 		{
-			return -1;
+			return Integer.valueOf(-1);
 		}
 	}
 	
