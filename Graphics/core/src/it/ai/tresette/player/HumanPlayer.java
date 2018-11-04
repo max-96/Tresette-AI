@@ -20,7 +20,7 @@ public class HumanPlayer extends Player
 		}
 
 		@Override
-		protected int computeMove()
+		protected Integer computeMove()
 		{
 			return -1;
 		}
