@@ -17,7 +17,6 @@ public class AIPlayer extends Player
 	public Card getMove(CardsOnTable cardsOnTable)
 	{
 		Card mossa = new Card(ai.getMove());
-		System.out.println(mossa);
 		return myCards.remove(mossa);
 	}
 	

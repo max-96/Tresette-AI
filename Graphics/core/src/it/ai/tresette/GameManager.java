@@ -44,7 +44,7 @@ public class GameManager {
 	/**
 	 * Point counter for each team
 	 */
-	private double[] punteggi = { 0, 0 };
+	private double[] punteggi;
 
 	/**
 	 * Total point counter for each team
@@ -206,9 +206,9 @@ public class GameManager {
 		{
 			System.out.println("\nNow let's check who's the winner!");
 			if (punteggiTotali[0] > punteggiTotali[1])
-				System.out.println("The winner is your team with " + punteggi[0] + " points!");
+				System.out.println("The winner is your team with " + punteggiTotali[0] + " points!");
 			else
-				System.out.println("The winnes is opponent team with " + punteggi[1] + " points.");
+				System.out.println("The winner is opponent team with " + punteggiTotali[1] + " points.");
 			
 			this.gameState = GameState.GAMEEND;
 			return;

@@ -46,7 +46,7 @@ public class Card extends Entity implements Comparable<Card> {
 	public enum Val 
 	{ 
 		//la logica e': stringa per il path della texture - numero della carta - potenza della carta - valore in punti della carta
-		ASSO("uno",0,7,1), DUE("due",1,8,1/3), TRE("tre",2,9,1/3), QUATTRO("quattro",3,0,0), CINQUE("cinque",4,1,0), SEI("sei",5,2,0), SETTE("sette",6,3,0), FANTE("fante",7,4,1/3), CAVALLO("cavaliere",8,5,1/3), RE("re",9,6,1/3);
+		ASSO("uno",0,7,1), DUE("due",1,8,1.0/3), TRE("tre",2,9,1.0/3), QUATTRO("quattro",3,0,0), CINQUE("cinque",4,1,0), SEI("sei",5,2,0), SETTE("sette",6,3,0), FANTE("fante",7,4,1.0/3), CAVALLO("cavaliere",8,5,1.0/3), RE("re",9,6,1.0/3);
 		
 		/**
 		 * the int representation of the card; where Asso is 0 and Re is 9
@@ -68,7 +68,7 @@ public class Card extends Entity implements Comparable<Card> {
 		 */
 		private String stringPath;
 		
-		private Val(String stringPath,int cardNr, int dominanza, int punteggio) {this.stringPath = stringPath; this.cardNr = cardNr; this.dominanza = dominanza; this.punteggio = punteggio; }
+		private Val(String stringPath,int cardNr, int dominanza, double punteggio) {this.stringPath = stringPath; this.cardNr = cardNr; this.dominanza = dominanza; this.punteggio = punteggio; }
 		
 		private Val(int cardNr) { this.cardNr = cardNr;}
 		
