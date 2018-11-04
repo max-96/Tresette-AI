@@ -24,7 +24,7 @@ public class DesktopLauncher {
 		config.resizable = false;
 		
 		Player[] players = new Player[4];
-		players[0] = new HumanPlayer(0);
+		players[0] = new AIPlayer(new PartialInfoPlayer(new RandWalk(0)));;
 		players[1] = new AIPlayer(new PartialInfoPlayer(new RandWalk(1)));
 		players[2] = new AIPlayer(new PartialInfoPlayer(new RandWalk(2)));
 		players[3] = new AIPlayer(new PartialInfoPlayer(new RandWalk(3)));

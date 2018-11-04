@@ -5,6 +5,7 @@ import static util.CardsUtils.getTeam;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -16,6 +17,7 @@ import it.ai.tresette.objects.Card.Val;
 import it.ai.tresette.objects.CardsOnTable;
 import it.ai.tresette.player.Player;
 import setting.Game;
+import util.CardsUtils;
 
 public class GameManager {
 
@@ -44,6 +46,11 @@ public class GameManager {
 	 */
 	private double[] punteggi = { 0, 0 };
 
+	/**
+	 * Total point counter for each team
+	 */
+	private double[] punteggiTotali = { 0, 0 };
+	
 	/**
 	 * Suit active for each Player
 	 */
@@ -119,7 +126,7 @@ public class GameManager {
 		
 	private enum GameState
 	{
-		GAMEREADY, INGOING, GAMEEND
+		GAMEREADY, INGOING, MATCHEND, GAMEEND
 	}
 	
 	private enum HandState
@@ -141,8 +148,8 @@ public class GameManager {
 		for (int i = 0; i < 4; i++)
 			p[i] = players[i].getAI();
 		this.game = new Game(p);
-		
-		initialise();
+
+		this.gameState = GameState.GAMEREADY;
 	}
 	
 	public CardsOnTable getCardsOnTable()
@@ -160,6 +167,7 @@ public class GameManager {
 		switch (this.gameState)
 		{
 			case GAMEREADY:
+				initialise();
 				this.gameState = GameState.INGOING;
 				System.out.println("We are starting the game");
 				break;
@@ -169,28 +177,55 @@ public class GameManager {
 				if(this.handState == HandState.INITIALISINGHAND)
 					turno++;
 				if (turno > 10)
-					gameState = GameState.GAMEEND;
+					gameState = GameState.MATCHEND;
 				break;
 
+			case MATCHEND:
+				matchManager();
+				break;
+				
 			case GAMEEND:
-				System.out.println("Now let's check who's the winner!");
-				if (punteggi[0] > punteggi[1])
-					System.out.println("The winner is team 1 with " + punteggi[0] + " points!");
-				else
-					System.out.println("The winnes is team 2 with " + punteggi[1] + " points!");
-				return;
+				break;
 		}
+	}
+	
+	private void matchManager()
+	{
+		punteggi[CardsUtils.getTeam(dominatingPlayer)]++;
+		punteggi[0] = Math.floor(punteggi[0] + CardsUtils.EPS);
+		punteggi[1] = Math.floor(punteggi[1] + CardsUtils.EPS);
+		punteggiTotali[0] += punteggi[0];
+		punteggiTotali[1] += punteggi[1];
+		
+		System.out.println("\nYour team has scored " + punteggi[0] + " points");
+		System.out.println("Opponent team has scored " + punteggi[1] + " points");
+		
+		if ((punteggiTotali[0] > CardsUtils.WINNING_SCORE || 
+				punteggiTotali[0] > CardsUtils.WINNING_SCORE) &&
+				punteggiTotali[0] != punteggiTotali[1])
+		{
+			System.out.println("\nNow let's check who's the winner!");
+			if (punteggiTotali[0] > punteggiTotali[1])
+				System.out.println("The winner is your team with " + punteggi[0] + " points!");
+			else
+				System.out.println("The winnes is opponent team with " + punteggi[1] + " points.");
+			
+			this.gameState = GameState.GAMEEND;
+			return;
+		}
+		
+		this.gameState = GameState.GAMEREADY;
 	}
 	
 	/**
 	 * 	this method manage the lifecycle of a tresette's hand
 	 */
-	public void handManager()
+	private void handManager()
 	{
 		switch(this.handState)
 		{
 			case INITIALISINGHAND:
-				System.out.println("Playing hand number " + turno);
+				System.out.println("\nPlaying hand number " + turno);
 				initialiseHand();
 				break;
 			case INGOINGHAND:
@@ -222,11 +257,10 @@ public class GameManager {
 
 	private void concludeHand()
 	{
-		if (dominatingPlayer % 2 == 0) 												// se i punti vanno alla squadra 1
-			punteggi[0] += points;
-		else 																		// altrimenti vanno alla squadra 2
-			punteggi[1] += points;
-		System.out.println("The team " + (dominatingPlayer % 2 + 1) + " has scored " + points + " points.");
+		punteggi[CardsUtils.getTeam(dominatingPlayer)] += points;
+		
+		System.out.println("Team " + CardsUtils.getTeam(dominatingPlayer) + " takes: " + cardsOnTable);
+		
 		startingPlayer = dominatingPlayer;
 		cardsOnTable.reset();														//elimino le carte sul tavolo
 																					//incremento il contatore del turno
@@ -257,7 +291,7 @@ public class GameManager {
 			{
 				punteggi[getTeam(actualPlayer)] += punti;
 				
-				System.out.print("Accuso! " + (int) punti + " points: ");
+				System.out.print("Player " + (actualPlayer + 1) + " accuso! " + (int) punti + " points: ");
 				for (int i = 0; i < accusi.size() - 1; i++)
 					System.out.print(new Card(accusi.get(i)) + ", ");
 				System.out.println(new Card(accusi.get(accusi.size() - 1)));
@@ -281,7 +315,7 @@ public class GameManager {
 	private void AIturn()
 	{
 		//Chiediamo la mossa al player artificiale
-		Card temp = players[actualPlayer].getMove(cardsOnTable.getCardsOnTable());
+		Card temp = players[actualPlayer].getMove(cardsOnTable);
 		turnPlayed(temp);
 	}
 	
@@ -291,7 +325,7 @@ public class GameManager {
 	private void humanTurn()
 	{
 		//TODO e' temporaneo, ad ora il gioco frezza mentre aspetta la mossa del player, da cambiare 
-		Card temp = players[actualPlayer].getMove(cardsOnTable.getCardsOnTable());
+		Card temp = players[actualPlayer].getMove(cardsOnTable);
 		turnPlayed(temp); 
 	}
 	
@@ -325,7 +359,12 @@ public class GameManager {
 	
 	private void initialise()
 	{
+		assCarte.clear();
+		accusi.clear();
+		semiAttivi.clear();
+		punteggi = new double[] { 0, 0 };
 		game.initialise();
+		
 		//tutte le carte rappresentate con interi da 0 a 39
 		List<List<Integer>> deck = game.getAssegnamentoCarte();
 
@@ -334,6 +373,7 @@ public class GameManager {
 		//estraggo 4 players, dotati di 10 carte ognuno, prese dal mazzo
 		for (int i = 0; i < 4; i++)
 		{
+			Collections.sort(deck.get(i));
 			List<Card> carteInMano = new ArrayList<>();
 			for (int j = 0; j < 10; j++)
 				carteInMano.add(new Card(deck.get(i).get(j)));
@@ -351,7 +391,6 @@ public class GameManager {
 				startingPlayer = i;
 		}
 
-		this.gameState = GameState.GAMEREADY;
 		this.turno = 1;
 		this.cardsOnTable = new CardsOnTable();
 		this.handState = HandState.INITIALISINGHAND;

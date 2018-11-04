@@ -35,12 +35,14 @@ public abstract class Player
 	public int getMove()
 	{
 		List<Integer> mosse = CardsUtils.getPossibiliMosse(carteInMano, game.getInfo().getCardsOnTable());
+		Integer bestMove;
+		
 		if (mosse.size() == 1)
-			return mosse.get(0);
+			bestMove = mosse.get(0);
+		else
+			bestMove = computeMove();
 		
-		Integer bestMove = computeMove();
 		carteInMano.remove(bestMove);
-		
 		return bestMove;
 	}
 }

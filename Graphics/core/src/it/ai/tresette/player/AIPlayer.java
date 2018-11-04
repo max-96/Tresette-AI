@@ -4,6 +4,7 @@ import java.util.List;
 
 import it.ai.tresette.GameManager.KindOfPlayer;
 import it.ai.tresette.objects.Card;
+import it.ai.tresette.objects.CardsOnTable;
 
 public class AIPlayer extends Player
 {
@@ -13,12 +14,11 @@ public class AIPlayer extends Player
 	}
 	
 	@Override
-	public Card getMove(List<Integer> cardsOnTable)
+	public Card getMove(CardsOnTable cardsOnTable)
 	{
 		Card mossa = new Card(ai.getMove());
-		myCards.remove(mossa);
-		
-		return mossa;
+		System.out.println(mossa);
+		return myCards.remove(mossa);
 	}
 	
 	@Override

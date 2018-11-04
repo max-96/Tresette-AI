@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
-public class Card extends Entity {
+public class Card extends Entity implements Comparable<Card> {
 
 	private String path = "";
 	
@@ -46,7 +46,7 @@ public class Card extends Entity {
 	public enum Val 
 	{ 
 		//la logica e': stringa per il path della texture - numero della carta - potenza della carta - valore in punti della carta
-		ASSO("uno",0,7,3), DUE("due",1,8,1), TRE("tre",2,9,1), QUATTRO("quattro",3,0,0), CINQUE("cinque",4,1,0), SEI("sei",5,2,0), SETTE("sette",6,3,0), FANTE("fante",7,4,1), CAVALLO("cavaliere",8,5,1), RE("re",9,6,1);
+		ASSO("uno",0,7,1), DUE("due",1,8,1/3), TRE("tre",2,9,1/3), QUATTRO("quattro",3,0,0), CINQUE("cinque",4,1,0), SEI("sei",5,2,0), SETTE("sette",6,3,0), FANTE("fante",7,4,1/3), CAVALLO("cavaliere",8,5,1/3), RE("re",9,6,1/3);
 		
 		/**
 		 * the int representation of the card; where Asso is 0 and Re is 9
@@ -61,7 +61,7 @@ public class Card extends Entity {
 		/**
 		 * the value in points of each Card where Points(ASSO) = 3 and Points(TRE) = 1 and point(CINQUE) = 0
 		 */
-		private int punteggio;
+		private double punteggio;
 		
 		/**
 		 * The string used for constructing the path of the texture
@@ -76,7 +76,7 @@ public class Card extends Entity {
 		
 		public int getDominanza() {return this.dominanza;}
 		
-		public int getPoints() {return this.punteggio;}
+		public double getPoints() {return this.punteggio;}
 		
 		@Override
 		public String toString(){return this.stringPath;}
@@ -194,7 +194,7 @@ public class Card extends Entity {
 		return this.suit.getVal();
 	}
 	
-	public int getPoints() {return this.val.getPoints();}
+	public double getPoints() {return this.val.getPoints();}
 	
 	public int getCardnr() {return this.val.getCardNr()+this.suit.getVal();}
 	
@@ -207,6 +207,7 @@ public class Card extends Entity {
 		return(this.suit.equals(temp.suit) && this.val.equals(temp.val));
 	}
 	
+	@Override
 	public int compareTo(Card dominatingCard) {
 		if(this.suit.equals(dominatingCard.suit)) 
 			return this.val.moreDominant(dominatingCard.val);

@@ -5,6 +5,7 @@ import java.util.Scanner;
 
 import it.ai.tresette.GameManager.KindOfPlayer;
 import it.ai.tresette.objects.Card;
+import it.ai.tresette.objects.CardsOnTable;
 import util.CardsUtils;
 
 public class HumanPlayer extends Player
@@ -19,7 +20,7 @@ public class HumanPlayer extends Player
 		}
 
 		@Override
-		public int getMove()
+		protected int computeMove()
 		{
 			return -1;
 		}
@@ -31,10 +32,10 @@ public class HumanPlayer extends Player
 	}
 	
 	@Override
-	public Card getMove(List<Integer> cardsOnTable)
+	public Card getMove(CardsOnTable cardsOnTable)
 	{
 
-		List<Integer> possMosse = CardsUtils.getPossibiliMosse(getCardsInHand(), cardsOnTable);
+		List<Integer> possMosse = CardsUtils.getPossibiliMosse(getCardsInHand(), cardsOnTable.getCardsOnTable());
 	
 		System.out.print("Carte giocabili: [");
 		for (int i = 0; i < possMosse.size() - 1; i++)

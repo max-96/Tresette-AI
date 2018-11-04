@@ -38,20 +38,19 @@ public class CardsInHand {
 		this.cardCounter = cardCounter;
 	}
 	
-	public void remove(Card a) 
+	public Card remove(Card a) 
 	{
-		if(!cardsInHand.contains(a)) return;
-		cardsInHand.remove(a);
-		cardCounter--;
+		return remove(a.toInt());
 	}
 	
-	public Card remove(Integer cardNr)
+	public Card remove(int cardNr)
 	{
 		Card temp = null;
 		for(Card a : cardsInHand)
-			if(cardNr.equals(a.toInt()))
+			if(cardNr == a.toInt())
 				temp = a;
-		remove(temp);
+		cardsInHand.remove(temp);
+		cardCounter--;
 		return temp;
 	}
 	

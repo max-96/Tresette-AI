@@ -47,7 +47,6 @@ public class MainGameScreen implements Screen{
 		
 		
 		game.batch.end();
-		System.out.println("ok");
 		
 	}
 	

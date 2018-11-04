@@ -112,4 +112,10 @@ public class CardsOnTable {
 	{
 		return (this.cardsOnTable==0);
 	}
+	
+	@Override
+	public String toString()
+	{
+		return this.cards.toString();
+	}
 }

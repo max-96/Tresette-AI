@@ -1,6 +1,5 @@
 package it.ai.tresette.player;
 
-import java.util.Collections;
 import java.util.List;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -8,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import it.ai.tresette.GameManager.KindOfPlayer;
 import it.ai.tresette.objects.Card;
 import it.ai.tresette.objects.CardsInHand;
+import it.ai.tresette.objects.CardsOnTable;
 
 public abstract class Player
 {
@@ -26,7 +26,7 @@ public abstract class Player
 	/**
 	 * questo metodo ritorna la mossa che il player esegue nel turno
 	 */
-	public abstract Card getMove(List<Integer> cardsOnTable);
+	public abstract Card getMove(CardsOnTable cardsOnTable);
 
 	public void draw(SpriteBatch batch)
 	{
