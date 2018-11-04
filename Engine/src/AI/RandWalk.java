@@ -17,7 +17,7 @@ public class RandWalk extends PartialInfoAI
 	}
 
 	@Override
-	public int getBestMove(List<Integer> carteInMano, Info info)
+	public Integer getBestMove(List<Integer> carteInMano, Info info)
 	{
 		List<Integer> mosse = CardsUtils.getPossibiliMosse(carteInMano, info.getCardsOnTable());
 		return mosse.get(rand.nextInt(mosse.size()));
