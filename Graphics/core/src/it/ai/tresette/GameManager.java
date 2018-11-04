@@ -137,6 +137,11 @@ public class GameManager {
 		assert players.length == 4;
 		this.players = players;
 		
+		setting.Player[] p = new setting.Player[4];
+		for (int i = 0; i < 4; i++)
+			p[i] = players[i].getAI();
+		this.game = new Game(p);
+		
 		initialise();
 	}
 	
@@ -265,7 +270,7 @@ public class GameManager {
 	private void AIturn()
 	{
 		//Chiediamo la mossa al player artificiale
-		Card temp = players[actualPlayer].getMove();
+		Card temp = players[actualPlayer].getMove(cardsOnTable.getCardsOnTable());
 		turnPlayed(temp);
 	}
 	
@@ -275,7 +280,7 @@ public class GameManager {
 	private void humanTurn()
 	{
 		//TODO e' temporaneo, ad ora il gioco frezza mentre aspetta la mossa del player, da cambiare 
-		Card temp = players[actualPlayer].getMove();
+		Card temp = players[actualPlayer].getMove(cardsOnTable.getCardsOnTable());
 		turnPlayed(temp); 
 	}
 	
@@ -309,11 +314,6 @@ public class GameManager {
 	
 	private void initialise()
 	{
-		this.gameState = GameState.GAMEREADY;
-		this.turno = 1;
-		this.cardsOnTable = new CardsOnTable();
-		this.handState = HandState.INITIALISINGHAND;
-		
 		game.initialise();
 		//tutte le carte rappresentate con interi da 0 a 39
 		List<List<Integer>> deck = game.getAssegnamentoCarte();
@@ -329,7 +329,6 @@ public class GameManager {
 			
 //			carteInGioco.addAll(carteInMano); // adding these cards to the card "in game"
 			players[i].setCardsInHand(carteInMano);
-			players[i].setInfo(this);
 			
 			assCarte.add(carteInMano);
 			
@@ -340,6 +339,11 @@ public class GameManager {
 			if (carteInMano.contains(fourDenari))
 				startingPlayer = i;
 		}
+
+		this.gameState = GameState.GAMEREADY;
+		this.turno = 1;
+		this.cardsOnTable = new CardsOnTable();
+		this.handState = HandState.INITIALISINGHAND;
 	}
 
 	public void draw(SpriteBatch batch)

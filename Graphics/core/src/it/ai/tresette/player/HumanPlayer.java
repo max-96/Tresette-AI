@@ -3,26 +3,38 @@ package it.ai.tresette.player;
 import java.util.List;
 import java.util.Scanner;
 
-import it.ai.tresette.GameManager;
 import it.ai.tresette.GameManager.KindOfPlayer;
 import it.ai.tresette.objects.Card;
-import it.ai.tresette.objects.CardsOnTable;
 import util.CardsUtils;
 
 public class HumanPlayer extends Player
 {
-	private CardsOnTable carteInGioco;
+	private Scanner keyboard = new Scanner(System.in);
+	
+	public static class DummyPlayer extends setting.Player
+	{
+		private DummyPlayer(int id)
+		{
+			super(id);
+		}
+
+		@Override
+		public int getMove()
+		{
+			return -1;
+		}
+	}
 	
 	public HumanPlayer(int id)
 	{
-		super(id, KindOfPlayer.HUMANPLAYER);
+		super(id, new DummyPlayer(id), KindOfPlayer.HUMANPLAYER);
 	}
 	
 	@Override
-	public Card getMove()
+	public Card getMove(List<Integer> cardsOnTable)
 	{
 
-		List<Integer> possMosse = CardsUtils.getPossibiliMosse(getCardsInHand(), carteInGioco.getCardsOnTable());
+		List<Integer> possMosse = CardsUtils.getPossibiliMosse(getCardsInHand(), cardsOnTable);
 	
 		System.out.print("Carte giocabili: [");
 		for (int i = 0; i < possMosse.size() - 1; i++)
@@ -30,26 +42,16 @@ public class HumanPlayer extends Player
 		System.out.println(new Card(possMosse.get(possMosse.size() - 1)) + "]");
 
 		int myint;
-		try (Scanner keyboard = new Scanner(System.in))
+		do
 		{
-			do
-			{
-				System.out.println("che carta butti");
-				myint = keyboard.nextInt() - 1;
-				System.out.println(myint);
-
-			} while (myint < 0 || myint >= possMosse.size());
-		}
+			System.out.println("Che carta giochi?");
+			myint = keyboard.nextInt() - 1;
+			
+		} while (myint < 0 || myint >= possMosse.size());
 
 		return this.myCards.remove(possMosse.get(myint));
 
 		// TODO pick a cards of the available one and removes it from the cards
 		// in hand
-	}
-
-	@Override
-	public void setInfo(GameManager game)
-	{
-		carteInGioco = game.getCardsOnTable();
 	}
 }

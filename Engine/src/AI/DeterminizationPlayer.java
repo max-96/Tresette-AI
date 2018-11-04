@@ -61,7 +61,7 @@ public class DeterminizationPlayer extends Player
 			e.printStackTrace();
 		}
 
-		int bestMove = -1;
+		Integer bestMove = -1;
 		int bestVal = -1;
 
 		for (Entry<Integer, LongAdder> k : aiFactory.getPunti().entrySet())
@@ -73,6 +73,8 @@ public class DeterminizationPlayer extends Player
 			}
 		}
 
+		carteInMano.remove(bestMove);
+		
 		return bestMove;
 	}
 }

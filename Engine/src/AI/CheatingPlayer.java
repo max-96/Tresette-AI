@@ -22,6 +22,9 @@ public class CheatingPlayer extends Player
 		if (mosse.size() == 1)
 			return mosse.get(0);
 		
-		return ai.getBestMove(game.getAssegnamentoCarte(), game.getInfo());
+		Integer bestMove = ai.getBestMove(game.getAssegnamentoCarte(), game.getInfo());
+		carteInMano.remove(bestMove);
+		
+		return bestMove;
 	}
 }

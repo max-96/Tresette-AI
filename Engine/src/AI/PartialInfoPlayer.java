@@ -22,6 +22,9 @@ public class PartialInfoPlayer extends Player
 		if (mosse.size() == 1)
 			return mosse.get(0);
 		
+		Integer bestMove = ai.getBestMove(carteInMano, game.getInfo());
+		carteInMano.remove(bestMove);
+		
 		return ai.getBestMove(carteInMano, game.getInfo());
 	}
 }
