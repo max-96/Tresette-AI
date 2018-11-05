@@ -197,11 +197,11 @@ public class GameManager {
 		punteggiTotali[0] += punteggi[0];
 		punteggiTotali[1] += punteggi[1];
 		
-		System.out.println("\nYour team has scored " + punteggi[0] + " points");
-		System.out.println("Opponent team has scored " + punteggi[1] + " points");
+		System.out.println("\nYour team has scored " + punteggi[0] + " points, total: " + punteggiTotali[0]);
+		System.out.println("Opponent team has scored " + punteggi[1] + " points, total: " + punteggiTotali[1]);
 		
 		if ((punteggiTotali[0] > CardsUtils.WINNING_SCORE || 
-				punteggiTotali[0] > CardsUtils.WINNING_SCORE) &&
+				punteggiTotali[1] > CardsUtils.WINNING_SCORE) &&
 				punteggiTotali[0] != punteggiTotali[1])
 		{
 			System.out.println("\nNow let's check who's the winner!");
@@ -246,7 +246,7 @@ public class GameManager {
 		
 		try
 		{
-			TimeUnit.SECONDS.sleep(3);
+			TimeUnit.SECONDS.sleep(2);
 		} catch (InterruptedException e)
 		{
 			e.printStackTrace();
