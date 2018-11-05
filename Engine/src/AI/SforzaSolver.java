@@ -176,6 +176,8 @@ public class SforzaSolver
 
 		private void check()
 		{
+			int[] pcount = {0, 0, 0, 0};
+			
 			for (int player : ordineAssegnamento)
 			{
 				if (carteManc[player] == 0)
@@ -184,7 +186,10 @@ public class SforzaSolver
 				int somma = 0;
 				for (int s = 0; s < 4; s++)
 					if (info.isSemeAttivoForPlayer(player, s))
+					{
 						somma += carteLibPerSeme.get(s).size();
+						pcount[s]++;
+					}
 			
 				assert somma >= carteManc[player];
 				
@@ -198,6 +203,17 @@ public class SforzaSolver
 							carteManc[player] = 0;
 						}
 			}
+			
+			for (int s = 0; s < 4; s++)
+				if (pcount[s] == 1)
+					for (int player : ordineAssegnamento)
+						if (info.isSemeAttivoForPlayer(player, s))
+						{
+							assCarte.get(player).addAll(carteLibPerSeme.get(s));
+							carteLib.removeAll(carteLibPerSeme.get(s));
+							carteLibPerSeme.get(s).clear();
+							carteManc[player] = 0;
+						}
 		}
 
 	}
