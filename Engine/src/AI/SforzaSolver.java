@@ -141,15 +141,15 @@ public class SforzaSolver
 			for (int player = 0; player < 4; player++)
 			{
 				boolean skipcard = false;
-				Collections.shuffle(carteLiberePerPlayer.get(player), ThreadLocalRandom.current());
+				Collections.shuffle(carteLibPerPlayer.get(player), ThreadLocalRandom.current());
 				
-				for (Integer card : carteLiberePerPlayer.get(player))
+				for (Integer card : carteLibPerPlayer.get(player))
 				{
 					if (carteManc[player] == 0)
 						break;
 					for (int p = player + 1; p < 4; p++)
-						if (carteLiberePerPlayer.get(p).contains(card) &&
-								carteLiberePerPlayer.get(p).size() - 1 < carteManc[p])
+						if (carteLibPerPlayer.get(p).contains(card) &&
+								carteLibPerPlayer.get(p).size() - 1 < carteManc[p])
 						{
 							skipcard = true;
 							break;
