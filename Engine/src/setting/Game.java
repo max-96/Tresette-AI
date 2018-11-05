@@ -79,10 +79,13 @@ public class Game
 			assert player >= 0 && player < 4;
 
 			List<Integer> l = new ArrayList<>();
-			if (startingPlayer == player)
+			if (startingPlayer == player && availableCards.contains(QUATTRODIDENARI))
 				l.add(QUATTRODIDENARI);
-			l.addAll(accusi.get(player));
 
+			for (Integer c : accusi.get(player))
+				if (availableCards.contains(c))
+					l.add(c);
+			
 			return l;
 		}
 
