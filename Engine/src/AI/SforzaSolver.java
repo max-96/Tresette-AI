@@ -3,6 +3,7 @@ package AI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
@@ -21,6 +22,7 @@ public class SforzaSolver
 	private int[] carteMancanti = new int[4];
 	private List<Integer> carteLibere;
 	private List<List<Integer>> carteLiberePerSeme = new ArrayList<>(4);
+	private Integer[] ordineAssegnamento = new Integer[4];
 
 	private int status = 0;
 	private BlockingQueue<List<List<Integer>>> possibiliAssegnamenti;
@@ -49,10 +51,13 @@ public class SforzaSolver
 			
 			carteLibere.removeAll(assegnamentoCarte.get(i));
 			carteLiberePerSeme.add(new ArrayList<>());
+			ordineAssegnamento[i] = i;
 		}
 
 		for (int carta : carteLibere)
 			carteLiberePerSeme.get(carta / 10).add(carta);
+		
+		Arrays.sort(ordineAssegnamento, Comparator.comparingInt(info::getNumeroSemiAttivi));
 	}
 
 	/**
@@ -131,7 +136,7 @@ public class SforzaSolver
 		{
 			copiaStrutture();
 
-			for (int player = 0; player < 4; player++)
+			for (int player : ordineAssegnamento)
 			{
 				check();
 
@@ -171,7 +176,7 @@ public class SforzaSolver
 
 		private void check()
 		{
-			for (int player = 0; player < 4; player++)
+			for (int player : ordineAssegnamento)
 			{
 				if (carteManc[player] == 0)
 					continue;

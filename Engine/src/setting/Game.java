@@ -94,6 +94,11 @@ public class Game
 			return semiAttivi.get(player).contains(suit);
 		}
 
+		public int getNumeroSemiAttivi(int player)
+		{
+			return semiAttivi.get(player).size();
+		}
+		
 		public int getNumeroCarteInMano(int player)
 		{
 			return numeroCarteInMano[player];
