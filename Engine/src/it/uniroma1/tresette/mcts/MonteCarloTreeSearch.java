@@ -6,6 +6,7 @@ import java.util.concurrent.RecursiveAction;
 import java.util.concurrent.atomic.LongAdder;
 
 import it.uniroma1.tresette.ai.DeterministicAI;
+import it.uniroma1.tresette.ai.AIGameState;
 import it.uniroma1.tresette.setting.Game.Info;
 
 public class MonteCarloTreeSearch extends DeterministicAI
@@ -43,7 +44,7 @@ public class MonteCarloTreeSearch extends DeterministicAI
 	{
 		long execTime = System.currentTimeMillis();
 		
-		GameState starting = new GameState(playerID, assegnamentoCarte, info);
+		AIGameState starting = new AIGameState(playerID, assegnamentoCarte, info);
 		MonteCarloTree MCT = new MonteCarloTree(starting);
 		int m = MCT.execute(iterations);
 		

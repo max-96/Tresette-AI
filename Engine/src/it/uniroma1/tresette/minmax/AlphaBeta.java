@@ -8,7 +8,7 @@ import java.util.concurrent.RecursiveAction;
 import java.util.concurrent.atomic.LongAdder;
 
 import it.uniroma1.tresette.ai.DeterministicAI;
-import it.uniroma1.tresette.mcts.GameState;
+import it.uniroma1.tresette.ai.AIGameState;
 import it.uniroma1.tresette.setting.Game.Info;
 import it.uniroma1.tresette.util.CardsUtils;
 import it.uniroma1.tresette.util.MovesStats;
@@ -101,7 +101,7 @@ public class AlphaBeta extends DeterministicAI
 
 //		assert mosse.size() > 1;
 
-		GameState init = new GameState(playerID, assegnamentoCarte, info);
+		AIGameState init = new AIGameState(playerID, assegnamentoCarte, info);
 
 		/*
 		 * L'insieme delle mosse e' definito, ora dobbiamo valutarle
@@ -148,7 +148,7 @@ public class AlphaBeta extends DeterministicAI
 		return Integer.valueOf(bestAction);
 	}
 
-	private double alphabeta(GameState gs, double alpha, double beta, int depth, final int maxDepth)
+	private double alphabeta(AIGameState gs, double alpha, double beta, int depth, final int maxDepth)
 	{
 		forkCounter++;
 

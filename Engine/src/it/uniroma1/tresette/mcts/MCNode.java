@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import it.uniroma1.tresette.ai.AIGameState;
+
 public class MCNode implements Comparable<MCNode>
 {
 
@@ -12,7 +14,7 @@ public class MCNode implements Comparable<MCNode>
 
 	private MCNode parent;
 	private final Integer generatingAction;
-	private it.uniroma1.tresette.mcts.GameState gamestate;
+	private it.uniroma1.tresette.ai.AIGameState gamestate;
 	private final MonteCarloTree tree;
 	protected boolean isLeaf;
 
@@ -22,7 +24,7 @@ public class MCNode implements Comparable<MCNode>
 	private int visitCount = 0;
 	private boolean isBlackNode;
 
-	public MCNode(MCNode parent, Integer generatingAction, it.uniroma1.tresette.mcts.GameState gamestate, MonteCarloTree tree)
+	public MCNode(MCNode parent, Integer generatingAction, it.uniroma1.tresette.ai.AIGameState gamestate, MonteCarloTree tree)
 	{
 		this.parent = parent;
 		this.generatingAction = generatingAction;
@@ -68,7 +70,7 @@ public class MCNode implements Comparable<MCNode>
 	protected double playout()
 	{
 		init();
-		GameState gs = gamestate;
+		AIGameState gs = gamestate;
 		while (!gs.terminal)
 		{
 			Integer mossa = gs.genRandMossa();
