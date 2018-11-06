@@ -15,7 +15,7 @@ public class MovesStats
 	private static MovesStats instance = null;
 	private String name;
 	private List<Map<Integer, Map<Integer, Long>>> stats;
-	
+
 	// depth x domTeam x dominante x carta
 	private long[][][][] stats2 = new long[10][2][10][10];
 
@@ -37,8 +37,6 @@ public class MovesStats
 			for (long[][] b : a)
 				for (long[] c : b)
 					Arrays.fill(c, 0L);
-		;
-
 	}
 
 	public MovesStats addStats(int depth, int domCard, int chosenCard)

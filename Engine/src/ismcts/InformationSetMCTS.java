@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.Set;
 
 import AI.PartialInfoAI;
-import AI.SforzaSolver;
 import setting.Game.Info;
+import util.Determinizer;
 
 public class InformationSetMCTS extends PartialInfoAI
 {
@@ -28,7 +28,7 @@ public class InformationSetMCTS extends PartialInfoAI
 	{
 		long execTime = System.currentTimeMillis();
 
-		SforzaSolver deter = new SforzaSolver(playerID, carteInMano, info, iterations);
+		Determinizer deter = new Determinizer(playerID, carteInMano, info, iterations);
 		deter.startProducing();
 		
 		List<Set<Integer>> possibleCards = new ArrayList<>(4);

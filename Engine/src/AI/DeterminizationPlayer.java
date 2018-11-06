@@ -11,6 +11,7 @@ import java.util.concurrent.atomic.LongAdder;
 
 import AI.DeterministicAI.Factory;
 import setting.Game.Info;
+import util.Determinizer;
 import setting.Player;
 
 public class DeterminizationPlayer extends Player
@@ -29,7 +30,7 @@ public class DeterminizationPlayer extends Player
 	protected Integer computeMove()
 	{
 		Info info = game.getInfo();
-		SforzaSolver deter = new SforzaSolver(id, carteInMano, info, n_TRAILS);
+		Determinizer deter = new Determinizer(id, carteInMano, info, n_TRAILS);
 		deter.startProducing();
 		BlockingQueue<List<List<Integer>>> sols = deter.getPossibiliAssegnamenti();
 

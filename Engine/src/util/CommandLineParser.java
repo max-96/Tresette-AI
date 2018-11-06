@@ -25,7 +25,7 @@ public class CommandLineParser
 	
 	private void printHelp()
 	{
-		System.out.println("AI \"parola\" for the game of tresette\n");
+		System.out.println("Artificial Intelligences for the game of tresette\n");
 		int aiNr = forTest ? 4 : 3;
 		System.out.println("Usage: choose " + aiNr + " AIs from the following list");
 		System.out.println("  RANDOM");
@@ -38,7 +38,7 @@ public class CommandLineParser
 		System.out.println("    -n\tDeterminizations number [100]");
 		System.out.println("  MCTS");
 		System.out.println("    -i\tIterations number [1200]");
-		System.out.println("    -n\ttDeterminizations number [100]");
+		System.out.println("    -n\tDeterminizations number [100]");
 		System.out.println("  ISMTCS");
 		System.out.println("    -i\tIterations number [1200]");
 	}
