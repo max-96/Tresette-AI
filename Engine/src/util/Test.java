@@ -1,5 +1,7 @@
 package util;
 
+import java.util.Arrays;
+
 import AI.CheatingPlayer;
 import AI.DeterminizationPlayer;
 import AI.PartialInfoPlayer;
@@ -11,19 +13,18 @@ import setting.Player;
 public class Test
 {
 	private Player[] players;
-	private int noMatches;
+	private static final int NOMATCHES = 100;
 
-	public Test(int noMatches, Player... players)
+	public Test(Player... players)
 	{
 		this.players = players;
-		this.noMatches = noMatches;
 	}
 
 	public void exec()
 	{
 		int[] winnings = { 0, 0 };
 
-		for (int i = 0; i < noMatches; i++)
+		for (int i = 0; i < NOMATCHES; i++)
 		{
 			Game gm = new Game(players);
 			int res = gm.run();
@@ -63,13 +64,14 @@ public class Test
 
 	public static void main(String[] args)
 	{
-		Player[] players = new Player[4];
+		CommandLineParser clp = new CommandLineParser(true);
+		Player[] players = clp.parseArgs(args);
 		int noMatches = 100;
 		
-		players[0] = new DeterminizationPlayer(0, new MonteCarloTreeSearch.Factory(2000, 0.75), 10);
-		players[1] = new PartialInfoPlayer(new RandWalk(1));
-		players[2] = new DeterminizationPlayer(2, new MonteCarloTreeSearch.Factory(2000, 0.75), 10);
-		players[3] = new PartialInfoPlayer(new RandWalk(3));
+//		players[0] = new DeterminizationPlayer(0, new MonteCarloTreeSearch.Factory(2000, 0.75), 10);
+//		players[1] = new PartialInfoPlayer(new RandWalk(1));
+//		players[2] = new DeterminizationPlayer(2, new MonteCarloTreeSearch.Factory(2000, 0.75), 10);
+//		players[3] = new PartialInfoPlayer(new RandWalk(3));
 //		players[0] = new PartialInfoPlayer(new RandWalk(0));
 //		players[1] = new PartialInfoPlayer(new RandWalk(1));
 //		players[2] = new PartialInfoPlayer(new RandWalk(2));
@@ -79,10 +81,8 @@ public class Test
 //		players[0] = new PartialInfoPlayer(new RandWalk(0));
 //		players[3] = new CheatingPlayer(new AlphaBeta(3, 8));
 //		players[2] = new PartialInfoPlayer(new RandWalk(2));
-		
-		//TODO assegnamento da args
-		
-		Test test = new Test(noMatches, players);
+	
+		Test test = new Test(players);
 		
 		test.exec();
 	}

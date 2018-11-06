@@ -12,7 +12,6 @@ import setting.Game.Info;
 public class MonteCarloTreeSearch extends DeterministicAI
 {
 	private int iterations;
-	private double C_PARAM;
 	
 	public long execTime;
 	public static long maxExecTime = 0;
@@ -20,27 +19,24 @@ public class MonteCarloTreeSearch extends DeterministicAI
 	public static class Factory extends DeterministicAI.Factory
 	{
 		private int iterations;
-		private double C_PARAM;
 		
-		public Factory(int playerID, int iterations, double c_param)
+		public Factory(int playerID, int iterations)
 		{
 			super(playerID);
 			this.iterations = iterations;
-			C_PARAM = c_param;
 		}
 		
 		@Override
 		public RecursiveAction getAI(List<List<Integer>> assegnamentoCarte, Info info)
 		{
-			return new Slave(playerID, iterations, C_PARAM, assegnamentoCarte, info, punti);
+			return new Slave(playerID, iterations, assegnamentoCarte, info, punti);
 		}
 	}
 	
-	public MonteCarloTreeSearch(int playerID, int iterations, double c_param)
+	public MonteCarloTreeSearch(int playerID, int iterations)
 	{
 		super(playerID);
 		this.iterations = iterations;
-		C_PARAM = c_param;
 	}
 
 	@Override
@@ -49,7 +45,7 @@ public class MonteCarloTreeSearch extends DeterministicAI
 		long execTime = System.currentTimeMillis();
 		
 		AIGameState starting = new AIGameState(playerID, assegnamentoCarte, info);
-		MonteCarloTree MCT = new MonteCarloTree(starting, C_PARAM);
+		MonteCarloTree MCT = new MonteCarloTree(starting);
 		int m = MCT.execute(iterations);
 		
 		execTime = System.currentTimeMillis() - execTime;
@@ -65,17 +61,15 @@ public class MonteCarloTreeSearch extends DeterministicAI
 		
 		private int playerId;
 		private int iterations;
-		private double C_PARAM;
 		private List<List<Integer>> assegnamentoCarte;
 		private Info info;
 		private ConcurrentHashMap<Integer, LongAdder> punti;
 
-		private Slave(int playerId, int iterations, double c_param, List<List<Integer>> assegnamentoCarte,
+		private Slave(int playerId, int iterations, List<List<Integer>> assegnamentoCarte,
 				Info info, ConcurrentHashMap<Integer, LongAdder> punti)
 		{
 			this.playerId = playerId;
 			this.iterations = iterations;
-			C_PARAM = c_param;
 			this.assegnamentoCarte = assegnamentoCarte;
 			this.info = info;
 			this.punti = punti;
@@ -84,7 +78,7 @@ public class MonteCarloTreeSearch extends DeterministicAI
 		@Override
 		protected void compute()
 		{
-			MonteCarloTreeSearch k = new MonteCarloTreeSearch(playerId, iterations, C_PARAM);
+			MonteCarloTreeSearch k = new MonteCarloTreeSearch(playerId, iterations);
 			Integer r = k.getBestMove(assegnamentoCarte, info);
 			punti.computeIfAbsent(r, key -> new LongAdder()).increment();
 		}
