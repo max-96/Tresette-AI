@@ -4,13 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+
 /**
  * A class created in order to manage the drawing of cards on the table
  * @author Zamma
  *
  */
-public class CardsOnTable {
-
+public class CardsOnTable
+{
 	private ArrayList<Card> cards;
 	
 	private int cardsOnTable;
@@ -84,8 +85,6 @@ public class CardsOnTable {
 				x += Card.getWidth() + Constants.TABLE_CARDS_OFFSIDE;
 			}
 		}
-		
-	
 	}
 
 	public void reset()

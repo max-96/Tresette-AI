@@ -51,8 +51,5 @@ public class HumanPlayer extends Player
 		} while (myint < 0 || myint >= possMosse.size());
 
 		return this.myCards.remove(possMosse.get(myint));
-
-		// TODO pick a cards of the available one and removes it from the cards
-		// in hand
 	}
 }

@@ -4,8 +4,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
-public class Card extends Entity implements Comparable<Card> {
-
+public class Card implements Comparable<Card>
+{
 	private String path = "";
 	
 	private final String cardsBack = "cards/dorso_sapienza_1.png";
@@ -20,12 +20,13 @@ public class Card extends Entity implements Comparable<Card> {
 	
 	private static int textureWidth = Constants.TABLE_EDGE/10;
 	
-	private static int textureHeight =(int) ((int) (Constants.TABLE_EDGE/10) * 1.5); //cosi facendo le proporzioni sono 6/9 tra larghezze e altezza
+	private static int textureHeight =(int) ((int) (Constants.TABLE_EDGE/10) * 1.5); // cosi facendo le proporzioni sono 6/9 tra larghezze e altezza
 	
 	private static final Suit[] intToSuit = {Suit.COPPE, Suit.DENARI, Suit.BASTONI, Suit.SPADE};
 	private static final Val[] intToVal = {Val.ASSO, Val.DUE, Val.TRE, Val.QUATTRO, Val.CINQUE, Val.SEI, Val.SETTE, Val.FANTE, Val.CAVALLO, Val.RE};
 	
-	public enum Suit { 
+	public enum Suit
+	{ 
 		
 		COPPE(0,"coppe"), DENARI(10,"oro"), BASTONI(20,"bastoni"), SPADE(30,"spade");
 		
@@ -45,7 +46,7 @@ public class Card extends Entity implements Comparable<Card> {
 	
 	public enum Val 
 	{ 
-		//la logica e': stringa per il path della texture - numero della carta - potenza della carta - valore in punti della carta
+		// la logica e': stringa per il path della texture - numero della carta - potenza della carta - valore in punti della carta
 		ASSO("uno",0,7,1), DUE("due",1,8,1.0/3), TRE("tre",2,9,1.0/3), QUATTRO("quattro",3,0,0), CINQUE("cinque",4,1,0), SEI("sei",5,2,0), SETTE("sette",6,3,0), FANTE("fante",7,4,1.0/3), CAVALLO("cavaliere",8,5,1.0/3), RE("re",9,6,1.0/3);
 		
 		/**
@@ -85,14 +86,11 @@ public class Card extends Entity implements Comparable<Card> {
 		{
 			return this.dominanza - other.getDominanza();
 		}
-	
-	
 	}
 	
 	private Suit suit;
 	
 	private Val val;
-	
 	
 	/**
 	 * Return the card represented by the number cardNr.
@@ -130,9 +128,6 @@ public class Card extends Entity implements Comparable<Card> {
 		frontTexRegion = new TextureRegion(frontTexture);
 		this.backTexture = new Texture(this.cardsBack);
 		this.backTexRegion = new TextureRegion(backTexture);
-		
-		
-		
 	}
 	
 	/**
@@ -146,6 +141,7 @@ public class Card extends Entity implements Comparable<Card> {
 		//batch.draw(texture, (float)x, (float)y, 0f, 0f, (float)textureWidth, (float)textureHeight, 1f, 1f);
 		batch.draw(frontTexRegion, x, y, 0, 0, textureWidth, textureHeight, 1, 1, 0);
 	}
+	
 	/**
 	 * this method draws the card in the coordinates x,y and with rotation rot
 	 * @param batch
@@ -169,7 +165,6 @@ public class Card extends Entity implements Comparable<Card> {
 				batch.draw(backTexRegion, x, y, 0, 0, textureWidth, textureHeight, 1, 1, rot*90);
 				break;
 		}
-		
 	}
 
 	public void draw(SpriteBatch batch, int x, int y,float scale)
@@ -208,23 +203,23 @@ public class Card extends Entity implements Comparable<Card> {
 	}
 	
 	@Override
-	public int compareTo(Card dominatingCard) {
+	public int compareTo(Card dominatingCard)
+	{
 		if(this.suit.equals(dominatingCard.suit)) 
 			return this.val.moreDominant(dominatingCard.val);
 		
 		return 0;
-		
 	}
-	
 	
 	public String toString()
 	{
 		return this.val.toString()+" di "+this.suit.toString();
 	}
 	
-	
-	public static void main(String[] args) {
-		//main for tests purpose
+	public static void main(String[] args)
+	{
+		// main for tests purpose
+		
 //		Card a = new Card(Suit.BASTONI, Val.TRE);
 //		System.out.println(a.suit.getVal() + a.val.getCardNr() );
 //		System.out.println("the path is "+a.suit.toString()+"_"+a.val.toString()+".png");
@@ -235,8 +230,6 @@ public class Card extends Entity implements Comparable<Card> {
 		System.out.println(b.equals(b));
 		System.out.println(b.path);
 		// System.out.println(b.toString());
-		
-		 
 	}
 	
 }

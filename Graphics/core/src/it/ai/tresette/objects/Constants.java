@@ -1,6 +1,7 @@
 package it.ai.tresette.objects;
 
-public class Constants {
+public class Constants
+{
 
 	
 	//WINDOW SIZE CONSTANTS
@@ -29,5 +30,4 @@ public class Constants {
 	public static final int EXIT_BUTTON_Y = (WINDOW_HEIGHT / 6);
 	
 
-	
 }

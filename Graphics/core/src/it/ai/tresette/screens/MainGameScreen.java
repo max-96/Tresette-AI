@@ -1,17 +1,14 @@
 package it.ai.tresette.screens;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import it.ai.tresette.GameManager;
 import it.ai.tresette.TreSette;
 
-public class MainGameScreen implements Screen{
+public class MainGameScreen implements Screen
+{
 
-	
 	Texture img;
 	
 	TreSette game;
@@ -40,7 +37,6 @@ public class MainGameScreen implements Screen{
 		this.table.run();						//update logico
 		
 		
-		
 		game.batch.begin();  
 		game.batch.draw(img, 0, 0);
 		this.table.draw(game.batch);			//update draw
@@ -51,7 +47,6 @@ public class MainGameScreen implements Screen{
 	}
 	
 	
-
 	@Override
 	public void resize(int width, int height) {
 		// TODO Auto-generated method stub

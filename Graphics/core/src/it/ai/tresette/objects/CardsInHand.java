@@ -5,13 +5,8 @@ import java.util.List;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-import it.ai.tresette.player.Player;
-
-public class CardsInHand {
-	
-	
-	
-	
+public class CardsInHand
+{
 	private List<Card> cardsInHand;
 	
 	//private Player player; 
@@ -20,9 +15,6 @@ public class CardsInHand {
 	 * the player number is used for rendering purposes
 	 */
 	private int playerNumber;
-	
-	//private int playerTeam;
-	
 
 	private int cardCounter;
 	
@@ -106,9 +98,7 @@ public class CardsInHand {
 					startingY -= Constants.TABLE_EDGE/this.cardsInHand.size();
 				}
 				break;
-		}
-		
-			
+		}	
 	}
 	
 	public boolean contains(Card b)
@@ -127,5 +117,4 @@ public class CardsInHand {
 			res.add(a.toInt());
 		return res;
 	}
-
 }

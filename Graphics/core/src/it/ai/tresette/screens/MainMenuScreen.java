@@ -8,17 +8,14 @@ import com.badlogic.gdx.graphics.Texture;
 import it.ai.tresette.TreSette;
 import it.ai.tresette.objects.Constants;
 
-public class MainMenuScreen implements Screen{
-
-
-	
+public class MainMenuScreen implements Screen
+{
 	
 	/**
 	 * calcoliamo l'altezza di ogni bottone dividendo l'altezza della finestra per 6;
 	 * il primo si trovera quindi ad 1/6 altezza moltiplicato per 4;
 	 * per trovare le y degli altri due bottoni semplicemente lo abbassiamo di un fattore 1.5
 	 */
-	
 	
 	TreSette game;
 	
@@ -124,6 +121,5 @@ public class MainMenuScreen implements Screen{
 				return true;
 		return false;
 	}
-	
 
 }

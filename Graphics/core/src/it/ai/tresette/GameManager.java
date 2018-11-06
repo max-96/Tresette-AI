@@ -32,15 +32,6 @@ public class GameManager {
 	 */
 	private Player[] players = new Player[4];
 
-//	/**
-//	 * Cards currently in game
-//	 */
-//	private Set<Card> carteInGioco = new HashSet<Card>();
-//
-//	/**
-//	 * Cards that are used during the game
-//	 */
-//	private Set<Card> exCards = new HashSet<Card>();
 	/**
 	 * Point counter for each team
 	 */
@@ -95,13 +86,6 @@ public class GameManager {
 	 */
 	private int turno;
 	
-//	/**
-//	 * Map of integer,card that specifies the card used by each player, where 0,Card
-//	 * indicates the card used by player 0
-//	 */
-//	private Map<Integer, Card> cardsOnTable = new HashMap<Integer, Card>();
-//	
-//	private TreSette game;
 	/**
 	 * the cards on table object relative to this Game "table"
 	 */
@@ -246,7 +230,7 @@ public class GameManager {
 		
 		try
 		{
-			TimeUnit.SECONDS.sleep(2);
+			TimeUnit.SECONDS.sleep(5);
 		} catch (InterruptedException e)
 		{
 			e.printStackTrace();
@@ -259,7 +243,7 @@ public class GameManager {
 	{
 		punteggi[CardsUtils.getTeam(dominatingPlayer)] += points;
 		
-		System.out.println("Team " + CardsUtils.getTeam(dominatingPlayer) + " takes: " + cardsOnTable);
+		System.out.println("Player " + (dominatingPlayer + 1) + " takes: " + cardsOnTable);
 		
 		startingPlayer = dominatingPlayer;
 		cardsOnTable.reset();														//elimino le carte sul tavolo
@@ -317,6 +301,13 @@ public class GameManager {
 		//Chiediamo la mossa al player artificiale
 		Card temp = players[actualPlayer].getMove(cardsOnTable);
 		turnPlayed(temp);
+		try
+		{
+			TimeUnit.SECONDS.sleep(3);
+		} catch (InterruptedException e)
+		{
+			e.printStackTrace();
+		}
 	}
 	
 	/**
@@ -345,8 +336,6 @@ public class GameManager {
 	
 		points += card.getPoints(); 											// aggiorno i punti
 		cardsOnTable.add(card); 												// aggiungo la carta al "tavolo"
-//		carteInGioco.remove(card); 												// la rimuovo dalle carte in "gioco"
-//		exCards.add(card); 														// la aggiungo alle carte esplorate
 		assCarte.get(actualPlayer).remove(card);
 		actualPlayer = Math.floorMod(actualPlayer - 1, 4); 						// il prossimo giocatore e' quello alla mia sinistra
 		if(actualPlayer == startingPlayer)										// se ha giocato l'ultimo giocatore, entro nella fase conclusiva della mano
@@ -378,7 +367,6 @@ public class GameManager {
 			for (int j = 0; j < 10; j++)
 				carteInMano.add(new Card(deck.get(i).get(j)));
 			
-//			carteInGioco.addAll(carteInMano); // adding these cards to the card "in game"
 			players[i].setCardsInHand(carteInMano);
 			
 			assCarte.add(carteInMano);
@@ -402,21 +390,6 @@ public class GameManager {
 			players[i].draw(batch);
 		this.cardsOnTable.draw(batch);
 	}
-	
-//	public static List<Integer> possibiliMosse(List<Integer> carte, int semeAttuale)
-//	{
-//		List<Integer> mosse = new ArrayList<>();
-//		for (Integer c : carte)
-//		{
-//			if (c / 10 == semeAttuale)
-//				mosse.add(c);
-//		}
-//
-//		if (mosse.isEmpty())
-//			mosse.addAll(carte);
-//
-//		return mosse;
-//	}
 	
 	public static void main(String[] args) {
 		
