@@ -44,14 +44,15 @@ public class InformationSetMCTS extends PartialInfoAI
 		InformationSet is = new InformationSet(playerID, possibleCards, info);
 		ISMonteCarloTree ismct = new ISMonteCarloTree(is);
 		
-		int bestMove = ismct.execute(deter.getPossibiliAssegnamenti(), iterations);
+		Integer bestMove = ismct.execute(deter.getPossibiliAssegnamenti(), iterations);
+		assert bestMove>=0: bestMove;
 		
 		execTime = System.currentTimeMillis() - execTime;
 		this.execTime = execTime;
 		if (execTime > maxExecTime)
 			maxExecTime = execTime;
 
-		return Integer.valueOf(bestMove);
+		return bestMove;
 	}
 
 }

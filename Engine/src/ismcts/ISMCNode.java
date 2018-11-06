@@ -4,11 +4,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import AI.AIGameState;
+
 public class ISMCNode implements Comparable<ISMCNode>
 {
 
-	private InformationSet infoset;
-	public static final double C_PARAM = 1.25;
+	public InformationSet infoset;
+	public static final double C_PARAM = 0.75;
 	public static final double EPS = 1e-8;
 	private ISMCNode parent;
 	private final Integer generatingAction;
@@ -48,36 +50,54 @@ public class ISMCNode implements Comparable<ISMCNode>
 		}
 	}
 
-	public void generateChildren(List<List<Integer>> determin)
+	
+	public void generateChildren()
 	{
 		if (!children.isEmpty() || infoset.terminal)
 			return;
 
-		List<Integer> mosse = infoset.generateActions(determin);
+		List<Integer> mosse = infoset.getPossibleMoves();
+		children = new ArrayList<>();
 
-		if(children == Collections.EMPTY_LIST)
-			children = new ArrayList<>();
-		
-		
+			
 		for (Integer gaction : mosse)
 		{
 			ISMCNode child = new ISMCNode(this, gaction, tree);
-			if (!children.contains(child))
-				children.add(child);
+			children.add(child);
 		}
 		isLeaf = false;
 	}
+//	public void generateChildren(List<List<Integer>> determin)
+//	{
+//		if (!children.isEmpty() || infoset.terminal)
+//			return;
+//
+//		List<Integer> mosse = infoset.generateActions(determin);
+//
+//		if(children == Collections.EMPTY_LIST)
+//			children = new ArrayList<>();
+//		
+//		
+//		for (Integer gaction : mosse)
+//		{
+//			ISMCNode child = new ISMCNode(this, gaction, tree);
+//			if (!children.contains(child))
+//				children.add(child);
+//		}
+//		isLeaf = false;
+//	}
 
 	protected double playout(List<List<Integer>> determin)
 	{
 		init();
-		InformationSet is = infoset;
-		while (!is.terminal)
+		int player = infoset.getCurrentPlayer();
+		AIGameState gs = new AIGameState(infoset.getCurrentPlayer(), determin, infoset.getCardsOnTable(), infoset.getScore(player), infoset.getScore(player+1), infoset.maxNode);
+		while (!gs.terminal)
 		{
-			Integer mossa = is.genRandMossa(determin);
-			is = is.genSuccessor(mossa);
+			Integer mossa = gs.genRandMossa();
+			gs = gs.genSuccessor(mossa);
 		}
-		return is.getScoreSoFar();
+		return gs.getScoreSoFar();
 	}
 
 	public double getPriority()
@@ -108,7 +128,10 @@ public class ISMCNode implements Comparable<ISMCNode>
 
 	public boolean isCompatible(List<List<Integer>> determ)
 	{
-		return infoset.isCompatible(determ);
+		//init();
+		InformationSet is= (infoset==null) ? parent.infoset.genSuccessor(generatingAction): infoset;
+			
+		return is.isCompatible(determ);
 	}
 
 	@Override
@@ -121,15 +144,18 @@ public class ISMCNode implements Comparable<ISMCNode>
 	{
 
 		int maxVisite = 0;
-		Integer bestAction = -1;
+		Integer bestAction = 0;
+		boolean debug_flag=false;
 		for (ISMCNode c : children)
 		{
+			debug_flag=true;
 			if (c.visitCount > maxVisite)
 			{
 				maxVisite = c.visitCount;
 				bestAction = c.generatingAction;
 			}
 		}
+		assert debug_flag;
 		return bestAction;
 	}
 

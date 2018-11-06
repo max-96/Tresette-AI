@@ -3,6 +3,7 @@ package ismcts;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
@@ -29,6 +30,8 @@ public class InformationSet
 	private InformationSet(double[] scores, List<Set<Integer>> possibleCards, List<Integer> cardsOnTable,
 			int currentPlayer, byte[] cardsLeft, byte maxTeam)
 	{
+	
+	
 		this.scores = scores;
 		this.possibleCards = possibleCards;
 		this.cardsOnTable = cardsOnTable;
@@ -37,13 +40,18 @@ public class InformationSet
 		this.terminal = cardsLeft[currentPlayer] == 0;
 		this.maxNode = (currentPlayer & 1) == maxTeam;
 		this.maxTeam = maxTeam;
+		
+		if(this.terminal) System.out.println("Un nodo terminale!");
 	}
 
 	public List<Integer> generateActions(List<List<Integer>> det)
 	{
 		if (terminal)
 			return Collections.emptyList();
-		return CardsUtils.getPossibiliMosse(det.get(currentPlayer), cardsOnTable);
+		List<Integer> mosse = CardsUtils.getPossibiliMosse(det.get(currentPlayer), cardsOnTable);
+		
+		mosse.retainAll(possibleCards.get(currentPlayer));
+		return mosse;
 	}
 
 	public InformationSet genSuccessor(Integer mossa)
@@ -51,12 +59,16 @@ public class InformationSet
 		if (terminal)
 			return null;
 
-		assert possibleCards.get(currentPlayer).contains(mossa);
+		assert possibleCards.get(currentPlayer).contains(mossa): possibleCards.get(currentPlayer)+" "+mossa+" "+Arrays.toString(cardsLeft);
 
-		List<Set<Integer>> newPossibleCards = new ArrayList<>(possibleCards);
+		List<Set<Integer>> newPossibleCards = new ArrayList<>(4);
 		List<Integer> newCardsOnTable = new ArrayList<>(cardsOnTable);
 		for (int i = 0; i < 4; i++)
-			newPossibleCards.get(i).remove(mossa);
+		{
+			Set<Integer> s = new HashSet<>(possibleCards.get(0));
+			s.remove(mossa);
+			newPossibleCards.add(s);
+		}
 		newCardsOnTable.add(mossa);
 		byte[] newCardsLeft = Arrays.copyOf(cardsLeft, 4);
 		newCardsLeft[currentPlayer] -= 1;
@@ -108,5 +120,24 @@ public class InformationSet
 	public int getCurrentPlayer()
 	{
 		return currentPlayer;
+	}
+	
+	public List<Integer> getCardsOnTable()
+	{
+		return new ArrayList<>(cardsOnTable);
+	}
+	public double getScore(int team)
+	{
+		return scores[team&1];
+	}
+
+	public List<Integer> getPossibleMoves()
+	{
+		return new ArrayList<>(possibleCards.get(currentPlayer));
+	}
+	
+	public List<Set<Integer>> getAllPossibleMoves()
+	{
+		return possibleCards;
 	}
 }

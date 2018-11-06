@@ -27,7 +27,7 @@ public class AIGameState
 				info.getOpponentScore(currentPlayer), true);
 	}
 
-	private AIGameState(int currentPlayer, List<List<Integer>> cardsAssignment, List<Integer> cardsOnTable,
+	public AIGameState(int currentPlayer, List<List<Integer>> cardsAssignment, List<Integer> cardsOnTable,
 			double scoreMyTeam, double scoreOtherTeam, boolean maxNode)
 	{
 		this.cardsAssignment = cardsAssignment;

@@ -198,6 +198,7 @@ public class Game
 					}
 
 					Integer move = players[currentPlayer].getMove();
+					
 
 					carteInMano.remove(move);
 					info.availableCards.remove(move);

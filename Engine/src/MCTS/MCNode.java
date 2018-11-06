@@ -10,7 +10,7 @@ import AI.AIGameState;
 public class MCNode implements Comparable<MCNode>
 {
 
-	public static final double C_PARAM = 1.25;
+	public static final double C_PARAM = 0.75;
 	public static final double EPS = 1e-8;
 
 	private MCNode parent;

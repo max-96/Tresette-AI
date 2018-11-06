@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
@@ -17,22 +18,22 @@ import setting.Game.Info;
 
 public class SforzaSolver
 {
-//	private Info info;
+	// private Info info;
 	private int n_TRAILS;
 	private List<List<Integer>> assegnamentoCarte = new ArrayList<>(4);
 	private int[] carteMancanti = new int[4];
 	private List<List<Integer>> carteLiberePerPlayer = new ArrayList<>(4);
-//	private Integer[] ordineAssegnamento = new Integer[4];
+	// private Integer[] ordineAssegnamento = new Integer[4];
 
 	private int status = 0;
 	private BlockingQueue<List<List<Integer>>> possibiliAssegnamenti;
 
 	public long tempoEsecuzione;
-	
+
 	public SforzaSolver(int playerID, List<Integer> carteInMano, Info info, int n_TRAILS)
 	{
 		this.n_TRAILS = n_TRAILS;
-//		this.info = info;
+		// this.info = info;
 		possibiliAssegnamenti = new ArrayBlockingQueue<>(n_TRAILS + 1);
 		List<Integer> carteLibere = info.getAvailableCards();
 
@@ -42,24 +43,24 @@ public class SforzaSolver
 			{
 				assegnamentoCarte.add(new ArrayList<>(carteInMano));
 				carteMancanti[playerID] = 0;
-			}
-			else
+			} else
 			{
 				assegnamentoCarte.add(info.getKnownCardsOfPlayer(i));
 				carteMancanti[i] = info.getNumeroCarteInMano(i) - assegnamentoCarte.get(i).size();
 			}
-			
+
 			carteLibere.removeAll(assegnamentoCarte.get(i));
 			carteLiberePerPlayer.add(new ArrayList<>());
-//			ordineAssegnamento[i] = i;
+			// ordineAssegnamenti = i;
 		}
 
 		for (int carta : carteLibere)
 			for (int p = 0; p < 4; p++)
 				if (info.isSemeAttivoForPlayer(p, carta / 10))
 					carteLiberePerPlayer.get(p).add(carta);
-		
-//		Arrays.sort(ordineAssegnamento, Comparator.comparingInt(info::getNumeroSemiAttivi));
+
+		// Arrays.sort(ordineAssegnamento,
+		// Comparator.comparingInt(info::getNumeroSemiAttivi));
 	}
 
 	/**
@@ -88,7 +89,7 @@ public class SforzaSolver
 	{
 		return status == 2;
 	}
-	
+
 	public BlockingQueue<List<List<Integer>>> getPossibiliAssegnamenti()
 	{
 		return possibiliAssegnamenti;
@@ -127,14 +128,91 @@ public class SforzaSolver
 	private class SforzaSlave extends RecursiveAction
 	{
 		private static final long serialVersionUID = 1L;
-		
+
 		private List<List<Integer>> assCarte = new ArrayList<>(4);
 		private int[] carteManc;
-//		private List<Integer> carteLib = new ArrayList<>();
+		// private List<Integer> carteLib = new ArrayList<>();
 		private List<List<Integer>> carteLibPerPlayer = new ArrayList<>(4);
 
 		@Override
 		protected void compute()
+		{
+			copiaStrutture();
+//			int debug_counter = 0;
+
+			for (int player = 0; player < 4; player++)
+			{
+				boolean skipcard = false, goout = false;
+				Collections.shuffle(carteLibPerPlayer.get(player), ThreadLocalRandom.current());
+
+				for (Integer card : carteLibPerPlayer.get(player))
+				{
+					if (carteManc[player] == 0)
+						break;
+
+					for (int p = player + 1; p < 4; p++)
+					{
+//						debug_counter++;
+						if (carteLibPerPlayer.get(p).contains(card)
+								&& carteLibPerPlayer.get(p).size() - 1 < carteManc[p])
+						{
+							skipcard = true;
+							break;
+						}
+
+						for (int p2 = player + 2; p2 < 4; p2++)
+						{
+							if (carteLibPerPlayer.get(p).contains(card) && carteLibPerPlayer.get(p2).contains(card))
+							{
+								HashSet<Integer> union = new HashSet<>(carteLibPerPlayer.get(p));
+								union.addAll(carteLibPerPlayer.get(p2));
+
+								if (union.size() - 1 < carteManc[p] + carteManc[p2])
+								{
+									skipcard = true;
+									goout = true;
+									break;
+								}
+							}
+							if (goout)
+								break;
+							for (int p3 = player + 3; p3 < 4; p3++)
+							{
+								if (carteLibPerPlayer.get(p).contains(card) && carteLibPerPlayer.get(p2).contains(card)
+										&& carteLibPerPlayer.get(p3).contains(card))
+								{
+									HashSet<Integer> union = new HashSet<>(carteLibPerPlayer.get(p));
+									union.addAll(carteLibPerPlayer.get(p2));
+									union.addAll(carteLibPerPlayer.get(p3));
+
+									// System.out.println(intersezione);
+									if (union.size() - 1 < carteManc[p] + carteManc[p2] + carteManc[p3])
+									{
+										skipcard = true;
+										goout = true;
+										break;
+									}
+								}
+
+							}
+						}
+					}
+					if (skipcard)
+						continue;
+
+					assCarte.get(player).add(card);
+					for (int p = player + 1; p < 4; p++)
+						carteLibPerPlayer.get(p).remove(card);
+					carteManc[player]--;
+				}
+			}
+			// if(debug_counter>100)
+//			System.out.println(debug_counter);
+			// System.out.println(carteLibPerPlayer);
+			possibiliAssegnamenti.offer(assCarte);
+		}
+
+		protected void compute2()
 		{
 			copiaStrutture();
 
@@ -142,20 +220,21 @@ public class SforzaSolver
 			{
 				boolean skipcard = false;
 				Collections.shuffle(carteLibPerPlayer.get(player), ThreadLocalRandom.current());
-				
+
 				for (Integer card : carteLibPerPlayer.get(player))
 				{
 					if (carteManc[player] == 0)
 						break;
 					for (int p = player + 1; p < 4; p++)
-						if (carteLibPerPlayer.get(p).contains(card) &&
-								carteLibPerPlayer.get(p).size() - 1 < carteManc[p])
+						if (carteLibPerPlayer.get(p).contains(card)
+								&& carteLibPerPlayer.get(p).size() - 1 < carteManc[p])
 						{
 							skipcard = true;
 							break;
 						}
-					if (skipcard) continue;
-					
+					if (skipcard)
+						continue;
+
 					assCarte.get(player).add(card);
 					for (int p = player + 1; p < 4; p++)
 						carteLibPerPlayer.get(p).remove(card);
@@ -175,7 +254,7 @@ public class SforzaSolver
 			}
 
 			carteManc = Arrays.copyOf(carteMancanti, 4);
-//			carteLib = new ArrayList<>(carteLibere);
+			// carteLib = new ArrayList<>(carteLibere);
 		}
 	}
 

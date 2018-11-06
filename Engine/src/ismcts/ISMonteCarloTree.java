@@ -42,6 +42,9 @@ public class ISMonteCarloTree
 			node.backpropagateStats(outcome > 0);
 		}
 
+		System.out.println("rsize:"+root.children.size());
+		if(root.children.size()==0)
+			System.out.println(root.infoset.getAllPossibleMoves());
 		return root.getBestMove();
 	}
 
@@ -52,7 +55,7 @@ public class ISMonteCarloTree
 
 		while (!node.isLeaf)
 		{
-			node.generateChildren(det);
+			node.generateChildren();
 			ISMCNode n = null;
 			double bestPri = -1;
 
@@ -62,13 +65,17 @@ public class ISMonteCarloTree
 					n = i;
 					bestPri = i.getPriority();
 				}
+			if (n==null)
+				break;
 			node = n;
 		}
 
 		if (node.isTerminal())
 			return node;
 
-		node.generateChildren(det);
+		node.generateChildren();
+		if(node.children.isEmpty())
+			return node;
 		int i = r.nextInt(node.children.size());
 		return node.children.get(i);
 	}
