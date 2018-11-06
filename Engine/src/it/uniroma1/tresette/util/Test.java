@@ -6,7 +6,7 @@ import it.uniroma1.tresette.setting.Player;
 public class Test
 {
 	private Player[] players;
-	private static final int NOMATCHES = 100;
+	private static final int NOMATCHES = 400;
 
 	public Test(Player... players)
 	{

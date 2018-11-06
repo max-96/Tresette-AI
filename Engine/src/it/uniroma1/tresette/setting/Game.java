@@ -209,7 +209,7 @@ public class Game
 					if (p == 0)
 						firstCard = move;
 					else if (!isSameSuit(move, firstCard))
-						info.semiAttivi.get(currentPlayer).remove((Integer) getCardSuit(firstCard));
+						info.semiAttivi.get(currentPlayer).remove((Integer.valueOf(getCardSuit(firstCard))));
 
 					currentPlayer = nextPlayer(currentPlayer);
 				}
