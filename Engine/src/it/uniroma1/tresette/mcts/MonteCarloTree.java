@@ -3,13 +3,11 @@ package it.uniroma1.tresette.mcts;
 import java.util.Collections;
 import java.util.concurrent.ThreadLocalRandom;
 
-import it.uniroma1.tresette.ai.AIGameState;
-
 public class MonteCarloTree
 {
 	private MCNode root;
 
-	public MonteCarloTree(AIGameState gamestate)
+	public MonteCarloTree(GameState gamestate)
 	{
 		root = new MCNode(null, null, gamestate, this);
 		root.generateChildren();

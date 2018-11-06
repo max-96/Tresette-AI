@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import it.uniroma1.tresette.ai.AIGameState;
+import it.uniroma1.tresette.mcts.GameState;
 
 public class ISMCNode implements Comparable<ISMCNode>
 {
@@ -91,7 +91,7 @@ public class ISMCNode implements Comparable<ISMCNode>
 	{
 		init();
 		int player = infoset.getCurrentPlayer();
-		AIGameState gs = new AIGameState(infoset.getCurrentPlayer(), determin, infoset.getCardsOnTable(), infoset.getScore(player), infoset.getScore(player+1), infoset.maxNode);
+		GameState gs = new GameState(infoset.getCurrentPlayer(), determin, infoset.getCardsOnTable(), infoset.getScore(player), infoset.getScore(player+1), infoset.maxNode);
 		while (!gs.terminal)
 		{
 			Integer mossa = gs.genRandMossa();

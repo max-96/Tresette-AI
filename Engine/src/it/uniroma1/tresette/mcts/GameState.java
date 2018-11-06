@@ -1,4 +1,4 @@
-package it.uniroma1.tresette.ai;
+package it.uniroma1.tresette.mcts;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,7 +9,7 @@ import java.util.Random;
 import it.uniroma1.tresette.setting.Game.Info;
 import it.uniroma1.tresette.util.CardsUtils;
 
-public class AIGameState
+public class GameState
 {
 
 	private static Random rand;
@@ -22,13 +22,13 @@ public class AIGameState
 	public final double scoreOtherTeam;
 	public final boolean maxNode;
 
-	public AIGameState(int currentPlayer, List<List<Integer>> cardsAssignment, Info info)
+	public GameState(int currentPlayer, List<List<Integer>> cardsAssignment, Info info)
 	{
 		this(currentPlayer, cardsAssignment, info.getCardsOnTable(), info.getTeamScore(currentPlayer),
 				info.getOpponentScore(currentPlayer), true);
 	}
 
-	public AIGameState(int currentPlayer, List<List<Integer>> cardsAssignment, List<Integer> cardsOnTable,
+	public GameState(int currentPlayer, List<List<Integer>> cardsAssignment, List<Integer> cardsOnTable,
 			double scoreMyTeam, double scoreOtherTeam, boolean maxNode)
 	{
 		this.cardsAssignment = cardsAssignment;
@@ -57,7 +57,7 @@ public class AIGameState
 	 * @return
 	 */
 	@Deprecated
-	public Map<Integer, AIGameState> generateSuccessors()
+	public Map<Integer, GameState> generateSuccessors()
 	{
 
 		if (terminal)
@@ -68,11 +68,11 @@ public class AIGameState
 		 */
 		List<Integer> mosse = CardsUtils.getPossibiliMosse(cardsAssignment.get(currentPlayer), cardsOnTable);
 
-		HashMap<Integer, AIGameState> mappa = new HashMap<>();
+		HashMap<Integer, GameState> mappa = new HashMap<>();
 
 		for (Integer m : mosse)
 		{
-			AIGameState g = genSuccessor(m);
+			GameState g = genSuccessor(m);
 			mappa.put(m, g);
 		}
 
@@ -105,7 +105,7 @@ public class AIGameState
 		return mosse.get(pos);
 	}
 
-	public AIGameState genSuccessor(Integer mossa)
+	public GameState genSuccessor(Integer mossa)
 	{
 		List<List<Integer>> newCardsAssignment = new ArrayList<>(cardsAssignment);
 		List<Integer> newCardsOnTable = new ArrayList<>(cardsOnTable);
@@ -126,7 +126,7 @@ public class AIGameState
 		if (newCardsOnTable.size() < 4)
 		{
 			newCurrentPlayer = CardsUtils.nextPlayer(currentPlayer);
-			AIGameState newGS = new AIGameState(newCurrentPlayer, newCardsAssignment, newCardsOnTable, scoreMyTeam,
+			GameState newGS = new GameState(newCurrentPlayer, newCardsAssignment, newCardsOnTable, scoreMyTeam,
 					scoreOtherTeam, !maxNode);
 			return newGS;
 		} else
@@ -175,7 +175,7 @@ public class AIGameState
 			// assegno il maximise (stessa squadra)
 			// svuoto la lista di carte sul tavolo
 			newCardsOnTable.clear();
-			AIGameState newGS = new AIGameState(newCurrentPlayer, newCardsAssignment, newCardsOnTable, newScoreMyTeam,
+			GameState newGS = new GameState(newCurrentPlayer, newCardsAssignment, newCardsOnTable, newScoreMyTeam,
 					newScoreOtherTeam, newMaxNode);
 			
 			return newGS;
