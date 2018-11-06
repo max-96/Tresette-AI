@@ -8,7 +8,7 @@ import it.ai.tresette.objects.Constants;
 import it.ai.tresette.player.AIPlayer;
 import it.ai.tresette.player.HumanPlayer;
 import it.ai.tresette.player.Player;
-import util.CommandLineParser;
+import it.uniroma1.tresette.util.CommandLineParser;
 
 public class DesktopLauncher
 {
@@ -28,7 +28,7 @@ public class DesktopLauncher
 		players[0] = new HumanPlayer(0);
 		
 		CommandLineParser clp = new CommandLineParser(false);
-		setting.Player[] aiPlayers = clp.parseArgs(args);
+		it.uniroma1.tresette.setting.Player[] aiPlayers = clp.parseArgs(args);
 		
 		if (aiPlayers == null)
 			return;

@@ -1,11 +1,11 @@
-package AI;
+package it.uniroma1.tresette.ai;
 
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.RecursiveAction;
 import java.util.concurrent.atomic.LongAdder;
 
-import setting.Game.Info;
+import it.uniroma1.tresette.setting.Game.Info;
 
 public abstract class DeterministicAI
 {

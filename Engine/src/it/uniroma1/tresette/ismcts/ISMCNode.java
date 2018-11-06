@@ -1,10 +1,10 @@
-package ismcts;
+package it.uniroma1.tresette.ismcts;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import AI.AIGameState;
+import it.uniroma1.tresette.ai.AIGameState;
 
 public class ISMCNode implements Comparable<ISMCNode>
 {

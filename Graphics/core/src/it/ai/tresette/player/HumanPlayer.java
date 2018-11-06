@@ -6,13 +6,13 @@ import java.util.Scanner;
 import it.ai.tresette.GameManager.KindOfPlayer;
 import it.ai.tresette.objects.Card;
 import it.ai.tresette.objects.CardsOnTable;
-import util.CardsUtils;
+import it.uniroma1.tresette.util.CardsUtils;
 
 public class HumanPlayer extends Player
 {
 	private Scanner keyboard = new Scanner(System.in);
 	
-	public static class DummyPlayer extends setting.Player
+	public static class DummyPlayer extends it.uniroma1.tresette.setting.Player
 	{
 		private DummyPlayer(int id)
 		{

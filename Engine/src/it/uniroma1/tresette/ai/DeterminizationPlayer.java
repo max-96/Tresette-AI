@@ -1,4 +1,4 @@
-package AI;
+package it.uniroma1.tresette.ai;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -9,10 +9,10 @@ import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.RecursiveAction;
 import java.util.concurrent.atomic.LongAdder;
 
-import AI.DeterministicAI.Factory;
-import setting.Game.Info;
-import util.Determinizer;
-import setting.Player;
+import it.uniroma1.tresette.ai.DeterministicAI.Factory;
+import it.uniroma1.tresette.setting.Player;
+import it.uniroma1.tresette.setting.Game.Info;
+import it.uniroma1.tresette.util.Determinizer;
 
 public class DeterminizationPlayer extends Player
 {

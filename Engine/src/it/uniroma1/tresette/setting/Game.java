@@ -1,16 +1,16 @@
-package setting;
+package it.uniroma1.tresette.setting;
 
-import static util.CardsUtils.EPS;
-import static util.CardsUtils.FindFourOfDenari;
-import static util.CardsUtils.QUATTRODIDENARI;
-import static util.CardsUtils.WINNING_SCORE;
-import static util.CardsUtils.findAccusiOfPlayer;
-import static util.CardsUtils.getCardSuit;
-import static util.CardsUtils.getDominantPlayer;
-import static util.CardsUtils.getPointsOfCards;
-import static util.CardsUtils.getTeam;
-import static util.CardsUtils.isSameSuit;
-import static util.CardsUtils.nextPlayer;
+import static it.uniroma1.tresette.util.CardsUtils.EPS;
+import static it.uniroma1.tresette.util.CardsUtils.FindFourOfDenari;
+import static it.uniroma1.tresette.util.CardsUtils.QUATTRODIDENARI;
+import static it.uniroma1.tresette.util.CardsUtils.WINNING_SCORE;
+import static it.uniroma1.tresette.util.CardsUtils.findAccusiOfPlayer;
+import static it.uniroma1.tresette.util.CardsUtils.getCardSuit;
+import static it.uniroma1.tresette.util.CardsUtils.getDominantPlayer;
+import static it.uniroma1.tresette.util.CardsUtils.getPointsOfCards;
+import static it.uniroma1.tresette.util.CardsUtils.getTeam;
+import static it.uniroma1.tresette.util.CardsUtils.isSameSuit;
+import static it.uniroma1.tresette.util.CardsUtils.nextPlayer;
 
 import java.util.ArrayList;
 import java.util.Arrays;

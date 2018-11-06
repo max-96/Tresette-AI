@@ -1,8 +1,8 @@
-package setting;
+package it.uniroma1.tresette.setting;
 
 import java.util.List;
 
-import util.CardsUtils;
+import it.uniroma1.tresette.util.CardsUtils;
 
 public abstract class Player
 {

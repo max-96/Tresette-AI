@@ -13,10 +13,10 @@ public abstract class Player
 {
 	protected int id;
 	protected CardsInHand myCards;
-	protected setting.Player ai;
+	protected it.uniroma1.tresette.setting.Player ai;
 	protected KindOfPlayer myKind;
 
-	public Player(int id, setting.Player ai, KindOfPlayer myKind)
+	public Player(int id, it.uniroma1.tresette.setting.Player ai, KindOfPlayer myKind)
 	{
 		this.id = id;
 		this.ai = ai;
@@ -48,7 +48,7 @@ public abstract class Player
 		return this.myCards.toIntList();
 	}
 
-	public setting.Player getAI()
+	public it.uniroma1.tresette.setting.Player getAI()
 	{
 		return this.ai;
 	}

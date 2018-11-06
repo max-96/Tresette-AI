@@ -1,13 +1,13 @@
-package ismcts;
+package it.uniroma1.tresette.ismcts;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import AI.PartialInfoAI;
-import setting.Game.Info;
-import util.Determinizer;
+import it.uniroma1.tresette.ai.PartialInfoAI;
+import it.uniroma1.tresette.setting.Game.Info;
+import it.uniroma1.tresette.util.Determinizer;
 
 public class InformationSetMCTS extends PartialInfoAI
 {

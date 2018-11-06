@@ -1,4 +1,4 @@
-package util;
+package it.uniroma1.tresette.util;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -12,7 +12,7 @@ import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.RecursiveAction;
 import java.util.concurrent.ThreadLocalRandom;
 
-import setting.Game.Info;
+import it.uniroma1.tresette.setting.Game.Info;
 
 public class Determinizer
 {

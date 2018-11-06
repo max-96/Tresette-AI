@@ -1,7 +1,7 @@
-package util;
+package it.uniroma1.tresette.util;
 
-import setting.Game;
-import setting.Player;
+import it.uniroma1.tresette.setting.Game;
+import it.uniroma1.tresette.setting.Player;
 
 public class Test
 {

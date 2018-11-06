@@ -1,8 +1,8 @@
-package AI;
+package it.uniroma1.tresette.ai;
 
 import java.util.List;
 
-import setting.Game.Info;
+import it.uniroma1.tresette.setting.Game.Info;
 
 public abstract class PartialInfoAI
 {

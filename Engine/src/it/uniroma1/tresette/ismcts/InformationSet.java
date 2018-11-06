@@ -1,4 +1,4 @@
-package ismcts;
+package it.uniroma1.tresette.ismcts;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -8,8 +8,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
-import setting.Game.Info;
-import util.CardsUtils;
+import it.uniroma1.tresette.setting.Game.Info;
+import it.uniroma1.tresette.util.CardsUtils;
 
 public class InformationSet
 {

@@ -1,4 +1,4 @@
-package util;
+package it.uniroma1.tresette.util;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;

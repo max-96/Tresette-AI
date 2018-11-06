@@ -1,4 +1,4 @@
-package ismcts;
+package it.uniroma1.tresette.ismcts;
 
 import java.util.Collections;
 import java.util.List;

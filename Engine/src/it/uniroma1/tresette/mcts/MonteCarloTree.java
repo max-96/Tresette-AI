@@ -1,9 +1,9 @@
-package MCTS;
+package it.uniroma1.tresette.mcts;
 
 import java.util.Collections;
 import java.util.concurrent.ThreadLocalRandom;
 
-import AI.AIGameState;
+import it.uniroma1.tresette.ai.AIGameState;
 
 public class MonteCarloTree
 {

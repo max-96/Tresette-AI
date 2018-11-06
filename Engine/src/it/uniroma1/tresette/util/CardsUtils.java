@@ -1,4 +1,4 @@
-package util;
+package it.uniroma1.tresette.util;
 
 import java.util.ArrayList;
 import java.util.Collections;

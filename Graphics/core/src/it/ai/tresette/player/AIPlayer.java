@@ -8,7 +8,7 @@ import it.ai.tresette.objects.CardsOnTable;
 
 public class AIPlayer extends Player
 {
-	public AIPlayer(setting.Player ai)
+	public AIPlayer(it.uniroma1.tresette.setting.Player ai)
 	{
 		super(ai.getID(), ai, KindOfPlayer.AIPLAYER);
 	}

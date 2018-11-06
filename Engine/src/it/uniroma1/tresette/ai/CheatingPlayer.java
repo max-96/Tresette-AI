@@ -1,6 +1,6 @@
-package AI;
+package it.uniroma1.tresette.ai;
 
-import setting.Player;
+import it.uniroma1.tresette.setting.Player;
 
 public class CheatingPlayer extends Player
 {

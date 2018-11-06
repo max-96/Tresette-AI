@@ -1,13 +1,13 @@
-package util;
+package it.uniroma1.tresette.util;
 
-import AI.CheatingPlayer;
-import AI.DeterminizationPlayer;
-import AI.PartialInfoPlayer;
-import AI.RandWalk;
-import MCTS.MonteCarloTreeSearch;
-import ismcts.InformationSetMCTS;
-import minmax.AlphaBeta;
-import setting.Player;
+import it.uniroma1.tresette.ai.CheatingPlayer;
+import it.uniroma1.tresette.ai.DeterminizationPlayer;
+import it.uniroma1.tresette.ai.PartialInfoPlayer;
+import it.uniroma1.tresette.ai.RandWalk;
+import it.uniroma1.tresette.ismcts.InformationSetMCTS;
+import it.uniroma1.tresette.mcts.MonteCarloTreeSearch;
+import it.uniroma1.tresette.minmax.AlphaBeta;
+import it.uniroma1.tresette.setting.Player;
 
 public class CommandLineParser
 {

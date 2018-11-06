@@ -1,10 +1,10 @@
-package AI;
+package it.uniroma1.tresette.ai;
 
 import java.util.List;
 import java.util.Random;
 
-import setting.Game.Info;
-import util.CardsUtils;
+import it.uniroma1.tresette.setting.Game.Info;
+import it.uniroma1.tresette.util.CardsUtils;
 
 public class RandWalk extends PartialInfoAI
 {

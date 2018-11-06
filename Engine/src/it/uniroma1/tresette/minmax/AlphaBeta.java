@@ -1,4 +1,4 @@
-package minmax;
+package it.uniroma1.tresette.minmax;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -7,11 +7,11 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.RecursiveAction;
 import java.util.concurrent.atomic.LongAdder;
 
-import AI.AIGameState;
-import AI.DeterministicAI;
-import setting.Game.Info;
-import util.CardsUtils;
-import util.MovesStats;
+import it.uniroma1.tresette.ai.AIGameState;
+import it.uniroma1.tresette.ai.DeterministicAI;
+import it.uniroma1.tresette.setting.Game.Info;
+import it.uniroma1.tresette.util.CardsUtils;
+import it.uniroma1.tresette.util.MovesStats;
 
 public class AlphaBeta extends DeterministicAI
 {

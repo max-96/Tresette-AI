@@ -1,7 +1,7 @@
 package it.ai.tresette;
 
-import static util.CardsUtils.findAccusiOfPlayer;
-import static util.CardsUtils.getTeam;
+import static it.uniroma1.tresette.util.CardsUtils.findAccusiOfPlayer;
+import static it.uniroma1.tresette.util.CardsUtils.getTeam;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,8 +16,8 @@ import it.ai.tresette.objects.Card.Suit;
 import it.ai.tresette.objects.Card.Val;
 import it.ai.tresette.objects.CardsOnTable;
 import it.ai.tresette.player.Player;
-import setting.Game;
-import util.CardsUtils;
+import it.uniroma1.tresette.setting.Game;
+import it.uniroma1.tresette.util.CardsUtils;
 
 public class GameManager {
 
@@ -144,7 +144,7 @@ public class GameManager {
 		assert players.length == 4;
 		this.players = players;
 		
-		setting.Player[] p = new setting.Player[4];
+		it.uniroma1.tresette.setting.Player[] p = new it.uniroma1.tresette.setting.Player[4];
 		for (int i = 0; i < 4; i++)
 			p[i] = players[i].getAI();
 		this.game = new Game(p);
