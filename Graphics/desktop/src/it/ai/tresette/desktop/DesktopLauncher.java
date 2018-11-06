@@ -10,8 +10,10 @@ import it.ai.tresette.player.HumanPlayer;
 import it.ai.tresette.player.Player;
 import util.CommandLineParser;
 
-public class DesktopLauncher {
-	public static void main (String[] args) {
+public class DesktopLauncher
+{
+	public static void main (String[] args)
+	{
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		config.foregroundFPS = 60;
 		

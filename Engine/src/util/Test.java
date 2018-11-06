@@ -1,12 +1,5 @@
 package util;
 
-import java.util.Arrays;
-
-import AI.CheatingPlayer;
-import AI.DeterminizationPlayer;
-import AI.PartialInfoPlayer;
-import AI.RandWalk;
-import MCTS.MonteCarloTreeSearch;
 import setting.Game;
 import setting.Player;
 

@@ -25,7 +25,22 @@ public class CommandLineParser
 	
 	private void printHelp()
 	{
-		System.out.println("An help message");
+		System.out.println("AI \"parola\" for the game of tresette\n");
+		int aiNr = forTest ? 4 : 3;
+		System.out.println("Usage: choose " + aiNr + " AIs from the following list");
+		System.out.println("  RANDOM");
+		System.out.println("  AB_CHEATING");
+		System.out.println("    -d\tExploring depth [12]");
+		System.out.println("  MCTS_CHEATING");
+		System.out.println("    -i\tIterations number [1200]");
+		System.out.println("  ALPHABETA ");
+		System.out.println("    -d\tExploring depth [12]");
+		System.out.println("    -n\tDeterminizations number [100]");
+		System.out.println("  MCTS");
+		System.out.println("    -i\tIterations number [1200]");
+		System.out.println("    -n\ttDeterminizations number [100]");
+		System.out.println("  ISMTCS");
+		System.out.println("    -i\tIterations number [1200]");
 	}
 	
 	public Player[] parseArgs(String[] args)
@@ -48,9 +63,9 @@ public class CommandLineParser
 				AI ai = AI.valueOf(args[argNr]);
 				
 				int id = forTest ? i : i + 1;
-				int depth = 1;
-				int iter = 1;
-				int deterNr = 1;
+				int depth = 12;
+				int iter = 1200;
+				int deterNr = 100;
 				switch (ai)
 				{
 					case AB_CHEATING:
