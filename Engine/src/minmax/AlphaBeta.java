@@ -43,13 +43,14 @@ public class AlphaBeta extends DeterministicAI
 	{
 		private int depth;
 
-		public Factory(int depth)
+		public Factory(int playerID, int depth)
 		{
+			super(playerID);
 			this.depth = depth;
 		}
 		
 		@Override
-		public RecursiveAction getAI(int playerID, List<List<Integer>> assegnamentoCarte, Info info)
+		public RecursiveAction getAI(List<List<Integer>> assegnamentoCarte, Info info)
 		{
 			return new Slave(playerID, depth, assegnamentoCarte, info, punti);
 		}

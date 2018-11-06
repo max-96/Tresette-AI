@@ -13,7 +13,18 @@ public abstract class DeterministicAI
 	
 	public abstract static class Factory
 	{
+		protected int playerID;
 		protected ConcurrentHashMap<Integer, LongAdder> punti = new ConcurrentHashMap<>();
+		
+		public Factory(int playerID)
+		{
+			this.playerID = playerID;
+		}
+		
+		public int getPlayerID ()
+		{
+			return playerID;
+		}
 		
 		public ConcurrentHashMap<Integer, LongAdder> getPunti()
 		{
@@ -25,7 +36,7 @@ public abstract class DeterministicAI
 			punti = new ConcurrentHashMap<>();
 		}
 		
-		public abstract RecursiveAction getAI(int playerID, List<List<Integer>> assegnamentoCarte, Info info);
+		public abstract RecursiveAction getAI(List<List<Integer>> assegnamentoCarte, Info info);
 	}
 	
 	public DeterministicAI(int playerID)

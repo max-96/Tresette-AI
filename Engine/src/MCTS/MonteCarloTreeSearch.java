@@ -22,14 +22,15 @@ public class MonteCarloTreeSearch extends DeterministicAI
 		private int iterations;
 		private double C_PARAM;
 		
-		public Factory(int iterations, double c_param)
+		public Factory(int playerID, int iterations, double c_param)
 		{
+			super(playerID);
 			this.iterations = iterations;
 			C_PARAM = c_param;
 		}
 		
 		@Override
-		public RecursiveAction getAI(int playerID, List<List<Integer>> assegnamentoCarte, Info info)
+		public RecursiveAction getAI(List<List<Integer>> assegnamentoCarte, Info info)
 		{
 			return new Slave(playerID, iterations, C_PARAM, assegnamentoCarte, info, punti);
 		}

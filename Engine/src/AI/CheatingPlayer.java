@@ -8,7 +8,7 @@ public class CheatingPlayer extends Player
 	
 	public CheatingPlayer(DeterministicAI ai)
 	{
-		super(ai.playerID);
+		super(ai.getPlayerID());
 		this.ai = ai;
 	}
 	

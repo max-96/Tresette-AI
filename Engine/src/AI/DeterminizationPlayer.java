@@ -18,9 +18,9 @@ public class DeterminizationPlayer extends Player
 	private Factory aiFactory;
 	private int n_TRAILS;
 
-	public DeterminizationPlayer(int id, Factory aiFactory, int n_TRAILS)
+	public DeterminizationPlayer(Factory aiFactory, int n_TRAILS)
 	{
-		super(id);
+		super(aiFactory.getPlayerID());
 		this.aiFactory = aiFactory;
 		this.n_TRAILS = n_TRAILS;
 	}
@@ -41,7 +41,7 @@ public class DeterminizationPlayer extends Player
 			List<List<Integer>> s = sols.take();
 			while (s != Collections.EMPTY_LIST)
 			{
-				RecursiveAction r = aiFactory.getAI(id, s, info);
+				RecursiveAction r = aiFactory.getAI(s, info);
 				pool.execute(r);
 				threads.add(r);
 				
