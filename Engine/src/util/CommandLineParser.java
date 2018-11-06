@@ -138,14 +138,21 @@ public class CommandLineParser
 				}
 				argNr++;
 			}
+			if (argNr < args.length)
+			{
+				System.out.println("Error: invalid argument \"" + args[args.length - 1] + "\"\n");
+				printHelp();
+				return null;
+			}
+			
 			return players;	
 		}
 		catch (Exception e)
 		{
 			if (argNr == args.length)
-				System.out.println("Please provide " + aiNr + " AIs\n");
+				System.out.println("Error: please provide " + aiNr + " AIs\n");
 			else
-				System.out.println("Invalid argument \"" + args[argNr] + "\"\n");
+				System.out.println("Error: invalid argument \"" + args[argNr] + "\"\n");
 			printHelp();
 			return null;
 		}
