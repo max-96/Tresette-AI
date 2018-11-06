@@ -1,9 +1,5 @@
 package util;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
-
 import AI.CheatingPlayer;
 import AI.DeterminizationPlayer;
 import AI.PartialInfoPlayer;
@@ -15,7 +11,7 @@ import setting.Player;
 
 public class CommandLineParser
 {
-	private final int aiNr;
+	private final boolean forTest;
 	
 	private enum AI
 	{
@@ -24,10 +20,7 @@ public class CommandLineParser
 	
 	public CommandLineParser(boolean forTest)
 	{
-		if (forTest)
-			aiNr = 4;
-		else
-			aiNr = 3;
+		this.forTest = forTest;
 	}
 	
 	private void printHelp()
@@ -44,6 +37,7 @@ public class CommandLineParser
 				return null;
 			}
 		
+		int aiNr = forTest ? 4 : 3;
 		Player[] players = new Player[aiNr];
 		int argNr = 0;
 		
@@ -51,95 +45,92 @@ public class CommandLineParser
 		{
 			for (int i = 0; i < aiNr; i++)
 			{
-				AI ai = AI.valueOf(args[argNr++]);
+				AI ai = AI.valueOf(args[argNr]);
+				
+				int id = forTest ? i : i + 1;
 				int depth = 1;
 				int iter = 1;
 				int deterNr = 1;
 				switch (ai)
 				{
 					case AB_CHEATING:
-						if (argNr < args.length && args[argNr].equals("-d"))
+						if (argNr + 1 < args.length && args[argNr + 1].equals("-d"))
 						{
-							argNr += 2;
-							depth = Integer.parseInt(args[argNr++]);
+							depth = Integer.parseInt(args[++argNr + 1]);
+							argNr++;
 						}
-						players[i] = new CheatingPlayer(new AlphaBeta(i, depth));
+						players[i] = new CheatingPlayer(new AlphaBeta(id, depth));
 						break;
 						
 					case ALPHABETA:
 						for (int j = 0; j < 2; j++)
 						{
-							if (argNr < args.length && args[argNr].equals("-d"))
+							if (argNr + 1 < args.length && args[argNr + 1].equals("-d"))
 							{
+								depth = Integer.parseInt(args[++argNr + 1]);
 								argNr++;
-								depth = Integer.parseInt(args[argNr++]);
 							}
-							if (argNr < args.length && args[argNr].equals("-n"))
+							if (argNr + 1 < args.length && args[argNr + 1].equals("-n"))
 							{
+								deterNr = Integer.parseInt(args[++argNr + 1]);
 								argNr++;
-								deterNr = Integer.parseInt(args[argNr++]);
 							}
 						}
-						players[i] = new DeterminizationPlayer(new AlphaBeta.Factory(i, depth), deterNr);
+						players[i] = new DeterminizationPlayer(new AlphaBeta.Factory(id, depth), deterNr);
 						break;
 						
 					case ISMTCS:
-						if (argNr < args.length && args[argNr].equals("-i"))
+						if (argNr + 1 < args.length && args[argNr + 1].equals("-i"))
 						{
+							iter = Integer.parseInt(args[++argNr + 1]);
 							argNr++;
-							iter = Integer.parseInt(args[argNr++]);
 						}
-						players[i] = new PartialInfoPlayer(new InformationSetMCTS(i, iter));
+						players[i] = new PartialInfoPlayer(new InformationSetMCTS(id, iter));
 						break;
 						
 					case MCTS:
 						for (int j = 0; j < 2; j++)
 						{
-							if (args[argNr].equals("-i"))
+							if (argNr + 1 < args.length && args[argNr + 1].equals("-i"))
 							{
+								iter = Integer.parseInt(args[++argNr + 1]);
 								argNr++;
-								iter = Integer.parseInt(args[argNr++]);
 							}
-							if (args[argNr].equals("-n"))
+							if (argNr + 1 < args.length && args[argNr + 1].equals("-n"))
 							{
+								deterNr = Integer.parseInt(args[++argNr + 1]);
 								argNr++;
-								deterNr = Integer.parseInt(args[argNr++]);
 							}
 						}
-						players[i] = new DeterminizationPlayer(new MonteCarloTreeSearch.Factory(i, iter), deterNr);
+						players[i] = new DeterminizationPlayer(new MonteCarloTreeSearch.Factory(id, iter), deterNr);
 						break;
 						
 					case MCTS_CHEATING:
-						if (args[argNr].equals("-i"))
+						if (argNr + 1 < args.length && args[argNr + 1].equals("-i"))
 						{
+							iter = Integer.parseInt(args[++argNr + 1]);
 							argNr++;
-							iter = Integer.parseInt(args[argNr++]);
 						}
-						players[i] = new CheatingPlayer(new MonteCarloTreeSearch(i, iter));
+						players[i] = new CheatingPlayer(new MonteCarloTreeSearch(id, iter));
 						break;
 						
 					case RANDOM:
-						players[i] = new PartialInfoPlayer(new RandWalk(i));
+						players[i] = new PartialInfoPlayer(new RandWalk(id));
 						break;
 						
 					default:
 						break;
 				}
+				argNr++;
 			}
 			return players;	
 		}
 		catch (Exception e)
 		{
-			
-//				if (argNr >= args.length - 1)
-//				{
-//					System.out.println("Please provide " + aiNr + " AIs\n");
-//					printHelp();
-//					return null;
-//					
-//				}
-			
-			System.out.println("Invalid argument \"" + args[argNr - 1] + "\"\n");
+			if (argNr == args.length)
+				System.out.println("Please provide " + aiNr + " AIs\n");
+			else
+				System.out.println("Invalid argument \"" + args[argNr] + "\"\n");
 			printHelp();
 			return null;
 		}
