@@ -20,7 +20,7 @@ public class CommandLineParser
 	
 	private enum AI
 	{
-		RANDOM, AB_CHEATING, MCTS_CHEATING, ALPHABETA, MCTS, //ISMTCS
+		RANDOM, CHEATING_AB, CHEATING_MCTS, ALPHABETA, MCTS, //ISMTCS
 	}
 	
 	public CommandLineParser(String[] args)
@@ -34,9 +34,9 @@ public class CommandLineParser
 		int aiNr = forTest ? 4 : 3;
 		System.out.println("Usage: choose " + aiNr + " AIs from the following list");
 		System.out.println("  RANDOM");
-		System.out.println("  AB_CHEATING");
+		System.out.println("  CHEATING_AB");
 		System.out.println("    -d\tExploring depth          [12]");
-		System.out.println("  MCTS_CHEATING");
+		System.out.println("  CHEATING_MCTS");
 		System.out.println("    -i\tIterations number        [1200]");
 		System.out.println("  ALPHABETA ");
 		System.out.println("    -d\tExploring depth          [12]");
@@ -104,7 +104,7 @@ public class CommandLineParser
 				int deterNr = 100;
 				switch (ai)
 				{
-					case AB_CHEATING:
+					case CHEATING_AB:
 						if (argNr + 1 < args.size() && args.get(argNr + 1).equals("-d"))
 						{
 							depth = Integer.parseInt(args.get(++argNr + 1));
@@ -156,7 +156,7 @@ public class CommandLineParser
 						players[i] = new DeterminizationPlayer(new MonteCarloTreeSearch.Factory(id, iter), deterNr);
 						break;
 						
-					case MCTS_CHEATING:
+					case CHEATING_MCTS:
 						if (argNr + 1 < args.size() && args.get(argNr + 1).equals("-i"))
 						{
 							iter = Integer.parseInt(args.get(++argNr + 1));
