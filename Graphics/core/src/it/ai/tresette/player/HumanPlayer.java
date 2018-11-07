@@ -46,7 +46,14 @@ public class HumanPlayer extends Player
 		do
 		{
 			System.out.println("Che carta giochi? (inserisci l'indice della carta nella lista)");
-			myint = keyboard.nextInt() - 1;
+			try
+			{
+				myint = Integer.parseInt(keyboard.next()) - 1;
+			}
+			catch (NumberFormatException e)
+			{
+				myint = -1;
+			}
 			
 		} while (myint < 0 || myint >= possMosse.size());
 
