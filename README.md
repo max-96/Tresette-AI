@@ -1,4 +1,4 @@
-# Tresette's AI
+# Providing an AI for the Game of Tresette
 
 In our work we want to provide an AI capable of playing the Game of Tresette.
 We are not aware of other attempts to develop skilled AIs for this game.
