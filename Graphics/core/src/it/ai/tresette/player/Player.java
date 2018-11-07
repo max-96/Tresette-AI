@@ -11,6 +11,8 @@ import it.ai.tresette.objects.CardsOnTable;
 
 public abstract class Player
 {
+	private static final String[] STRING_REPR = {"↧", "↦", "↥", "↤"};
+	
 	protected int id;
 	protected CardsInHand myCards;
 	protected it.uniroma1.tresette.setting.Player ai;
@@ -56,6 +58,12 @@ public abstract class Player
 	public KindOfPlayer getKind()
 	{
 		return this.myKind;
+	}
+	
+	@Override
+	public String toString()
+	{
+		return STRING_REPR[id];
 	}
 
 }
