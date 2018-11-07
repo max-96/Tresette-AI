@@ -31,6 +31,12 @@ public class MonteCarloTreeSearch extends DeterministicAI
 		{
 			return new Slave(playerID, iterations, assegnamentoCarte, info, punti);
 		}
+		
+		@Override
+		public String toString()
+		{
+			return "Monte Carlo Tree Search with " + iterations + " iterations";
+		}
 	}
 	
 	public MonteCarloTreeSearch(int playerID, int iterations)
@@ -53,6 +59,12 @@ public class MonteCarloTreeSearch extends DeterministicAI
 			maxExecTime = execTime;
 
 		return m;
+	}
+	
+	@Override
+	public String toString()
+	{
+		return "Monte Carlo Tree Search with " + iterations + " iterations";
 	}
 	
 	public static class Slave extends RecursiveAction

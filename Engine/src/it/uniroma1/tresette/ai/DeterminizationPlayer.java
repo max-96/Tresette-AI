@@ -73,4 +73,10 @@ public class DeterminizationPlayer extends Player
 		
 		return bestMove;
 	}
+	
+	@Override
+	public String toString()
+	{
+		return "Determinized " + aiFactory + " and " + n_TRAILS + " determinizations";
+	}
 }

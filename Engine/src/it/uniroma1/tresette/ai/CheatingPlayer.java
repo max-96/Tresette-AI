@@ -17,4 +17,10 @@ public class CheatingPlayer extends Player
 	{
 		return ai.getBestMove(game.getAssegnamentoCarte(), game.getInfo());
 	}
+	
+	@Override
+	public String toString()
+	{
+		return "Cheating " + ai;
+	}
 }

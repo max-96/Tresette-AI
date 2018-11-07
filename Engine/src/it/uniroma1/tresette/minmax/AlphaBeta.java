@@ -54,6 +54,12 @@ public class AlphaBeta extends DeterministicAI
 		{
 			return new Slave(playerID, depth, assegnamentoCarte, info, punti);
 		}
+		
+		@Override
+		public String toString()
+		{
+			return "Alpha Beta with " + depth + " plies explored";
+		}
 	}
 	
 	public AlphaBeta(int playerID, int depth)
@@ -99,7 +105,7 @@ public class AlphaBeta extends DeterministicAI
 
 		List<Integer> mosse = CardsUtils.getPossibiliMosse(assegnamentoCarte.get(playerID), cardsOnTable);
 
-//		assert mosse.size() > 1;
+		assert mosse.size() > 1;
 
 		AIGameState init = new AIGameState(playerID, assegnamentoCarte, info);
 
@@ -275,6 +281,12 @@ public class AlphaBeta extends DeterministicAI
 	public List<List<Integer>> getBetaMoves()
 	{
 		return betaMoves;
+	}
+	
+	@Override
+	public String toString()
+	{
+		return "Alpha Beta with " + depth + " plies explored";
 	}
 
 	public static class Slave extends RecursiveAction

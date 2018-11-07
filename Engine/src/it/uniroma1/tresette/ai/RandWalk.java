@@ -22,4 +22,10 @@ public class RandWalk extends PartialInfoAI
 		List<Integer> mosse = CardsUtils.getPossibiliMosse(carteInMano, info.getCardsOnTable());
 		return mosse.get(rand.nextInt(mosse.size()));
 	}
+	
+	@Override
+	public String toString()
+	{
+		return "Random Walk";
+	}
 }

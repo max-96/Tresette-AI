@@ -17,4 +17,10 @@ public class PartialInfoPlayer extends Player
 	{
 		return ai.getBestMove(carteInMano, game.getInfo());
 	}
+	
+	@Override
+	public String toString()
+	{
+		return ai.toString();
+	}
 }

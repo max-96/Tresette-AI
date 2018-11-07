@@ -54,5 +54,11 @@ public class InformationSetMCTS extends PartialInfoAI
 
 		return bestMove;
 	}
+	
+	@Override
+	public String toString()
+	{
+		return "Information Set MCTS  with " + iterations + " iterations";
+	}
 
 }
