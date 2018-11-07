@@ -16,12 +16,10 @@ import it.uniroma1.tresette.setting.Game.Info;
 
 public class Determinizer
 {
-	// private Info info;
 	private int n_TRAILS;
 	private List<List<Integer>> assegnamentoCarte = new ArrayList<>(4);
 	private int[] carteMancanti = new int[4];
 	private List<List<Integer>> carteLiberePerPlayer = new ArrayList<>(4);
-	// private Integer[] ordineAssegnamento = new Integer[4];
 
 	private int status = 0;
 	private BlockingQueue<List<List<Integer>>> possibiliAssegnamenti;
@@ -49,16 +47,12 @@ public class Determinizer
 
 			carteLibere.removeAll(assegnamentoCarte.get(i));
 			carteLiberePerPlayer.add(new ArrayList<>());
-			// ordineAssegnamenti = i;
 		}
 
 		for (int carta : carteLibere)
 			for (int p = 0; p < 4; p++)
 				if (info.isSemeAttivoForPlayer(p, carta / 10))
 					carteLiberePerPlayer.get(p).add(carta);
-
-		// Arrays.sort(ordineAssegnamento,
-		// Comparator.comparingInt(info::getNumeroSemiAttivi));
 	}
 
 	/**
@@ -129,14 +123,12 @@ public class Determinizer
 
 		private List<List<Integer>> assCarte = new ArrayList<>(4);
 		private int[] carteManc;
-		// private List<Integer> carteLib = new ArrayList<>();
 		private List<List<Integer>> carteLibPerPlayer = new ArrayList<>(4);
 
 		@Override
 		protected void compute()
 		{
 			copiaStrutture();
-//			int debug_counter = 0;
 
 			for (int player = 0; player < 4; player++)
 			{
@@ -150,7 +142,6 @@ public class Determinizer
 
 					for (int p = player + 1; p < 4; p++)
 					{
-//						debug_counter++;
 						if (carteLibPerPlayer.get(p).contains(card)
 								&& carteLibPerPlayer.get(p).size() - 1 < carteManc[p])
 						{
@@ -172,8 +163,10 @@ public class Determinizer
 									break;
 								}
 							}
+							
 							if (goout)
 								break;
+							
 							for (int p3 = player + 3; p3 < 4; p3++)
 							{
 								if (carteLibPerPlayer.get(p).contains(card) && carteLibPerPlayer.get(p2).contains(card)
@@ -183,7 +176,6 @@ public class Determinizer
 									union.addAll(carteLibPerPlayer.get(p2));
 									union.addAll(carteLibPerPlayer.get(p3));
 
-									// System.out.println(intersezione);
 									if (union.size() - 1 < carteManc[p] + carteManc[p2] + carteManc[p3])
 									{
 										skipcard = true;
@@ -204,45 +196,9 @@ public class Determinizer
 					carteManc[player]--;
 				}
 			}
-			// if(debug_counter>100)
-//			System.out.println(debug_counter);
-			// System.out.println(carteLibPerPlayer);
 			possibiliAssegnamenti.offer(assCarte);
 		}
-
-		protected void compute2()
-		{
-			copiaStrutture();
-
-			for (int player = 0; player < 4; player++)
-			{
-				boolean skipcard = false;
-				Collections.shuffle(carteLibPerPlayer.get(player), ThreadLocalRandom.current());
-
-				for (Integer card : carteLibPerPlayer.get(player))
-				{
-					if (carteManc[player] == 0)
-						break;
-					for (int p = player + 1; p < 4; p++)
-						if (carteLibPerPlayer.get(p).contains(card)
-								&& carteLibPerPlayer.get(p).size() - 1 < carteManc[p])
-						{
-							skipcard = true;
-							break;
-						}
-					if (skipcard)
-						continue;
-
-					assCarte.get(player).add(card);
-					for (int p = player + 1; p < 4; p++)
-						carteLibPerPlayer.get(p).remove(card);
-					carteManc[player]--;
-				}
-			}
-
-			possibiliAssegnamenti.offer(assCarte);
-		}
-
+		
 		private void copiaStrutture()
 		{
 			for (int i = 0; i < 4; i++)
@@ -252,7 +208,6 @@ public class Determinizer
 			}
 
 			carteManc = Arrays.copyOf(carteMancanti, 4);
-			// carteLib = new ArrayList<>(carteLibere);
 		}
 	}
 
