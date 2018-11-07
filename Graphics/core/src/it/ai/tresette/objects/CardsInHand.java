@@ -16,6 +16,10 @@ public class CardsInHand
 	 */
 	private int playerNumber;
 
+	/**
+	 * this field is not useless in 1vs1 game
+	 * @param a
+	 */
 	@SuppressWarnings("unused")
 	private int cardCounter;
 	
