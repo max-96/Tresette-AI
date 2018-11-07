@@ -22,7 +22,7 @@ public class Game
 	private Player[] players;
 	private List<List<Integer>> assCarte;
 	private Info info;
-	private double[] totalScores = { 0, 0 };
+	private int[] totalScores = { 0, 0 };
 
 	public static class Info
 	{

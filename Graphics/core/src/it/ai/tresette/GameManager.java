@@ -40,7 +40,7 @@ public class GameManager {
 	/**
 	 * Total point counter for each team
 	 */
-	private double[] punteggiTotali = { 0, 0 };
+	private int[] punteggiTotali = { 0, 0 };
 	
 	/**
 	 * Suit active for each Player
@@ -182,8 +182,8 @@ public class GameManager {
 		punteggiTotali[0] += punteggi[0];
 		punteggiTotali[1] += punteggi[1];
 		
-		System.out.println("\nYour team has scored " + (int) punteggi[0] + " points, total: " + (int) punteggiTotali[0]);
-		System.out.println("Opponent team has scored " + (int) punteggi[1] + " points, total: " + (int) punteggiTotali[1] + "\n");
+		System.out.println("\nYour team has scored " + (int) punteggi[0] + " points, total: " + punteggiTotali[0]);
+		System.out.println("Opponent team has scored " + (int) punteggi[1] + " points, total: " + punteggiTotali[1] + "\n");
 		
 		if ((punteggiTotali[0] >= CardsUtils.WINNING_SCORE || 
 				punteggiTotali[1] >= CardsUtils.WINNING_SCORE) &&
@@ -191,9 +191,9 @@ public class GameManager {
 		{
 			System.out.println("\nNow let's check who's the winner!");
 			if (punteggiTotali[0] > punteggiTotali[1])
-				System.out.println("The winner is your team with " + (int) punteggiTotali[0] + " points!");
+				System.out.println("The winner is your team with " + punteggiTotali[0] + " points!");
 			else
-				System.out.println("The winner is opponent team with " + (int) punteggiTotali[1] + " points.");
+				System.out.println("The winner is opponent team with " + punteggiTotali[1] + " points.");
 			
 			this.gameState = GameState.GAMEEND;
 			return;
@@ -276,10 +276,10 @@ public class GameManager {
 			{
 				punteggi[getTeam(actualPlayer)] += punti;
 				
-				System.out.print("Player " + players[actualPlayer] + " accuso! " + (int) punti + " points: ");
+				System.out.print("Player " + players[actualPlayer] + " accuso! " + (int) punti + " points: [");
 				for (int i = 0; i < accusi.size() - 1; i++)
 					System.out.print(new Card(accusi.get(i)) + ", ");
-				System.out.println(new Card(accusi.get(accusi.size() - 1)));
+				System.out.println(new Card(accusi.get(accusi.size() - 1)) + "]");
 			}
 		}
 		
