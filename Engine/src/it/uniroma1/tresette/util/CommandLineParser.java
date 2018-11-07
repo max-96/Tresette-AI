@@ -20,7 +20,7 @@ public class CommandLineParser
 	
 	private enum AI
 	{
-		RANDOM, AB_CHEATING, MCTS_CHEATING, ALPHABETA, MCTS, ISMTCS
+		RANDOM, AB_CHEATING, MCTS_CHEATING, ALPHABETA, MCTS, //ISMTCS
 	}
 	
 	public CommandLineParser(String[] args)
@@ -44,8 +44,8 @@ public class CommandLineParser
 		System.out.println("  MCTS");
 		System.out.println("    -i\tIterations number       [1200]");
 		System.out.println("    -n\tDeterminizations number [100]");
-		System.out.println("  ISMTCS");
-		System.out.println("    -i\tIterations number       [1200]");
+//		System.out.println("  ISMTCS");
+//		System.out.println("    -i\tIterations number       [1200]");
 		System.out.println("\nOptions:");
 		System.out.println("  -t\tRun tests instead GUI   [false]");
 		System.out.println("  -m\tTest matches number     [200]");
@@ -130,14 +130,14 @@ public class CommandLineParser
 						players[i] = new DeterminizationPlayer(new AlphaBeta.Factory(id, depth), deterNr);
 						break;
 						
-					case ISMTCS:
-						if (argNr + 1 < args.size() && args.get(argNr + 1).equals("-i"))
-						{
-							iter = Integer.parseInt(args.get(++argNr + 1));
-							argNr++;
-						}
-						players[i] = new PartialInfoPlayer(new InformationSetMCTS(id, iter));
-						break;
+//					case ISMTCS:
+//						if (argNr + 1 < args.size() && args.get(argNr + 1).equals("-i"))
+//						{
+//							iter = Integer.parseInt(args.get(++argNr + 1));
+//							argNr++;
+//						}
+//						players[i] = new PartialInfoPlayer(new InformationSetMCTS(id, iter));
+//						break;
 						
 					case MCTS:
 						for (int j = 0; j < 2; j++)
