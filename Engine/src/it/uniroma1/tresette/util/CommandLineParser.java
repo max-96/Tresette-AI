@@ -30,25 +30,25 @@ public class CommandLineParser
 	
 	private void printHelp()
 	{
-		System.out.println("Artificial Intelligences for the game of tresette\n");
+		System.out.println("Artificial Intelligences for the game of Tresette\n");
 		int aiNr = forTest ? 4 : 3;
 		System.out.println("Usage: choose " + aiNr + " AIs from the following list");
 		System.out.println("  RANDOM");
 		System.out.println("  AB_CHEATING");
-		System.out.println("    -d\tExploring depth         [12]");
+		System.out.println("    -d\tExploring depth          [12]");
 		System.out.println("  MCTS_CHEATING");
-		System.out.println("    -i\tIterations number       [1200]");
+		System.out.println("    -i\tIterations number        [1200]");
 		System.out.println("  ALPHABETA ");
-		System.out.println("    -d\tExploring depth         [12]");
-		System.out.println("    -n\tDeterminizations number [100]");
+		System.out.println("    -d\tExploring depth          [12]");
+		System.out.println("    -n\tDeterminizations number  [100]");
 		System.out.println("  MCTS");
-		System.out.println("    -i\tIterations number       [1200]");
-		System.out.println("    -n\tDeterminizations number [100]");
+		System.out.println("    -i\tIterations number        [1200]");
+		System.out.println("    -n\tDeterminizations number  [100]");
 //		System.out.println("  ISMTCS");
-//		System.out.println("    -i\tIterations number       [1200]");
+//		System.out.println("    -i\tIterations number        [1200]");
 		System.out.println("\nOptions:");
-		System.out.println("  -t\tRun tests instead GUI   [false]");
-		System.out.println("  -m\tTest matches number     [200]");
+		System.out.println("  -t\tRun tests instead of GUI [false]");
+		System.out.println("  -m\tTest matches number      [200]");
 	}
 	
 	public boolean parseTest()
