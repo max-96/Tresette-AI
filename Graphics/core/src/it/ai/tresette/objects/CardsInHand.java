@@ -16,6 +16,7 @@ public class CardsInHand
 	 */
 	private int playerNumber;
 
+	@SuppressWarnings("unused")
 	private int cardCounter;
 	
 	public CardsInHand(List<Card> cards,int playerNumber) 
