@@ -6,18 +6,19 @@ import it.uniroma1.tresette.setting.Player;
 public class Test
 {
 	private Player[] players;
-	private static final int NOMATCHES = 400;
+	private int noMatches = 200;
 
-	public Test(Player... players)
+	public Test(int noMatches, Player... players)
 	{
 		this.players = players;
+		this.noMatches = noMatches;
 	}
 
 	public void exec()
 	{
 		int[] winnings = { 0, 0 };
 
-		for (int i = 0; i < NOMATCHES; i++)
+		for (int i = 0; i < noMatches; i++)
 		{
 			Game gm = new Game(players);
 			int res = gm.run();
@@ -57,13 +58,20 @@ public class Test
 
 	public static void main(String[] args)
 	{
-		CommandLineParser clp = new CommandLineParser(true);
-		Player[] players = clp.parseArgs(args);
+		CommandLineParser clp = new CommandLineParser(args);
+		if (!clp.parseTest())
+			return;
+		
+		int noMatches = clp.parseMatchesNr();
+		if (noMatches < 0)
+			return;
+		
+		Player[] players = clp.parseArgs();
 		
 		if (players == null)
 			return;
 		
-		Test test = new Test(players);
+		Test test = new Test(noMatches, players);
 		test.exec();
 	}
 }

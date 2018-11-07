@@ -151,9 +151,10 @@ public class GameManager {
 		switch (this.gameState)
 		{
 			case GAMEREADY:
+				System.out.println("We are starting the game...");
 				initialise();
+				System.out.println("Player " + (startingPlayer + 1) + " starts");
 				this.gameState = GameState.INGOING;
-				System.out.println("We are starting the game");
 				break;
 				
 			case INGOING:
@@ -230,7 +231,7 @@ public class GameManager {
 		
 		try
 		{
-			TimeUnit.SECONDS.sleep(5);
+			TimeUnit.SECONDS.sleep(3);
 		} catch (InterruptedException e)
 		{
 			e.printStackTrace();
@@ -301,13 +302,6 @@ public class GameManager {
 		//Chiediamo la mossa al player artificiale
 		Card temp = players[actualPlayer].getMove(cardsOnTable);
 		turnPlayed(temp);
-		try
-		{
-			TimeUnit.SECONDS.sleep(3);
-		} catch (InterruptedException e)
-		{
-			e.printStackTrace();
-		}
 	}
 	
 	/**

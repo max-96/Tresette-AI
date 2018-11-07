@@ -9,11 +9,30 @@ import it.ai.tresette.player.AIPlayer;
 import it.ai.tresette.player.HumanPlayer;
 import it.ai.tresette.player.Player;
 import it.uniroma1.tresette.util.CommandLineParser;
+import it.uniroma1.tresette.util.Test;
 
 public class DesktopLauncher
 {
 	public static void main (String[] args)
 	{
+		CommandLineParser clp = new CommandLineParser(args);
+		boolean test = clp.parseTest();
+		
+		if (test)
+		{
+			int matchesNr = clp.parseMatchesNr();
+			if (matchesNr < 0)
+				return;
+			
+			it.uniroma1.tresette.setting.Player[] players = clp.parseArgs();
+			if (players == null)
+				return;
+			
+			Test tester = new Test(matchesNr, players);
+			tester.exec();
+			return;
+		}
+		
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		config.foregroundFPS = 60;
 		
@@ -27,8 +46,7 @@ public class DesktopLauncher
 		Player[] players = new Player[4];
 		players[0] = new HumanPlayer(0);
 		
-		CommandLineParser clp = new CommandLineParser(false);
-		it.uniroma1.tresette.setting.Player[] aiPlayers = clp.parseArgs(args);
+		it.uniroma1.tresette.setting.Player[] aiPlayers = clp.parseArgs();
 		
 		if (aiPlayers == null)
 			return;

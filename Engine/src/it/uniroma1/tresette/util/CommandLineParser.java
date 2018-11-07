@@ -1,5 +1,9 @@
 package it.uniroma1.tresette.util;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import it.uniroma1.tresette.ai.CheatingPlayer;
 import it.uniroma1.tresette.ai.DeterminizationPlayer;
 import it.uniroma1.tresette.ai.PartialInfoPlayer;
@@ -11,16 +15,17 @@ import it.uniroma1.tresette.setting.Player;
 
 public class CommandLineParser
 {
-	private final boolean forTest;
+	private List<String> args = new ArrayList<>();
+	private boolean forTest = false;
 	
 	private enum AI
 	{
 		RANDOM, AB_CHEATING, MCTS_CHEATING, ALPHABETA, MCTS, ISMTCS
 	}
 	
-	public CommandLineParser(boolean forTest)
+	public CommandLineParser(String[] args)
 	{
-		this.forTest = forTest;
+		this.args.addAll(Arrays.asList(args));
 	}
 	
 	private void printHelp()
@@ -30,27 +35,58 @@ public class CommandLineParser
 		System.out.println("Usage: choose " + aiNr + " AIs from the following list");
 		System.out.println("  RANDOM");
 		System.out.println("  AB_CHEATING");
-		System.out.println("    -d\tExploring depth [12]");
+		System.out.println("    -d\tExploring depth         [12]");
 		System.out.println("  MCTS_CHEATING");
-		System.out.println("    -i\tIterations number [1200]");
+		System.out.println("    -i\tIterations number       [1200]");
 		System.out.println("  ALPHABETA ");
-		System.out.println("    -d\tExploring depth [12]");
+		System.out.println("    -d\tExploring depth         [12]");
 		System.out.println("    -n\tDeterminizations number [100]");
 		System.out.println("  MCTS");
-		System.out.println("    -i\tIterations number [1200]");
+		System.out.println("    -i\tIterations number       [1200]");
 		System.out.println("    -n\tDeterminizations number [100]");
 		System.out.println("  ISMTCS");
-		System.out.println("    -i\tIterations number [1200]");
+		System.out.println("    -i\tIterations number       [1200]");
+		System.out.println("\nOptions:");
+		System.out.println("  -t\tRun tests instead GUI   [false]");
+		System.out.println("  -m\tTest matches number     [200]");
 	}
 	
-	public Player[] parseArgs(String[] args)
+	public boolean parseTest()
 	{
-		for (String arg : args)
-			if (arg.equals("-h"))
-			{
-				printHelp();
-				return null;
-			}
+		forTest = args.remove("-t");
+		return forTest;
+	}
+	
+	public int parseMatchesNr()
+	{
+		int m = 200;
+		int i = 0;
+		try
+		{
+			for (i = 0; i < args.size(); i++)
+				if (args.get(i).equals("-m"))
+				{
+					m = Integer.parseInt(args.get(++i));
+					args.remove(i);
+					args.remove(--i);
+				}
+		}
+		catch (Exception e)
+		{
+			System.out.println("Error: invalid argument \"" + args.get(--i) + "\"\n");
+			printHelp();
+			return -1;
+		}
+		return m;
+	}
+	
+	public Player[] parseArgs()
+	{
+		if(args.contains("-h"))
+		{
+			printHelp();
+			return null;
+		}
 		
 		int aiNr = forTest ? 4 : 3;
 		Player[] players = new Player[aiNr];
@@ -60,7 +96,7 @@ public class CommandLineParser
 		{
 			for (int i = 0; i < aiNr; i++)
 			{
-				AI ai = AI.valueOf(args[argNr]);
+				AI ai = AI.valueOf(args.get(argNr));
 				
 				int id = forTest ? i : i + 1;
 				int depth = 12;
@@ -69,9 +105,9 @@ public class CommandLineParser
 				switch (ai)
 				{
 					case AB_CHEATING:
-						if (argNr + 1 < args.length && args[argNr + 1].equals("-d"))
+						if (argNr + 1 < args.size() && args.get(argNr + 1).equals("-d"))
 						{
-							depth = Integer.parseInt(args[++argNr + 1]);
+							depth = Integer.parseInt(args.get(++argNr + 1));
 							argNr++;
 						}
 						players[i] = new CheatingPlayer(new AlphaBeta(id, depth));
@@ -80,14 +116,14 @@ public class CommandLineParser
 					case ALPHABETA:
 						for (int j = 0; j < 2; j++)
 						{
-							if (argNr + 1 < args.length && args[argNr + 1].equals("-d"))
+							if (argNr + 1 < args.size() && args.get(argNr + 1).equals("-d"))
 							{
-								depth = Integer.parseInt(args[++argNr + 1]);
+								depth = Integer.parseInt(args.get(++argNr + 1));
 								argNr++;
 							}
-							if (argNr + 1 < args.length && args[argNr + 1].equals("-n"))
+							if (argNr + 1 < args.size() && args.get(argNr + 1).equals("-n"))
 							{
-								deterNr = Integer.parseInt(args[++argNr + 1]);
+								deterNr = Integer.parseInt(args.get(++argNr + 1));
 								argNr++;
 							}
 						}
@@ -95,9 +131,9 @@ public class CommandLineParser
 						break;
 						
 					case ISMTCS:
-						if (argNr + 1 < args.length && args[argNr + 1].equals("-i"))
+						if (argNr + 1 < args.size() && args.get(argNr + 1).equals("-i"))
 						{
-							iter = Integer.parseInt(args[++argNr + 1]);
+							iter = Integer.parseInt(args.get(++argNr + 1));
 							argNr++;
 						}
 						players[i] = new PartialInfoPlayer(new InformationSetMCTS(id, iter));
@@ -106,14 +142,14 @@ public class CommandLineParser
 					case MCTS:
 						for (int j = 0; j < 2; j++)
 						{
-							if (argNr + 1 < args.length && args[argNr + 1].equals("-i"))
+							if (argNr + 1 < args.size() && args.get(argNr + 1).equals("-i"))
 							{
-								iter = Integer.parseInt(args[++argNr + 1]);
+								iter = Integer.parseInt(args.get(++argNr + 1));
 								argNr++;
 							}
-							if (argNr + 1 < args.length && args[argNr + 1].equals("-n"))
+							if (argNr + 1 < args.size() && args.get(argNr + 1).equals("-n"))
 							{
-								deterNr = Integer.parseInt(args[++argNr + 1]);
+								deterNr = Integer.parseInt(args.get(++argNr + 1));
 								argNr++;
 							}
 						}
@@ -121,9 +157,9 @@ public class CommandLineParser
 						break;
 						
 					case MCTS_CHEATING:
-						if (argNr + 1 < args.length && args[argNr + 1].equals("-i"))
+						if (argNr + 1 < args.size() && args.get(argNr + 1).equals("-i"))
 						{
-							iter = Integer.parseInt(args[++argNr + 1]);
+							iter = Integer.parseInt(args.get(++argNr + 1));
 							argNr++;
 						}
 						players[i] = new CheatingPlayer(new MonteCarloTreeSearch(id, iter));
@@ -138,9 +174,9 @@ public class CommandLineParser
 				}
 				argNr++;
 			}
-			if (argNr < args.length)
+			if (argNr < args.size())
 			{
-				System.out.println("Error: invalid argument \"" + args[args.length - 1] + "\"\n");
+				System.out.println("Error: invalid argument \"" + args.get(args.size() - 1) + "\"\n");
 				printHelp();
 				return null;
 			}
@@ -149,10 +185,10 @@ public class CommandLineParser
 		}
 		catch (Exception e)
 		{
-			if (argNr == args.length)
+			if (argNr == args.size())
 				System.out.println("Error: please provide " + aiNr + " AIs\n");
 			else
-				System.out.println("Error: invalid argument \"" + args[argNr] + "\"\n");
+				System.out.println("Error: invalid argument \"" + args.get(argNr) + "\"\n");
 			printHelp();
 			return null;
 		}
