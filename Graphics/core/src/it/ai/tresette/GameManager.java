@@ -262,6 +262,7 @@ public class GameManager {
 		this.playerKind = players[startingPlayer].getKind();
 		points = 0;
 		actualPlayer = startingPlayer;
+		dominatingPlayer = actualPlayer;
 		this.handState = HandState.INGOINGHAND;
 	}
 	
