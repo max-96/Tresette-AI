@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -23,6 +22,7 @@ public class SforzaSolver
 	private int[] carteMancanti = new int[4];
 	private List<List<Integer>> cartePossibiliPerPlayer = new ArrayList<>(4);
 	private Map<Integer, List<Integer>> carteLiberePerPlayer = new HashMap<>();
+	private List<Integer> playerAttivi = new ArrayList<>(3);
 
 	private int status = 0;
 	private BlockingQueue<List<List<Integer>>> possibiliAssegnamenti;
@@ -45,16 +45,19 @@ public class SforzaSolver
 			{
 				assegnamentoCarte.add(info.getKnownCardsOfPlayer(i));
 				carteMancanti[i] = info.getNumeroCarteInMano(i) - assegnamentoCarte.get(i).size();
+				if (carteMancanti[i] != 0)
+					playerAttivi.add(i);
 			}
 
 			carteLibere.removeAll(assegnamentoCarte.get(i));
+			cartePossibiliPerPlayer.add(new ArrayList<>());
 		}
 		
 		for (int carta : carteLibere)
 		{
 			carteLiberePerPlayer.put(carta, new ArrayList<>());
 			
-			for (int p = 0; p < 4; p++)
+			for (int p : playerAttivi)
 				if (info.isSemeAttivoForPlayer(p, carta / 10))
 				{
 					carteLiberePerPlayer.get(carta).add(p);
@@ -115,7 +118,7 @@ public class SforzaSolver
 
 			while (!threads.isEmpty())
 				threads.pop().join();
-
+			
 			tempo = System.currentTimeMillis() - tempo;
 			tempoEsecuzione = tempo;
 
@@ -140,17 +143,17 @@ public class SforzaSolver
 		{
 			copiaStrutture();
 
-			
-			for (int carta : carteLibPerPlayer.keySet())
+			for (Integer carta : carteLibPerPlayer.keySet())
 			{
 				for (int p = 0; p < 4; p++)
 					if (!serviti.contains(p) && carteManc[p] == cartePossPerPlayer.get(p).size())
 					{
-						for (int c : cartePossPerPlayer.get(p))
+						for (Integer c : cartePossPerPlayer.get(p))
 						{
 							assCarte.get(p).add(c);
 							for (int pp = 0; pp < 4; pp++)
-								cartePossPerPlayer.get(pp).remove(c);
+								if (pp != p)
+									cartePossPerPlayer.get(pp).remove(c);
 							carteManc[p]--;
 							
 							if (carteManc[p] == 0)
@@ -158,10 +161,13 @@ public class SforzaSolver
 						}
 					}
 				
+				if (serviti.size() == 4)
+					break;
+				
 				List<Integer> possibiliPlayer = carteLibPerPlayer.get(carta);
 				possibiliPlayer.removeAll(serviti);
-				int player = possibiliPlayer.get(ThreadLocalRandom.current().nextInt(possibiliPlayer.size()));
 				
+				int player = possibiliPlayer.get(ThreadLocalRandom.current().nextInt(possibiliPlayer.size()));
 				
 				assCarte.get(player).add(carta);
 				for (int p = 0; p < 4; p++)
@@ -171,7 +177,7 @@ public class SforzaSolver
 				if (carteManc[player] == 0)
 					serviti.add(player);
 			}
-			
+			System.out.println(assCarte);
 			possibiliAssegnamenti.offer(assCarte);
 		}
 		
@@ -184,9 +190,13 @@ public class SforzaSolver
 			}
 			
 			for (int c : carteLiberePerPlayer.keySet())
-				carteLibPerPlayer.put(c, carteLiberePerPlayer.get(c));
+				carteLibPerPlayer.put(c, new ArrayList<>(carteLiberePerPlayer.get(c)));
 
 			carteManc = Arrays.copyOf(carteMancanti, 4);
+			
+			for (int p = 0; p < 4; p++)
+				if (carteManc[p] == 0)
+					serviti.add(p);
 		}
 	}
 

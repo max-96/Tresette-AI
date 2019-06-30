@@ -8,7 +8,7 @@ import it.uniroma1.tresette.ai.CheatingPlayer;
 import it.uniroma1.tresette.ai.DeterminizationPlayer;
 import it.uniroma1.tresette.ai.PartialInfoPlayer;
 import it.uniroma1.tresette.ai.RandWalk;
-import it.uniroma1.tresette.ismcts.InformationSetMCTS;
+import it.uniroma1.tresette.ai.SforzaSolverPlayer;
 import it.uniroma1.tresette.mcts.MonteCarloTreeSearch;
 import it.uniroma1.tresette.minmax.AlphaBeta;
 import it.uniroma1.tresette.setting.Player;
@@ -26,7 +26,7 @@ public class CommandLineParser
 
 	private enum AI
 	{
-		RANDOM, CHEATING_AB, CHEATING_MCTS, ALPHABETA, MCTS, // ISMTCS
+		RANDOM, CHEATING_AB, CHEATING_MCTS, ALPHABETA, MCTS, SFORZA // ISMTCS
 	}
 
 	public CommandLineParser(String[] args)
@@ -137,6 +137,23 @@ public class CommandLineParser
 						}
 					}
 					players[i] = new DeterminizationPlayer(new AlphaBeta.Factory(id, depth), deterNr);
+					break;
+					
+				case SFORZA:
+					for (int j = 0; j < 2; j++)
+					{
+						if (argNr + 1 < args.size() && args.get(argNr + 1).equals("-d"))
+						{
+							parsingOpt = true;
+							depth = Integer.parseInt(args.get(argNr += 2));
+						}
+						if (argNr + 1 < args.size() && args.get(argNr + 1).equals("-n"))
+						{
+							parsingOpt = true;
+							deterNr = Integer.parseInt(args.get(argNr += 2));
+						}
+					}
+					players[i] = new SforzaSolverPlayer(new AlphaBeta.Factory(id, depth), deterNr);
 					break;
 
 //				case ISMTCS:
