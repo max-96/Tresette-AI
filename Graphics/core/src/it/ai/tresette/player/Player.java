@@ -11,7 +11,7 @@ import it.ai.tresette.objects.CardsOnTable;
 
 public abstract class Player
 {
-	private static final String[] STRING_REPR = {"\u21a7", "↦", "↥", "↤"};
+	private static final String[] STRING_REPR = {"South", "East", "North", "West"};
 	
 	protected int id;
 	protected CardsInHand myCards;
