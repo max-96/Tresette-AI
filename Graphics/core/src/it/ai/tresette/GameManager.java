@@ -102,6 +102,10 @@ public class GameManager {
 	private HandState handState;
 	
 	private Game game;
+	/**
+	 * flag field to avoid printing accusi already printed... to be changed
+	 */
+	private Boolean AccusiAlreadyCalled;
 	
 	/**
 	 * the actual kind of player who's playing his hand
@@ -154,6 +158,7 @@ public class GameManager {
 				System.out.println("We are starting the game...");
 				initialise();
 				System.out.println("Player " + players[startingPlayer] + " starts");
+				this.AccusiAlreadyCalled = false;
 				this.gameState = GameState.INGOING;
 				break;
 				
@@ -268,7 +273,8 @@ public class GameManager {
 	
 	private void turnManager()
 	{
-		if (turno == 1)
+		
+		if (turno == 1 && ! this.AccusiAlreadyCalled)
 		{
 			List<Integer> accusi = this.accusi.get(actualPlayer);
 			double punti = findAccusiOfPlayer(game.getAssegnamentoCarte().get(actualPlayer), accusi);
@@ -281,6 +287,7 @@ public class GameManager {
 				for (int i = 0; i < accusi.size() - 1; i++)
 					System.out.print(new Card(accusi.get(i)) + ", ");
 				System.out.println(new Card(accusi.get(accusi.size() - 1)) + "]");
+				this.AccusiAlreadyCalled = true; 			//accusi stampati.
 			}
 		}
 		
@@ -291,8 +298,6 @@ public class GameManager {
 				break;
 			case HUMANPLAYER:
 				humanTurn();
-				break;
-			default:
 				break;
 		}
 	}
@@ -310,9 +315,13 @@ public class GameManager {
 	 */
 	private void humanTurn()
 	{
+		//System.out.print("1");
 		//TODO e' temporaneo, ad ora il gioco frezza mentre aspetta la mossa del player, da cambiare 
 		Card temp = players[actualPlayer].getMove(cardsOnTable);
-		turnPlayed(temp); 
+		if(temp==null)
+			return;
+		else
+			turnPlayed(temp); 
 	}
 	
 	private void turnPlayed(Card card)

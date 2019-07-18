@@ -3,14 +3,19 @@ package it.ai.tresette.player;
 import java.util.List;
 import java.util.Scanner;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.input.*;
 import it.ai.tresette.GameManager.KindOfPlayer;
 import it.ai.tresette.objects.Card;
 import it.ai.tresette.objects.CardsOnTable;
+import it.ai.tresette.objects.Constants;
 import it.uniroma1.tresette.util.CardsUtils;
 
 public class HumanPlayer extends Player
 {
 	private Scanner keyboard = new Scanner(System.in);
+	
+	private boolean isPrinted = false;
 	
 	public static class DummyPlayer extends it.uniroma1.tresette.setting.Player
 	{
@@ -34,29 +39,31 @@ public class HumanPlayer extends Player
 	@Override
 	public Card getMove(CardsOnTable cardsOnTable)
 	{
-
 		List<Integer> possMosse = CardsUtils.getPossibiliMosse(getCardsInHand(), cardsOnTable.getCardsOnTable());
-	
-		System.out.print("Carte giocabili: [");
-		for (int i = 0; i < possMosse.size() - 1; i++)
-			System.out.print(new Card(possMosse.get(i)) + ", ");
-		System.out.println(new Card(possMosse.get(possMosse.size() - 1)) + "]");
-
-		int myint;
-		do
-		{
-			System.out.println("Che carta giochi? (inserisci l'indice della carta nella lista)");
-			try
-			{
-				myint = Integer.parseInt(keyboard.next()) - 1;
-			}
-			catch (NumberFormatException e)
-			{
-				myint = -1;
-			}
+		//print phase 
+		if(!isPrinted) {
 			
-		} while (myint < 0 || myint >= possMosse.size());
-
-		return this.myCards.remove(possMosse.get(myint));
+			System.out.print("Carte giocabili: [");
+			for (int i = 0; i < possMosse.size() - 1; i++)
+				System.out.print(new Card(possMosse.get(i)) + ", ");
+			System.out.println(new Card(possMosse.get(possMosse.size() - 1)) + "]");
+			System.out.println("Che carta giochi? (inserisci l'indice della carta nella lista)");
+			isPrinted = true; //cosi non ristampo ogni volta che chiamo il metodo
+		}
+		
+		if(Gdx.input.justTouched())
+		{
+			for(Card c : myCards.getCards())
+			{
+				if(c.isOverlapped(Gdx.input.getX(), Constants.WINDOW_HEIGHT-Gdx.input.getY()))
+					if(possMosse.contains(c.toInt()))
+					{	
+						myCards.remove(c);
+						return c;
+					}
+			}
+		}
+		
+		return null;
 	}
 }

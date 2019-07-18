@@ -122,4 +122,6 @@ public class CardsInHand
 			res.add(a.toInt());
 		return res;
 	}
+	
+	public List<Card> getCards() {return cardsInHand;}
 }

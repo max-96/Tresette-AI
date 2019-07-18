@@ -3,6 +3,7 @@ package it.ai.tresette.objects;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Rectangle;
 
 public class Card implements Comparable<Card>
 {
@@ -17,6 +18,8 @@ public class Card implements Comparable<Card>
 	private TextureRegion frontTexRegion;
 	
 	private TextureRegion backTexRegion;
+	
+	private Rectangle cardRectangle;
 	
 	private static int textureWidth = Constants.TABLE_EDGE/10;
 	
@@ -111,6 +114,7 @@ public class Card implements Comparable<Card>
 		frontTexRegion = new TextureRegion(frontTexture);
 		this.backTexture = new Texture(this.cardsBack);
 		this.backTexRegion = new TextureRegion(backTexture);
+		cardRectangle = new Rectangle(0,0,textureWidth,textureHeight);
 	}
 	
 	/**
@@ -128,6 +132,7 @@ public class Card implements Comparable<Card>
 		frontTexRegion = new TextureRegion(frontTexture);
 		this.backTexture = new Texture(this.cardsBack);
 		this.backTexRegion = new TextureRegion(backTexture);
+		cardRectangle = new Rectangle(0,0,textureWidth,textureHeight);
 	}
 	
 	/**
@@ -137,6 +142,7 @@ public class Card implements Comparable<Card>
 	 */
 	public void draw(SpriteBatch batch, int x, int y)
 	{
+		cardRectangle.set(x, y, textureWidth, textureHeight);
 		
 		//batch.draw(texture, (float)x, (float)y, 0f, 0f, (float)textureWidth, (float)textureHeight, 1f, 1f);
 		batch.draw(frontTexRegion, x, y, 0, 0, textureWidth, textureHeight, 1, 1, 0);
@@ -149,7 +155,8 @@ public class Card implements Comparable<Card>
 	 */
 	public void draw(SpriteBatch batch, int x ,int y,int rot)
 	{
-		
+		cardRectangle.set(x, y, textureWidth, textureHeight);
+		cardRectangle.setCenter(x,y);
 		switch(rot)
 		{
 			case 0:
@@ -169,8 +176,17 @@ public class Card implements Comparable<Card>
 
 	public void draw(SpriteBatch batch, int x, int y,float scale)
 	{
+		
+		cardRectangle.set(x, y, textureWidth, textureHeight);
 		batch.draw(frontTexRegion, x, y, 0, 0, textureWidth, textureHeight, scale, scale, 0);
 	}
+	
+	public boolean isOverlapped(int x, int y)
+	{
+		return cardRectangle.contains(x,y);
+		
+	}
+	
 	public static int getWidth() { return textureWidth;}
 	
 	public static int getHeigth() {return textureHeight;}
