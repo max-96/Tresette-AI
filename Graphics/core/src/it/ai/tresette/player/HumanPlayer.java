@@ -46,8 +46,8 @@ public class HumanPlayer extends Player
 			System.out.print("Carte giocabili: [");
 			for (int i = 0; i < possMosse.size() - 1; i++)
 				System.out.print(new Card(possMosse.get(i)) + ", ");
-			System.out.println(new Card(possMosse.get(possMosse.size() - 1)) + "]");
-			System.out.println("Che carta giochi? (inserisci l'indice della carta nella lista)");
+			// System.out.println(new Card(possMosse.get(possMosse.size() - 1)) + "]");
+			System.out.println("Che carta giochi?");
 			isPrinted = true; //cosi non ristampo ogni volta che chiamo il metodo
 		}
 		
