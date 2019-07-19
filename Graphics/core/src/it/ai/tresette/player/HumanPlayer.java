@@ -40,14 +40,14 @@ public class HumanPlayer extends Player
 	public Card getMove(CardsOnTable cardsOnTable)
 	{
 		List<Integer> possMosse = CardsUtils.getPossibiliMosse(getCardsInHand(), cardsOnTable.getCardsOnTable());
-		//print phase 
+		//print phase
 		if(!isPrinted) {
 			
-			System.out.print("Carte giocabili: [");
-			for (int i = 0; i < possMosse.size() - 1; i++)
-				System.out.print(new Card(possMosse.get(i)) + ", ");
+			// System.out.print("Carte giocabili: [");
+			// for (int i = 0; i < possMosse.size() - 1; i++)
+			//	System.out.print(new Card(possMosse.get(i)) + ", ");
 			// System.out.println(new Card(possMosse.get(possMosse.size() - 1)) + "]");
-			System.out.println("Che carta giochi?");
+			System.out.println("What card do you want to play?");
 			isPrinted = true; //cosi non ristampo ogni volta che chiamo il metodo
 		}
 		
@@ -59,6 +59,7 @@ public class HumanPlayer extends Player
 					if(possMosse.contains(c.toInt()))
 					{	
 						myCards.remove(c);
+						isPrinted = false;
 						return c;
 					}
 			}
