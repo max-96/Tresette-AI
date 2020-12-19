@@ -10,3 +10,7 @@ such as **Alpha-Beta** and **Monte Carlo Tree Search**.
 At the moment, the determinization follows a common **Flat Monte Carlo** policy. 
 
 Other than that, we want to use the **Information Set Monte Carlo Tree Search** (Single Observer variant), that does not utilize determinization.
+
+## About
+
+For detailed information about the project and the developed code, please read the [Providing_an_AI_for_the_Game_of_Tresette.pdf](Providing_an_AI_for_the_Game_of_Tresette.pdf) file.
