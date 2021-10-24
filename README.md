@@ -13,4 +13,4 @@ Other than that, we want to use the **Information Set Monte Carlo Tree Search** 
 
 ## About
 
-For detailed information about our work, please read the [Providing_an_AI_for_the_Game_of_Tresette.pdf](Providing_an_AI_for_the_Game_of_Tresette.pdf) file.
+For detailed information about our work, please read the [`Providing_an_AI_for_the_Game_of_Tresette.pdf`](Providing_an_AI_for_the_Game_of_Tresette.pdf) file.
